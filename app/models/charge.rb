@@ -4,9 +4,7 @@ class Charge < ActiveRecord::Base
   has_and_belongs_to_many :houses
 
   def add_house(house)
-    if (!houses.include?(house))
-      houses << house
-    end
+    houses << house
   end
 
   def house_ids

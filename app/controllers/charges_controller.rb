@@ -83,6 +83,7 @@ class ChargesController < ApplicationController
     if request.post?
 
       house_ids = params[:house_ids].split(',') || []
+      @charge.houses.clear
       house_ids.each do |id|
         house = House.find(id)
         @charge.add_house(house)

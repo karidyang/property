@@ -24,7 +24,6 @@ $(function(){
 
 function check_all(){
   $("#house_tree").jstree("check_all");
-  $("#house_tree").jstree("uncheck_node",$("#h-1"));
 }
 
 function getHouseIds(){
@@ -35,11 +34,8 @@ function getHouseIds(){
           idArray.push($(this).attr("id").split("-")[1]);
       }
   });
-  //$("#house_tree").find("> ul > .jstree-checked, .jstree-undetermined > ul > .jstree-leaf > .jstree-checked").each(function(){
-  //      idArray.push($(this).attr("id"));
-  //    });
+
   var ids=idArray.join(',');
-  alert(ids);
   $("#house_ids").attr("value",ids);
 }
 
