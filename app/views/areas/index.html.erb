@@ -4,9 +4,7 @@
 	<%= label_tag :plot_id, '选择小区'%>
 	<%= select_tag(:plot_id,options_for_select(all_plots) )%>
 	<%= submit_tag('查询')%>
-</div>
-<div class="toolbar">
-<%= link_to '新建楼栋', new_area_path %>
+    <%= link_to '新建楼栋', new_area_path %>
 </div>
 <% end %>
 <table class="tableClass" cellspacing="0">

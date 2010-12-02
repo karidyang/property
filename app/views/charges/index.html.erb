@@ -16,13 +16,13 @@
 <% @charges.each do |charge| %>
   <tr>
     <td><%= charge.item_name %></td>
-    <td><%= charge.period_type %></td>
+    <td><%= get_period_type(charge.period_type) %></td>
     <td><%= charge.price %></td>
-    <td><%= charge.unit_type %></td>
+    <td><%= get_unit_type(charge.unit_type) %></td>
     <td><%= charge.item_num %></td>
-    <td><%= charge.period %></td>
+    <td><%= get_period(charge.period) %></td>
     <td><%= charge.fee_rate %></td>
-    <td><%= charge.return_back %></td>
+    <td><%= get_return_back(charge.return_back) %></td>
     <td><%= link_to '查看', charge %>
     <%= link_to '编辑', edit_charge_path(charge) %>
     <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
