@@ -1,0 +1,36 @@
+<h1>收费项列表</h1>
+<%= link_to '新建收费项', new_charge_path %>
+<table class="tableClass" cellspacing="0">
+  <tr>
+    <th>收费项目名称</th>
+    <th>周期类型</th>
+    <th>单价</th>
+    <th>单价类型</th>
+    <th>数量</th>
+    <th>收费周期</th>
+    <th>滞纳金比率</th>
+    <th>是否退还</th>
+    <th>操作</th>
+  </tr>
+
+<% @charges.each do |charge| %>
+  <tr>
+    <td><%= charge.item_name %></td>
+    <td><%= charge.period_type %></td>
+    <td><%= charge.price %></td>
+    <td><%= charge.unit_type %></td>
+    <td><%= charge.item_num %></td>
+    <td><%= charge.period %></td>
+    <td><%= charge.fee_rate %></td>
+    <td><%= charge.return_back %></td>
+    <td><%= link_to '查看', charge %>
+    <%= link_to '编辑', edit_charge_path(charge) %>
+    <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
+    <%= link_to '设置房间', :controller=>'charges',:action=>'add_house',:id=>charge %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

@@ -1,0 +1,21 @@
+<% form_tag :action=>'add_role' do  %>
+<table>
+	<tr>
+		<td colspan="2" ><%=h @user.email %></td>
+	</tr>
+	<tr>
+		<td>角色</td>
+		<td>
+			<% for role in @roles %>
+				<%= check_box_tag 'user[role_ids][]', role.id,@user.roles.include?(role) %>
+				<%= role.name %>
+			<% end %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<%= submit_tag '保存' %>&nbsp;<%= link_to '返回',user_path  %>
+		</td>
+	</tr>
+</table>
+<% end %>

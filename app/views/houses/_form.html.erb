@@ -1,0 +1,47 @@
+<%= form_for(@house) do |f| %>
+  <% if @house.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@house.errors.count, "error") %> prohibited this house from being saved:</h2>
+
+      <ul>
+      <% @house.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table class="tableClass2" cellspacing="0">
+    <tr>
+        <td>楼栋</td>
+        <td><%= f.select( :area_id,all_areas )%></td>
+    </tr>
+    <tr>
+        <td><%= f.label '房号' %></td>
+        <td><%= f.text_field :house_code %></td>
+    </tr>
+    <tr>
+        <td><%= f.label '建筑面积' %></td>
+        <td><%= f.text_field :builded_area %></td>
+    </tr>
+	<tr>
+        <td><%= f.label '实际面积' %></td>
+        <td><%= f.text_field :real_area %></td>
+    </tr>
+	<tr>
+        <td><%= f.label '公摊面积' %></td>
+        <td><%= f.text_field :share_area %></td>
+    </tr>
+	<tr>
+        <td><%= f.label '单元状况' %></td>
+        <td><%= f.select :status,all_status %></td>
+    </tr>
+	<tr>
+        <td><%= f.label '使用类型' %></td>
+        <td><%= f.select :use_type,all_use_type %></td>
+    </tr>
+    <tr>
+        <td colspan="2"><%= f.submit '保存' %>&nbsp; <%= link_to '返回', houses_path %></td>
+    </tr>
+</table>
+<% end %>

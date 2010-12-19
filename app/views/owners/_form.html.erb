@@ -1,0 +1,42 @@
+<%= form_for(@owner) do |f| %>
+  <% if @owner.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@owner.errors.count, "error") %> prohibited this owner from being saved:</h2>
+
+      <ul>
+      <% @owner.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.hidden_field :house_id %>
+  <div class="field">
+    <%= f.label '姓名' %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label '年龄' %><br />
+    <%= f.text_field :age %>
+  </div>
+  <div class="field">
+    <%= f.label '性别' %><br />
+    <%= f.check_box :sex %>
+  </div>
+  <div class="field">
+    <%= f.label '电话' %><br />
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label '身份证' %><br />
+    <%= f.text_field :id_card %>
+  </div>
+  <div class="field">
+    <%= f.label '合同号' %><br />
+    <%= f.text_field :contract_no %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

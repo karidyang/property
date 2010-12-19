@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>House code:</b>
+  <%= @house.house_code %>
+</p>
+
+<p>
+  <b>Area:</b>
+  <%= @house.area_id %>
+</p>
+
+<p>
+  <b>Builded area:</b>
+  <%= @house.builded_area %>
+</p>
+
+<p>
+  <b>Real area:</b>
+  <%= @house.real_area %>
+</p>
+
+<p>
+  <b>Share area:</b>
+  <%= @house.share_area %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @house.status %>
+</p>
+
+<p>
+  <b>Use type:</b>
+  <%= @house.use_type %>
+</p>
+
+<p>
+  <b>Unit:</b>
+  <%= @house.unit_id %>
+</p>
+
+<p>
+  <b>Plot:</b>
+  <%= @house.plot_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_house_path(@house) %> |
+<%= link_to 'Back', houses_path %>

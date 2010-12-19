@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh_CN" lang="zh_CN">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+  <title>铭智物业管理</title>
+  <%= stylesheet_link_tag 'scaffold', 'menu', 'index' %>
+  <%= javascript_include_tag 'jquery-1.4.2.min', 'jquery.colorize-2.0.0', 'menu' %>
+  <%= javascript_include_tag 'jquery.cookie', 'jquery.hotkeys', 'jquery.jstree' %>
+  
+  <%= csrf_meta_tag %>
+</head>
+<body>
+<div id="header">
+  <div id="logo">
+    <div>
+    </div>
+  </div>
+  <div id="hello">
+    <br/>
+    &nbsp; &nbsp;Hello Admin
+    <br/>
+    <% require 'date'
+       day_names = %w{ 星期日 星期一 星期二 星期三 星期四 星期五 星期六 }
+       today = Date.today
+    %>
+    今天是 <%= day_names[today.wday] %>
+  </div>
+  <div id="banner">
+    <div class="banner">
+      <a href="#">
+        <div class="banner_button">
+          <%= image_tag 'big_logout.png' %>
+          <br/>
+          <span class="toplinks">退出系统</span>
+        </div>
+      </a>
+    </div>
+    <div class="banner">
+      <a href="#">
+        <div class="banner_button">
+          <%= image_tag 'big_settings.png' %>
+          <br/>
+          <span class="toplinks">系统设置</span>
+        </div>
+      </a>
+    </div>
+    <div class="banner">
+      <a href="#">
+        <div class="banner_button">
+          <%= image_tag 'big_users.png' %>
+          <br/>
+          <span class="toplinks">用户设置</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div id="menu">
+  <ul class="menu">
+    <li>
+      <a href="#"><span>首页</span></a>
+    </li>
+    <li>
+      <a href="#" class="parent"><span>小区管理</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <%= link_to '区域管理', areas_path %>
+          </li>
+          <li>
+            <%= link_to '房屋管理', houses_path %>
+            <div>
+              <ul>
+                <li>
+                  <%= link_to '业主管理', owners_path %>
+                </li>
+                <li>
+                  <a href="#"><span>成员管理</span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#"><span>日常管理</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <a href="#" class="parent"><span>物资管理</span></a>
+
+            <div>
+              <ul>
+                <li>
+                  <a href="#"><span>物资申请</span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#"><span>车位管理</span></a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#"><span>收费管理</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <%= link_to "收费项目及标准", charges_path %>
+          </li>
+          <li>
+            <a href="#" class="parent"><span>仪表管理</span></a>
+
+            <div>
+              <ul>
+                <li>
+                  <a href="#"><span>非公摊仪表</span></a>
+                </li>
+                <li>
+                  <a href="#"><span>公摊仪表</span></a>
+                </li>
+                <li>
+                  <a href="#"><span>抄表</span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="#"><span>费用账单</span></a>
+          </li>
+          <li>
+            <a href="#"><span>减免管理</span></a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#"><span>员工管理</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <a href="#"><span>员工考勤</span></a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#"><span>统计报表</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <a href="#"><span>小区报表</span></a>
+          </li>
+          <li>
+            <a href="#"><span>收费员报表</span></a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="last">
+      <a href="#"><span>装修管理</span></a>
+
+      <div>
+        <ul>
+          <li>
+            <a href="#"><span>装修费用</span></a>
+          </li>
+          <li>
+            <a href="#"><span>装修申请</span></a>
+          </li>
+          <li>
+            <a href="#"><span>装修出入证</span></a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+<div id="main">
+    <%= yield %>
+</div>
+<div id="footer">
+  <div id="site_nav">
+    <ul>
+      <li>
+        <a href="#">广告服务</a>
+      </li>
+      <li>
+        <a href="#">关于我们</a>
+      </li>
+      <li>
+        <a href="#">联系我们</a>
+      </li>
+      <li style="border-right:medium none;">
+        <a href="#">友情链接</a>
+      </li>
+    </ul>
+  </div>
+  <div id="copyright">
+    <div style="display: none;">
+      <a href="http://apycom.com/">Apycom jQuery Menus</a>
+    </div>
+    &copy; 2003-2010 MingZi.com. 成都铭智计算机软件有限公司版权所有 [ <a href="http://www.miibeian.gov.cn">川ICP备12345678号</a>
+    ]
+  </div>
+</div>
+</body>
+</html>

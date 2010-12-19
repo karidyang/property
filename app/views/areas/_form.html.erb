@@ -1,0 +1,31 @@
+<%= form_for(@area) do |f| %>
+    <% if @area.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@area.errors.count, "error") %> prohibited this area from being saved:</h2>
+
+          <ul>
+            <% @area.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <table class="tableClass2" cellspacing="0">
+    <tr>
+        <td>小区</td>
+        <td><%= f.select( :plot_id,all_plots )%></td>
+    </tr>
+    <tr>
+        <td><%= f.label '楼栋名称' %></td>
+        <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+        <td><%= f.label '房间数量' %></td>
+        <td><%= f.text_field :house_num %></td>
+    </tr>
+    <tr>
+        <td colspan="2"><%= f.submit '保存' %>&nbsp; <%= link_to '返回', areas_path %></td>
+    </tr>
+</table>
+<% end %>

@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item name:</b>
+  <%= @charge.item_name %>
+</p>
+
+<p>
+  <b>Period type:</b>
+  <%= @charge.period_type %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%= @charge.price %>
+</p>
+
+<p>
+  <b>Unit type:</b>
+  <%= @charge.unit_type %>
+</p>
+
+<p>
+  <b>Item num:</b>
+  <%= @charge.item_num %>
+</p>
+
+<p>
+  <b>Period:</b>
+  <%= @charge.period %>
+</p>
+
+<p>
+  <b>Fee rate:</b>
+  <%= @charge.fee_rate %>
+</p>
+
+<p>
+  <b>Return back:</b>
+  <%= @charge.return_back %>
+</p>
+
+<p>
+  <b>Note:</b>
+  <%= @charge.note %>
+</p>
+
+<p>
+  <b>Plot:</b>
+  <%= @charge.plot_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_charge_path(@charge) %> |
+<%= link_to 'Back', charges_path %>

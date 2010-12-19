@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @plot.name %>
+</p>
+
+<p>
+  <b>Developer:</b>
+  <%= @plot.developer %>
+</p>
+
+<p>
+  <b>Constructor:</b>
+  <%= @plot.constructor %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @plot.address %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%= @plot.phone %>
+</p>
+
+<p>
+  <b>Company:</b>
+  <%= @plot.company_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_plot_path(@plot) %> |
+<%= link_to 'Back', plots_path %>

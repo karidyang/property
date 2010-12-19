@@ -1,0 +1,32 @@
+<h1>楼栋列表</h1>
+<% form_tag( areas_path, :method=>"get") do %>
+<div id="search">
+	<%= label_tag :plot_id, '选择小区'%>
+	<%= select_tag(:plot_id,options_for_select(all_plots) )%>
+	<%= submit_tag('查询')%>
+</div>
+<div class="toolbar">
+<%= link_to '新建楼栋', new_area_path %>
+</div>
+<% end %>
+<table class="tableClass" cellspacing="0">
+  <tr>
+    <th>所属小区</th>
+    <th>楼栋名称</th>
+    <th>房间数量</th>
+	<th>操作</th>
+  </tr>
+
+<% @areas.each do |area| %>
+  <tr>
+    <td><%= area.plot.name %></td>
+    <td><%= area.name %></td>
+    <td><%= area.house_num %></td>
+    <td><%= link_to '查看', area %>
+    <%= link_to '编辑', edit_area_path(area) %>
+    <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @areas , :prev_label=>'<< 上一页', :next_label=>'下一页 >>'%>
+<br />

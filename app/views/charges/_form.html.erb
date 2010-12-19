@@ -1,0 +1,57 @@
+<%= form_for(@charge) do |f| %>
+  <% if @charge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@charge.errors.count, "error") %> prohibited this charge from being saved:</h2>
+
+      <ul>
+      <% @charge.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :item_name %><br />
+    <%= f.text_field :item_name %>
+  </div>
+  <div class="field">
+    <%= f.label :period_type %><br />
+    <%= f.text_field :period_type %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br />
+    <%= f.text_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :unit_type %><br />
+    <%= f.text_field :unit_type %>
+  </div>
+  <div class="field">
+    <%= f.label :item_num %><br />
+    <%= f.text_field :item_num %>
+  </div>
+  <div class="field">
+    <%= f.label :period %><br />
+    <%= f.text_field :period %>
+  </div>
+  <div class="field">
+    <%= f.label :fee_rate %><br />
+    <%= f.text_field :fee_rate %>
+  </div>
+  <div class="field">
+    <%= f.label :return_back %><br />
+    <%= f.text_field :return_back %>
+  </div>
+  <div class="field">
+    <%= f.label :note %><br />
+    <%= f.text_field :note %>
+  </div>
+  <div class="field">
+    <%= f.label :plot_id %><br />
+    <%= f.text_field :plot_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

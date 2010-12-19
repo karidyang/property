@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @owner.name %>
+</p>
+
+<p>
+  <b>Age:</b>
+  <%= @owner.age %>
+</p>
+
+<p>
+  <b>Sex:</b>
+  <%= @owner.sex %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%= @owner.phone %>
+</p>
+
+<p>
+  <b>Id card:</b>
+  <%= @owner.id_card %>
+</p>
+
+<p>
+  <b>Contract no:</b>
+  <%= @owner.contract_no %>
+</p>
+
+<p>
+  <b>House:</b>
+  <%= @owner.house_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_owner_path(@owner) %> |
+<%= link_to 'Back', owners_path %>
