@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  plot_id: 1
+  house_count: 1
+
+two:
+  name: MyString
+  plot_id: 1
+  house_count: 1

@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  house_code: MyString
+  area_id: 1
+  builded_area: 9.99
+  real_area: 9.99
+  share_area: 9.99
+  status: 1
+  use_type: 1
+  unit_id: 1
+  plot_id: 1
+
+two:
+  house_code: MyString
+  area_id: 1
+  builded_area: 9.99
+  real_area: 9.99
+  share_area: 9.99
+  status: 1
+  use_type: 1
+  unit_id: 1
+  plot_id: 1
