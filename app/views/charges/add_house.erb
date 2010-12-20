@@ -1,19 +1,21 @@
 <%= javascript_include_tag 'select_house_tree' %>
-<% form_tag :action=>'add_house' do  %>
+<%= form_tag({:action=>"add_house"},{:method=>"post",:id=>"add_house_form"}) do  %>
   <%= hidden_field_tag 'house_ids' %>
 <table>
 	<tr>
-		<td colspan="2" ><%=h @charge.item_name %></td>
+		<td><%=h @charge.item_name %></td>
 	</tr>
 	<tr>
-        <td>房间列表</td>
+      <td>房间列表</td>
+    </tr>
+    <tr>
         <td>
           <div id="house_tree"></div>
         </td>
 	</tr>
 	<tr>
-      <td colspan="2">
-        <input type="button" name='所选ids' onclick="getHouseIds()" />
+      <td>
+        <input type="submit" name='submit' value='保存' onclick="return getHouseIds()" />
 			<%= submit_tag '保存' %>&nbsp;<%= link_to '返回',user_path  %>
 		</td>
 	</tr>

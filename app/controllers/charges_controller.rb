@@ -81,10 +81,14 @@ class ChargesController < ApplicationController
   def add_house
     @charge = Charge.find(params[:id])
     if request.post?
-      puts params[:house_ids]
-      @houses = House.where('id in (?)',params[:house_ids])
-      @charge.houses = @houses
-      @charge.save
+      house_array ||= []
+      house_array = params[:house_ids].split(',') unless params.has_key?('house_ids')
+      house_array.each do |house_id|
+        house = House.find(house_id)
+        house.add_charge(@charge)
+        house.save
+      end
+      respond_with (@charge)
     end
   end
 end
