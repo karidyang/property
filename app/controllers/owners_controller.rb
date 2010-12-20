@@ -78,7 +78,6 @@ class OwnersController < ApplicationController
     @house.owner_name = nil
     @house.save
     @owner.destroy
-
-    redirect_to(owners_url)
+    respond_with(@owner,:location=>:back)
   end
 end

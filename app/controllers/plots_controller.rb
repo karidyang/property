@@ -75,10 +75,6 @@ class PlotsController < ApplicationController
   def destroy
     @plot = Plot.find(params[:id])
     @plot.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(plots_url) }
-      format.xml  { head :ok }
-    end
+    respond_with(@plot,:location=>:back)
   end
 end

@@ -74,11 +74,7 @@ class ChargesController < ApplicationController
   def destroy
     @charge = Charge.find(params[:id])
     @charge.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(charges_url) }
-      format.xml  { head :ok }
-    end
+    respond_with(@charge,:location=>:back)
   end
 
   def add_house

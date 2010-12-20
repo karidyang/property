@@ -75,10 +75,6 @@ class RolesController < ApplicationController
   def destroy
     @role = Role.find(params[:id])
     @role.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(roles_url) }
-      format.xml { head :ok }
-    end
+    respond_with(@role,:location=>:back)
   end
 end

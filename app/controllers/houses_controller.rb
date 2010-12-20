@@ -79,11 +79,7 @@ class HousesController < ApplicationController
   def destroy
     @house = House.find(params[:id])
     @house.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(houses_url) }
-      format.xml { head :ok }
-    end
+    respond_with(@house,:location=>:back)
   end
 
   def house_tree

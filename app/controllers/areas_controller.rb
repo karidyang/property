@@ -6,13 +6,9 @@ class AreasController < ApplicationController
     if params.has_key?('plot_id')
       @areas = Area.where("plot_id=?",params[:plot_id]).order('name').paginate(:page=>params[:page])
     else
-#      @areas = Area.paginate :page=>params[:page], :order=>'name'
       @areas = Area.order('name').paginate(:per_page => 10, :page => params[:page])
     end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @areas }
-    end
+    respond_with (@areas)
   end
 
   def plot_areas
@@ -25,22 +21,14 @@ class AreasController < ApplicationController
   # GET /areas/1.xml
   def show
     @area = Area.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml { render :xml => @area }
-    end
+    respond_with (@area)
   end
 
   # GET /areas/new
   # GET /areas/new.xml
   def new
     @area = Area.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml { render :xml => @area }
-    end
+    respond_with (@area)
   end
 
   # GET /areas/1/edit
@@ -85,10 +73,6 @@ class AreasController < ApplicationController
   def destroy
     @area = Area.find(params[:id])
     @area.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(areas_url) }
-      format.xml { head :ok }
-    end
+    respond_with(@area,:location=>:back)
   end
 end
