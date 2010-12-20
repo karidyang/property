@@ -1,3 +1,4 @@
+#coding: utf-8
 class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
@@ -80,7 +81,10 @@ class ChargesController < ApplicationController
   def add_house
     @charge = Charge.find(params[:id])
     if request.post?
-      puts params
+      puts params[:house_ids]
+      @houses = House.where('id in (?)',params[:house_ids])
+      @charge.houses = @houses
+      @charge.save
     end
   end
 end

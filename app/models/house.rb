@@ -7,4 +7,5 @@ class House < ActiveRecord::Base
   def to_json
     "{\"attr\":{\"id\":#{self.id},\"type\":3,\"rel\":\"house\"},\"data\":\"#{self.house_code}\",\"state\":\"\"}"
   end
+
 end
