@@ -6,7 +6,7 @@ class House < ActiveRecord::Base
   has_and_belongs_to_many :charges 
 
   def to_json
-    "{\"attr\":{\"id\":#{self.id},\"type\":3,\"rel\":\"house\"},\"data\":\"#{self.house_code}\",\"state\":\"\"}"
+    "{\"attr\":{\"id\":\"h-#{self.id}\",\"type\":3,\"rel\":\"house\"},\"data\":\"#{self.house_code}\",\"state\":\"\"}"
   end
  
   def add_charge(charge)

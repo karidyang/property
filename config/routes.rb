@@ -1,7 +1,7 @@
 # coding: utf-8
 Property::Application.routes.draw do
   root :to => 'home#index'
-  match 'house/house_tree(/:id(.:format))'=>'house#house_tree'
+  match 'houses/house_tree'=>'houses#house_tree'
 
   resources :charges
 
