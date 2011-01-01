@@ -29,13 +29,27 @@ function check_all(){
 
 function getHouseIds(){
   var idArray = new Array();
-  $("#house_tree").find("> ul > .jstree-checked, .jstree-undetermined > ul > .jstree-leaf > .jstree-checked").each(function(){
-        idArray.push($(this).attr("id"));
-      });
+  $('li[type=3]').each(function(){
+      var flag = $('#house_tree').jstree('is_checked',this);
+      if (flag){
+          idArray.push($(this).attr("id").split("-")[1]);
+      }
+  });
+  //$("#house_tree").find("> ul > .jstree-checked, .jstree-undetermined > ul > .jstree-leaf > .jstree-checked").each(function(){
+  //      idArray.push($(this).attr("id"));
+  //    });
   var ids=idArray.join(',');
+  alert(ids);
   $("#house_ids").attr("value",ids);
 }
 
 function check_house(){
-  $('li[type=3]').each(function(){$('#house_tree').jstree('check_node',this);});
+  var idArray = $("#house_ids").val().split(",");
+  $('li[type=3]').each(function(){
+      var id = $(this).attr("id").split("-")[1];
+
+      if ($.inArray(id,idArray) != -1){
+        $('#house_tree').jstree('check_node',this);
+      }
+  });
 }
