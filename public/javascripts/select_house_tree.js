@@ -2,7 +2,11 @@
  * @author karidyang
  */
 $(function(){
-    $("#house_tree").jstree({
+    $("#house_tree")
+    .bind("loaded.jstree", function (event, data) {
+        check_house();
+	})
+    .jstree({
       "json_data": {
       "ajax": { //配置采用ajax方式获取数据
       "url": "/houses/house_tree"
@@ -29,7 +33,9 @@ function getHouseIds(){
         idArray.push($(this).attr("id"));
       });
   var ids=idArray.join(',');
-  alert(ids);
-  return false;
   $("#house_ids").attr("value",ids);
-} 
+}
+
+function check_house(){
+  $('li[type=3]').each(function(){$('#house_tree').jstree('check_node',this);});
+}

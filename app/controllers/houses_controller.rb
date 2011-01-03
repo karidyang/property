@@ -83,21 +83,21 @@ class HousesController < ApplicationController
   end
 
   def house_tree
-    type   = params[:type].to_i
-    treeid = params[:treeid].to_i
+    #type   = params[:type].to_i
+    #treeid = params[:treeid].to_i
     #house_code = params[:house_code]
     #type==0取小区, type=2取房间
-    case type
-      when 0
+    #case type
+      #when 0
         json = []
 #            Plot.find(:all).each do |plot|
         json << Plot.first.to_json
 #            end
         render :json => "[#{json.join(",")}]"
-      when 2
-        area = Area.find(treeid)
-        render :json => area.houses_json
-    end
+      #when 2
+        #area = Area.find(treeid)
+        #render :json => area.houses_json
+    #end
 
   end
 end
