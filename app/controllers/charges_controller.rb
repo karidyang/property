@@ -81,10 +81,13 @@ class ChargesController < ApplicationController
   def add_house
     @charge = Charge.find(params[:id])
     if request.post?
-      house ||= []
-      house = params[:house_ids].split(',') unless params.has_key?('house_ids')
-      if (@charge.update_attributes(params[:house_ids].split(",")))
-        flash[:notice] = '保存成功'
+
+      house_ids = params[:house_ids].split(',') || []
+      house_ids.each do |id|
+        house = House.find(id)
+        @charge.add_house(house)
+      end
+      if(@charge.save)
         respond_with (@charge)
       end
     end
