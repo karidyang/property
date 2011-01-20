@@ -27,24 +27,18 @@
 
 <p>
   <b>Status:</b>
-  <%= @house.status %>
+  <%= get_status(@house.status) %>
 </p>
 
 <p>
   <b>Use type:</b>
-  <%= @house.use_type %>
+  <%= get_use_type(@house.use_type) %>
 </p>
 
 <p>
   <b>Unit:</b>
   <%= @house.unit_id %>
 </p>
-
-<p>
-  <b>Plot:</b>
-  <%= @house.plot_id %>
-</p>
-
 
 <%= link_to 'Edit', edit_house_path(@house) %> |
 <%= link_to 'Back', houses_path %>

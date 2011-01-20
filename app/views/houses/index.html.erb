@@ -12,6 +12,7 @@
     <th>小区</th>
     <th>楼栋</th>
     <th>房号</th>
+    <th>业主</th>
     <th>建筑面积</th>
     <th>实际面积</th>
     <th>公摊面积</th>
@@ -25,6 +26,7 @@
     <td><%=h house.plot.name %></td>
     <td><%=h house.area.name %></td>
     <td><%=h house.house_code %></td>
+    <td><%=h house.owner_name %></td>
     <td><%=h house.builded_area %></td>
     <td><%=h house.real_area %></td>
     <td><%=h house.share_area %></td>
@@ -34,7 +36,7 @@
     	<%= link_to '查看', house %>
 		<%= link_to '编辑', edit_house_path(house) %>
 		<%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
-		<%= link_to '新建业主', :controller=>'owners', :action=>'new',:house_id=>house %>
+		<%= link_to '添加成员', :controller=>'owners', :action=>'new',:house_id=>house %>
 	</td>
   </tr>
 

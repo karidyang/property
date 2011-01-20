@@ -25,16 +25,6 @@
   <%= @owner.id_card %>
 </p>
 
-<p>
-  <b>Contract no:</b>
-  <%= @owner.contract_no %>
-</p>
 
-<p>
-  <b>House:</b>
-  <%= @owner.house_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_owner_path(@owner) %> |
-<%= link_to 'Back', owners_path %>
+<%= link_to '编辑', edit_owner_path(@owner) %> |
+<%= link_to '返回', owners_path %>

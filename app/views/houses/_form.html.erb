@@ -41,6 +41,10 @@
         <td><%= f.select :use_type,all_use_type %></td>
     </tr>
     <tr>
+        <td><%= f.label '业主' %></td>
+        <td><%= f.text_field :owner_name %></td>
+    </tr>
+    <tr>
         <td colspan="2"><%= f.submit '保存' %>&nbsp; <%= link_to '返回', houses_path %></td>
     </tr>
 </table>
