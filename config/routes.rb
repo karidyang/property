@@ -19,7 +19,9 @@ Property::Application.routes.draw do
 
   resources :companies
 
-
+  match "login", :to => 'home#login'
+  match "login_create", :to => 'home#login_create'
+  match 'logout', :to => 'home#logout'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
