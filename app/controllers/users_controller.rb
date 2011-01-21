@@ -35,22 +35,23 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = @current_user
   end
 
   # POST /users
   # POST /users.xml
   def create
-    @user = User.new(params[:user])
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to(@user, :notice => '新建用户成功.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    up = params[:user]
+    @user = User.new(up)
+    @user.email = up[:email]
+    @user.name = up[:name]
+
+    if @user.save
+      flash[:notice] = "注册成功."
+      redirect_back_or_default root_path
+    else
+      render :action => :new
     end
   end
 

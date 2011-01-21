@@ -1,34 +1,26 @@
-<%= content_for :sitemap do %><span class="current">登录</span><% end %>
-<div class="leftbox">
-  <div class="box">
-  <h1>登录</h1>
+<h1>欢迎来到铭智物业管理系统，请登录</h1>
 
-  <div class="form">
+<div id="right">
   <%= form_for :user_session, :url => login_create_path do |f| %>
-    <%= render "shared/error_messages", :target => @user_session %>
-    <div class="field">
-    <%= f.label :email, "Email:" %><br />
-    <%= f.text_field :email %>
-    </div>
-    <div class="field">
-    <%= f.label :password, "密码:" %><br />
-    <%= f.password_field :password %>
-    </div>
-    <div class="field">
-    <%= f.check_box :remember_me, :class => "checkbox" %><%= f.label :remember_me, "一月之内不用再次登录" %><br />
-    </div>
-    <p>
-    <button type="submit" class="button submit">登录</button> 或 <a href="<%= new_user_path %>">注册新用户</a>
-    </p>
+      <%= render "shared/error_messages", :target => @user_session %>
+      <div class="field">
+        <%= f.label :email, "Email:" %>
+        <br/>
+        <%= f.text_field :email %>
+      </div>
+      <div class="field">
+        <%= f.label :password, "密码:" %>
+        <br/>
+        <%= f.password_field :password %>
+      </div>
+      <div class="field">
+        <%= f.check_box :remember_me, :class => "checkbox" %><%= f.label :remember_me, "一月之内不用再次登录" %>
+        <br/>
+      </div>
+      <p>
+        <button type="submit" class="button submit">登录</button>
+        或 <a href="<%= new_user_path %>">注册新用户</a>
+      </p>
   <% end %>
-  </div>
-  </div>
 </div>
-<div class="sidebar">
-  <div class="box">
-    <h2>没有帐号吗？</h2>
-    <p>
-      <a href="#">现在就注册一个</a>
-    </p>
-  </div>
-</div>
+

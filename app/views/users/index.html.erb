@@ -1,16 +1,11 @@
 <h1>Listing users</h1>
 
+<%= link_to 'New User', new_user_path %>
 <table>
   <tr>
     <th>Email</th>
-    <th>Passwd</th>
     <th>Name</th>
-    <th>Location</th>
-    <th>Bio</th>
-    <th>Avatar file name</th>
-    <th>Verified</th>
     <th>State</th>
-    <th>Last logined at</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,22 +14,11 @@
   <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
-        <td><%= user.passwd %></td>
         <td><%= user.name %></td>
-        <td><%= user.location %></td>
-        <td><%= user.bio %></td>
-        <td><%= user.avatar_file_name %></td>
-        <td><%= user.verified %></td>
         <td><%= user.state %></td>
-        <td><%= user.last_logined_at %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+        <td><%= link_to '编辑', edit_user_path(user) %></td>
+        <td><%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %></td>
         <td><%= link_to '添加角色',:controller=>'users',:action=>'add_role',:id=>user %></td>
       </tr>
-  <% end %>
+<% end %>
 </table>
-
-<br/>
-
-<%= link_to 'New User', new_user_path %>

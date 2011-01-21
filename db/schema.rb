@@ -96,7 +96,6 @@ ActiveRecord::Schema.define(:version => 20101220064204) do
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :null => false
-    t.string   "passwd",                              :null => false
     t.string   "name",                                :null => false
     t.string   "location"
     t.string   "bio"
@@ -106,6 +105,7 @@ ActiveRecord::Schema.define(:version => 20101220064204) do
     t.datetime "last_logined_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "passwd"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
