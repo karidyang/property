@@ -1,5 +1,6 @@
 # coding: utf-8  
 class PlotsController < ApplicationController
+  before_filter :require_user
   # GET /plots
   # GET /plots.xml
   def index

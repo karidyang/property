@@ -1,5 +1,6 @@
 # coding: utf-8  
 class HousesController < ApplicationController
+  before_filter :require_user
   # GET /houses
   # GET /houses.xml
   def index

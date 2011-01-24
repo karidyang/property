@@ -3,7 +3,7 @@ class CreateCharges < ActiveRecord::Migration
     create_table :charges do |t|
       t.string :item_name
       t.integer :period_type
-      t.decimal :price
+      t.decimal :price, :precision=>8, :scale=>2
       t.integer :unit_type
       t.integer :item_num
       t.integer :period

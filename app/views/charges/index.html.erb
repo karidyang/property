@@ -23,7 +23,7 @@
     <td><%= get_period(charge.period) %></td>
     <td><%= charge.fee_rate %></td>
     <td><%= get_return_back(charge.return_back) %></td>
-    <td><%= link_to '查看', charge %>
+    <td>
     <%= link_to '编辑', edit_charge_path(charge) %>
     <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
     <%= link_to '设置房间', :controller=>'charges',:action=>'add_house',:id=>charge %>

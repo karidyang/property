@@ -4,7 +4,7 @@ gem 'rails', '3.0.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-#gem 'mysql'
+gem 'mysql2'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'

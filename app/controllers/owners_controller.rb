@@ -1,5 +1,6 @@
 # coding: utf-8  
 class OwnersController < ApplicationController
+  before_filter :require_user
   # GET /owners
   # GET /owners.xml
   def index

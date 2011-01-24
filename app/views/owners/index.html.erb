@@ -35,7 +35,7 @@
             <td><%=h owner.phone %></td>
             <td><%=h owner.id_card %></td>
             <td><%=h owner.contract_no %></td>
-            <td><%= link_to '查看', owner %>
+            <td>
                 <%= link_to '编辑', edit_owner_path(owner) %>
                 <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
             </td>

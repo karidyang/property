@@ -22,7 +22,7 @@
                 </td>
                 <td><%=h plot.address %>
                 </td>
-                <td><%= link_to '查看', plot %>
+                <td>
               	<%= link_to '编辑', edit_plot_path(plot) %>
                 <%= link_to '删除', plot, :confirm => '你确定吗?', :method => :delete %>
 				<%= link_to '区域列表',:controller=>'areas',:action=>'index',:plot_id=>plot %>

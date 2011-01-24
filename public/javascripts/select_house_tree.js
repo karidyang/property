@@ -20,11 +20,23 @@ $(function(){
       },
       "plugins": ["themes", "json_data", "checkbox"]
     });
+    $("#select_all").click(function(){
+        $("#house_tree").jstree("check_all");
+    });
+    $("input[type='submit']").click(function(){
+        var idArray = new Array();
+          $('li[type=3]').each(function(){
+              var flag = $('#house_tree').jstree('is_checked',this);
+              if (flag){
+                  idArray.push($(this).attr("id").split("-")[1]);
+              }
+          });
+        var ids=idArray.join(',');
+        $("#house_ids").attr("value",ids);
+        $("#add_house_form").submit();
+    });
 });
 
-function check_all(){
-  $("#house_tree").jstree("check_all");
-}
 
 function getHouseIds(){
   var idArray = new Array();

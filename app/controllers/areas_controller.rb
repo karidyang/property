@@ -1,5 +1,6 @@
 # coding: utf-8  
 class AreasController < ApplicationController
+  before_filter :require_user
   # GET /areas
   # GET /areas.xml
   def index

@@ -33,7 +33,6 @@
     <td><%=h get_status(house.status) %></td>
     <td><%=h get_use_type(house.use_type) %></td>
     <td>
-    	<%= link_to '查看', house %>
 		<%= link_to '编辑', edit_house_path(house) %>
 		<%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
 		<%= link_to '添加成员', :controller=>'owners', :action=>'new',:house_id=>house %>

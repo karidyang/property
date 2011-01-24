@@ -1,5 +1,6 @@
 # coding: utf-8  
 class UsersController < ApplicationController
+  before_filter :require_user, :only => [:new,:create]
   # GET /users
   # GET /users.xml
   def index

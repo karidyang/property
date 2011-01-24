@@ -1,5 +1,6 @@
 #coding: utf-8
 class ChargesController < ApplicationController
+  before_filter :require_user
   # GET /charges
   # GET /charges.xml
   def index
@@ -84,10 +85,8 @@ class ChargesController < ApplicationController
 
       house_ids = params[:house_ids].split(',') || []
       @charge.houses.clear
-      house_ids.each do |id|
-        house = House.find(id)
-        @charge.add_house(house)
-      end
+      houses = House.find(house_ids)
+      @charge.houses = houses
       if(@charge.save)
         respond_with (@charge)
       end
