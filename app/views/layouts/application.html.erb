@@ -17,7 +17,7 @@
   </div>
   <div id="hello">
     <br/>
-    &nbsp; &nbsp;Hello Admin
+    &nbsp; &nbsp;Hello <%= user_name_tag @current_user %>
     <br/>
     <% require 'date'
        day_names = %w{ 星期日 星期一 星期二 星期三 星期四 星期五 星期六 }

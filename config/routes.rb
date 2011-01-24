@@ -1,6 +1,6 @@
 # coding: utf-8
 Property::Application.routes.draw do
-  root :to => 'home#index'
+  root :to => 'houses#index'
   match 'houses/house_tree'=>'houses#house_tree'
 
   resources :charges

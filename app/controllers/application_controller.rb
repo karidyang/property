@@ -58,7 +58,6 @@ class ApplicationController < ActionController::Base
         store_location
         flash[:notice] = "You must be logged in to access this page"
         redirect_to login_path
-        return false
       end
     end
 
@@ -67,7 +66,6 @@ class ApplicationController < ActionController::Base
         store_location
         flash[:notice] = "You must be logged out to access this page"
         redirect_to root_path
-        return false
       end
     end
 

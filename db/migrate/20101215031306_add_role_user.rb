@@ -7,6 +7,6 @@ class AddRoleUser < ActiveRecord::Migration
   end
 
   def self.down
-    drop table :roles_users
+    drop_table :roles_users
   end
 end

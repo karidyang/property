@@ -7,6 +7,6 @@ class CreateChargeHouse < ActiveRecord::Migration
   end
 
   def self.down
-    drop table :charges_houses
+    drop_table :charges_houses
   end
 end

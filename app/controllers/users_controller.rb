@@ -42,10 +42,7 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
 
-    up = params[:user]
-    @user = User.new(up)
-    @user.email = up[:email]
-    @user.name = up[:name]
+    @user = User.new(params[:user])
 
     if @user.save
       flash[:notice] = "注册成功."
