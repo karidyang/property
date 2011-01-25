@@ -1,7 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  role_name: MyString
+system:
+  id: 1
+  name: '管理员'
 
-two:
-  role_name: MyString
+operator:
+  id: 2
+  name: '普通操作员'

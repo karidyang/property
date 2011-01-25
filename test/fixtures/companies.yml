@@ -1,13 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
-  address: MyString
-  telphone: MyString
-  email: MyString
+  id: 1
+  name: '铭智物业'
 
-two:
-  name: MyString
-  address: MyString
-  telphone: MyString
-  email: MyString

@@ -1,11 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
+  name: '01号楼'
   plot_id: 1
-  house_count: 1
+  house_num: 10
 
 two:
-  name: MyString
+  name: '02号楼'
   plot_id: 1
-  house_count: 1
+  house_num: 10

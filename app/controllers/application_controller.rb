@@ -77,4 +77,8 @@ class ApplicationController < ActionController::Base
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
     end
+
+    def require_privilege(model_name)
+      #TODO 处理权限的问题
+    end
 end

@@ -27,4 +27,10 @@ class User < ActiveRecord::Base
     roles.each { |role| role_name << role.name }
     role_name
   end
+
+  def has_privilege?(model_name, operator_name, option={})
+    roles.each do |role|
+      return true if role.has_privilege?(model_name, operator_name, option)
+    end
+  end
 end

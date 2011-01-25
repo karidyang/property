@@ -1,25 +1,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  item_name: MyString
+  item_name: '物业管理费'
   period_type: 1
-  price: 9.99
+  price: 0.57
   unit_type: 1
   item_num: 1
-  period: 1
-  fee_rate: 1
+  period: 2
+  fee_rate: 0
   return_back: 1
-  note: MyString
-  plot_id: 1
-
-two:
-  item_name: MyString
-  period_type: 1
-  price: 9.99
-  unit_type: 1
-  item_num: 1
-  period: 1
-  fee_rate: 1
-  return_back: 1
-  note: MyString
   plot_id: 1
