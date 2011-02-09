@@ -4,8 +4,12 @@ class HousesController < ApplicationController
   # GET /houses
   # GET /houses.xml
   def index
+    if !@current_user.has_privilege?('house', 'select')
+      render_403
+      return
+    end
     if params.has_key?('plot_id')
-      @houses = House.where("plot_id=?",params[:plot_id]).order('house_code').paginate :page=>params[:page], :per_page=>5
+      @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').paginate :page=>params[:page], :per_page=>5
     else
       @houses = House.order('house_code').paginate :page=>params[:page], :per_page=>5
     end
@@ -29,6 +33,10 @@ class HousesController < ApplicationController
   # GET /houses/new
   # GET /houses/new.xml
   def new
+    if !@current_user.has_privilege?('house', 'insert')
+      render_403
+      return
+    end
     @house = House.new
 
     respond_to do |format|
@@ -39,12 +47,19 @@ class HousesController < ApplicationController
 
   # GET /houses/1/edit
   def edit
+    if !@current_user.has_privilege?('house', 'update')
+      render_403
+      return
+    end
     @house = House.find(params[:id])
   end
 
   # POST /houses
   # POST /houses.xml
   def create
+    if !@current_user.has_privilege?('house', 'insert')
+      render_403
+    end
     @house      = House.new(params[:house])
     @area       = @house.area
     @house.plot = @area.plot
@@ -62,6 +77,10 @@ class HousesController < ApplicationController
   # PUT /houses/1
   # PUT /houses/1.xml
   def update
+    if !@current_user.has_privilege?('house', 'update')
+      render_403
+      return
+    end
     @house = House.find(params[:id])
 
     respond_to do |format|
@@ -78,27 +97,22 @@ class HousesController < ApplicationController
   # DELETE /houses/1
   # DELETE /houses/1.xml
   def destroy
+    if !@current_user.has_privilege?('house', 'delete')
+      render_403
+      return
+    end
     @house = House.find(params[:id])
     @house.destroy
-    respond_with(@house,:location=>:back)
+    respond_with(@house, :location=>:back)
   end
 
   def house_tree
-    #type   = params[:type].to_i
-    #treeid = params[:treeid].to_i
-    #house_code = params[:house_code]
-    #type==0取小区, type=2取房间
-    #case type
-      #when 0
-        json = []
-#            Plot.find(:all).each do |plot|
-        json << Plot.first.to_json
-#            end
-        render :json => "[#{json.join(",")}]"
-      #when 2
-        #area = Area.find(treeid)
-        #render :json => area.houses_json
-    #end
+    if !@current_user.has_privilege?('house', 'select')
+      render :json => "[]"
+    end
+    json = []
+    json << Plot.first.to_json
+    render :json => "[#{json.join(",")}]"
 
   end
 end

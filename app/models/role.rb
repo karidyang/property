@@ -9,6 +9,7 @@ class Role < ActiveRecord::Base
     privileges.each do |pri|
       return true if pri.has_privilege?(model_name, operator_name, option)
     end
+    false
   end
 
 end

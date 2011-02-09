@@ -13,9 +13,13 @@ class ApplicationController < ActionController::Base
     render_optional_error_file(404)
   end
 
+  def render_403
+    render_optional_error_file(403)
+  end
+
   def render_optional_error_file(status_code)
     status = status_code.to_s
-    if ["404", "422", "500"].include?(status)
+    if ["403", "404", "422", "500"].include?(status)
       render :template => "/errors/#{status}.html.erb", :status => status, :layout => "application"
     else
       render :template => "/errors/unknown.html.erb", :status => status, :layout => "application"
@@ -78,7 +82,4 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
-    def require_privilege(model_name)
-      #TODO 处理权限的问题
-    end
 end

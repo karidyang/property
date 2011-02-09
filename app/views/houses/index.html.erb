@@ -1,5 +1,5 @@
 <h1>房间列表</h1>
-<% form_tag( '/houses', :method=>:get) do %>
+<%= form_tag( '/houses', :method=>:get) do %>
 <div object_id="search">
 	<%= label_tag '选择小区'%>
 	<%= select_tag(:plot_id,options_for_select(all_plots) )%>
@@ -41,4 +41,4 @@
 
 <% end %>
 </table>
-<%= will_paginate @houses , :prev_label=>'<< 上一页', :next_label=>'下一页 >>'%>
+<%= will_paginate @houses , :previous_label=>'<< 上一页', :next_label=>'下一页 >>'%>

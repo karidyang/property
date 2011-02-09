@@ -7,12 +7,12 @@ class InitData < ActiveRecord::Migration
     plot.save
     area = Area.create(:name=>'01号楼',:plot_id=>plot.id)
     area.save
-    5.times do |index|
+    1.upto(5) do |index|
       house = House.create(:house_code=>"1-1-1-#{index}",:use_type=>1,:status=>1,
                            :plot_id=>plot.id,:area_id=>area.id,:unit_id=>1)
       house.save
     end
-    5.times do |index|
+    1.upto(5) do |index|
       house = House.create(:house_code=>"1-1-2-#{index}",:use_type=>1,:status=>1,
                            :plot_id=>plot.id,:area_id=>area.id,:unit_id=>2)
       house.save
