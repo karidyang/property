@@ -5,7 +5,7 @@ development:
   database: "property_development"
   pool: 5
   username: "root"
-  password: "123456"
+  password: ""
   host: "127.0.0.1"
 #  adapter: sqlite3
 #  database: db/development.sqlite3

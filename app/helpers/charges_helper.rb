@@ -32,11 +32,6 @@ module ChargesHelper
     get({0=>'否',1=>'是'}, return_back)
   end
 
-  def get(hash,set_value)
-    hash.each do |key, value|
-      if key.to_i == set_value
-        return value
-      end
-    end
-  end
+
+
 end

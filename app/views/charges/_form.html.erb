@@ -10,7 +10,11 @@
           </ul>
         </div>
     <% end %>
+    <div class="field">
+      <%= label_tag '选择小区'%>
+	    <%= f.select(:plot_id, all_plots )%>
 
+    </div>
     <div class="field">
       <%= f.label '费用名称' %>
       <br/>
@@ -24,12 +28,12 @@
     <div class="field">
       <%= f.label '计费周期' %>
       <br/>
-      <%= f.text_field :period %>
+      <%= f.select( :period, all_period) %>
     </div>
     <div class="field">
       <%= f.label '单价类型' %>
       <br/>
-      <%= f.text_field :unit_type %>
+      <%= f.select(:unit_type,all_unit_type) %>
     </div>
     <div class="field">
       <%= f.label '单价' %>
@@ -49,7 +53,7 @@
     <div class="field">
       <%= f.label '是否退还' %>
       <br/>
-      <%= f.text_field :return_back %>
+      <%= f.select(:return_back,all_return_back) %>
     </div>
     <div class="field">
       <%= f.label '备注' %>
