@@ -1,11 +1,13 @@
 # coding: utf-8  
 class HomeController < ApplicationController
+
   def index
     @house = House.first
   end
 
   def login
     @user_session = UserSession.new
+    render :layout=>false
   end
 
   def login_create

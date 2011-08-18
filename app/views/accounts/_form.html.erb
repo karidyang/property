@@ -1,0 +1,27 @@
+<%= form_for(@account) do |f| %>
+    <% if @account.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+          <ul>
+            <% @account.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <%= f.hidden_field :house_id %>
+    <%= f.hidden_field :item_id %>
+    <%= f.hidden_field :plot_id %>
+    
+    <div class="field">
+      <%= f.label :money %>
+      <br/>
+      <%= f.text_field :money %>
+    </div>
+
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>

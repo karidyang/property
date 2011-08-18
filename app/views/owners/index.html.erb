@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    function clickTreeNode(house_code){
+    function clickTreeNode(house_code) {
 
         $("#house_code").attr("value", house_code);
         $("#searchForm").submit();
@@ -7,41 +7,46 @@
 
 </script>
 <fieldset style="height:585px;">
-    <legend style="font-size: 20px;">
-        业主列表
-    </legend>
-    <% form_tag( '/owners', :method=>:get, :id=>"searchForm") do %>
-    <div object_id="search" style="display: none;">
-        <%= hidden_field_tag "house_code",@house_code %>
-    </div>
+  <legend style="font-size: 20px;">
+    业主列表
+  </legend>
+  <% form_tag('/owners', :method=>:get, :id=>"searchForm") do %>
+      <div object_id="search" >
+
+        <%= label_tag '选择小区' %>
+        <%= select_tag(:plot_id, options_for_select(all_plots)) %>
+        <%= label_tag '房间号' %>
+        <%= text_field_tag "house_code", @house_code == 0?'':@house_code %>
+        <%= submit_tag('查询') %>
+      </div>
+  <% end %>
+  <table class="tableClass" cellspacing="0">
+    <tr>
+      <th>房号</th>
+      <th>姓名</th>
+      <th>年龄</th>
+      <th>性别</th>
+      <th>手机</th>
+      <th>身份证</th>
+      <th>合同号</th>
+      <th>操作</th>
+    </tr>
+    <% for owner in @owners %>
+        <tr>
+          <td><%= h owner.house.house_code %></td>
+          <td><%= h owner.name %></td>
+          <td><%= h owner.age %></td>
+          <td><%= h get_sex(owner.sex) %></td>
+          <td><%= h owner.phone %></td>
+          <td><%= h owner.id_card %></td>
+          <td><%= h owner.contract_no %></td>
+          <td>
+            <%= link_to '编辑', edit_owner_path(owner) %>
+            <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
+          </td>
+        </tr>
     <% end %>
-    <table class="tableClass" cellspacing="0">
-        <tr>
-            <th>房号</th>
-            <th>姓名</th>
-            <th>年龄</th>
-            <th>性别</th>
-            <th>手机</th>
-            <th>身份证</th>
-            <th>合同号</th>
-            <th>操作</th>
-        </tr>
-        <% for owner in @owners %>
-        <tr>
-            <td><%=h owner.house.house_code %></td>
-            <td><%=h owner.name %></td>
-            <td><%=h owner.age %></td>
-            <td><%=h owner.sex %></td>
-            <td><%=h owner.phone %></td>
-            <td><%=h owner.id_card %></td>
-            <td><%=h owner.contract_no %></td>
-            <td>
-                <%= link_to '编辑', edit_owner_path(owner) %>
-                <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
-            </td>
-        </tr>
-        <% end %>
-    </table>
-    <br/>
-    <%= will_paginate @owners , :prev_label=>'<< 上一页', :next_label=>'下一页 >>' %>
+  </table>
+  <br/>
+  <%= will_paginate @owners, :prev_label=>'<< 上一页', :next_label=>'下一页 >>' %>
 </fieldset>

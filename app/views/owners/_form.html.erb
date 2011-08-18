@@ -21,7 +21,8 @@
   </div>
   <div class="field">
     <%= f.label '性别' %><br />
-    <%= f.check_box :sex %>
+    <%= f.label '男' %><%= f.radio_button(:sex,true)%>
+    <%= f.label '女' %><%= f.radio_button(:sex,false)%>
   </div>
   <div class="field">
     <%= f.label '电话' %><br />
