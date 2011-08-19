@@ -14,4 +14,8 @@ class House < ActiveRecord::Base
       charges << charge
     end
   end
+
+  def owner_names
+    owners.map {|owner| owner.name}.flatten.uniq.join(",")
+  end
 end
