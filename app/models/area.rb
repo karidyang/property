@@ -4,12 +4,13 @@ class Area < ActiveRecord::Base
   has_many :houses, :order=>'house_code'
 
   def to_json
-    "{\"attr\":{\"id\":\"a-#{self.id}\",\"type\":2,\"rel\":\"area\"},\"data\":\"#{self.name}\",\"state\":\"open\",\"children\":[#{houses_json}]}"
+    
+    "{'id':'a-#{self.id}','name':'#{self.name}','open':'true',nocheck:true,nodes:#{houses_json}}"
   end
 
   def houses_json
     if !houses.empty?
-      json       = []
+      json = []
       house_unit = {}
 
       houses.each do |house|
@@ -21,7 +22,8 @@ class Area < ActiveRecord::Base
         house_unit[house.unit_id] = unit_house
       end
       house_unit.each do |k, v|
-        json << "{\"attr\":{\"id\":\"u-#{k}\",\"type\":2,\"rel\":\"unit\"},\"data\":\"#{k}单元\",\"state\":\"open\",\"children\":[#{v.join(",")}]}"
+
+        json << "{'id':'u-#{k}','name':'#{k}单元','open':'true','nodes':[#{v.join(",")}]}"
       end
       "[#{json.join(",")}]"
     end

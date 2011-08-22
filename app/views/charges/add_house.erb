@@ -1,24 +1,92 @@
-<%= javascript_include_tag 'select_house_tree' %>
-<%= form_tag({:action=>"add_house"},{:method=>"post",:id=>"add_house_form"}) do  %>
-  <%= hidden_field_tag 'house_ids', @charge.house_ids %>
-<table>
-	<tr>
-		<td><%=h @charge.item_name %></td>
-	</tr>
-	<tr>
-      <td>房间列表</td>
-    </tr>
-    <tr>
+<%= stylesheet_link_tag '/zTreeStyle/zTreeStyle' %>
+<script type="text/javascript">
+    var setting = {
+        checkable: true,
+        async : true,
+        asyncUrl: "/houses/house_tree",
+        asyncParam:  ['name','id'],
+        callback:{
+
+            asyncSuccess: zTreeOnAsyncSuccess,
+            asyncError: zTreeOnAsyncError
+        }
+    };
+    var zTree1 ;
+    var zNodes = [];
+    function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+        
+        var idArray = $("#house_ids").val().split(",");
+        for (var i=0; i < idArray.length; i++) {
+            var id = idArray[i];
+
+            var node = zTree1.getNodesByParam("id", "h-"+id, null)[0];
+            alert(node.tId);
+            zTree1.selectNode(node);
+            zTree1.updateNode(node, true);
+
+        }
+    }
+    function zTreeOnAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+        alert("error");
+    }
+    $(document).ready(function() {
+        refreshTree();
+
+    });
+
+    function refreshTree() {
+        var charge_id = $("#charge_id").val();
+        setting["asyncUrl"] = "/houses/house_tree?id=" + charge_id;
+        zTree1 = $("#house_tree").zTree(setting, zNodes);
+        $("#select_all").bind('click', function() {
+            zTree1.checkAllNodes(true);
+        });
+        $("#save").bind('click', function() {
+                    var nodes = zTree1.getCheckedNodes(true);
+                    var idArray = new Array();
+                    alert(nodes.length);
+                    for (var i = 0; i < nodes.length; i++) {
+                        var node_id = nodes[i].id;
+                        if (node_id[0] == "h") {
+                            idArray.push(node_id.split("-")[1]);
+                        }
+                    }
+
+                    var ids = idArray.join(',');
+                    $("#house_ids").attr("value", ids);
+                    $("#add_house_form").submit();
+                }
+        );
+        var node = zTree1.getNodeByTId('house_tree_4');
+        alert(node.id+","+node.name);
+        zTree1.selectNode();
+
+        
+    }
+
+
+</script>
+<%= form_tag({:action=>"add_house"}, {:method=>"post", :id=>"add_house_form"}) do %>
+    <%= hidden_field_tag 'charge_id', @charge.id %>
+    <%= hidden_field_tag 'house_ids', @charge.house_ids %>
+    <table>
+      <tr>
+        <td><%= h @charge.item_name %></td>
+      </tr>
+      <tr>
+        <td>房间列表</td>
+      </tr>
+      <tr>
         <td>
-          <div id="house_tree"></div>
+          <div id="house_tree" class="tree"></div>
         </td>
-	</tr>
-	<tr>
-      <td>
-        <input type="submit" name='submit' value='保存' />
-        <input type="button" id="select_all" value="选择所有" />
-        <%= link_to '返回',charges_path  %>
-		</td>
-	</tr>
-</table>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="save" value='保存'/>
+          <input type="button" id="select_all" value="选择所有"/>
+          <%= link_to '返回', charges_path %>
+        </td>
+      </tr>
+    </table>
 <% end %>

@@ -110,9 +110,12 @@ class HousesController < ApplicationController
     if !@current_user.has_privilege?('house', 'select')
       render :json => "[]"
     end
+    @plots = Plot.all
     json = []
-    json << Plot.first.to_json
-    render :json => "[#{json.join(",")}]"
+    @plots.each { |plot| json << plot.to_json }
+
+    render :json => "[#{json.join(',')}]"
 
   end
+
 end
