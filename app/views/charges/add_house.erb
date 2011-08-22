@@ -20,8 +20,7 @@
             var id = idArray[i];
 
             var node = zTree1.getNodesByParam("id", "h-"+id, null)[0];
-            alert(node.tId);
-            zTree1.selectNode(node);
+            node.checked = true;
             zTree1.updateNode(node, true);
 
         }
@@ -57,9 +56,7 @@
                     $("#add_house_form").submit();
                 }
         );
-        var node = zTree1.getNodeByTId('house_tree_4');
-        alert(node.id+","+node.name);
-        zTree1.selectNode();
+        
 
         
     }
