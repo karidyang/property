@@ -1,11 +1,11 @@
 <h1>房间列表</h1>
 <%= form_tag('/houses', :method=>:get) do %>
     <div object_id="search">
-      <%= label_tag '选择小区' %>
+      <%= label_tag :plot_id, '选择小区' %>
       <%= select_tag(:plot_id, options_for_select(all_plots)) %>
-      <%= label_tag '房间号' %>
-      <%= text_field_tag "house_code", @house_code == 0 ? '' :@house_code %>
-      <%= submit_tag('查询') %>
+      <%= label_tag :house_code, '房间号' %>
+      <%= text_field_tag :house_code, @house_code == 0 ? '' :@house_code %>
+      <%= submit_tag('查询', :name=>nil) %>
     </div>
 <% end %>
 <%= link_to '新建房间', new_house_path %>
