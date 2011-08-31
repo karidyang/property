@@ -80,4 +80,15 @@ class AccountsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def history
+    @account = Account.find(params[:id])
+    @details = @account.in_details
+  end
+
+  def add_pre_money
+    @house = House.find(params[:house_id])
+    @account = Account.new
+    render 'new'
+  end
 end

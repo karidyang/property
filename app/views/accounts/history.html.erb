@@ -1,0 +1,26 @@
+<table class="tableClass" cellspacing="0">
+  <tr>
+    <th>房号</th>
+    <th>业主</th>
+    <th>收费项目</th>
+    <th>预存时间</th>
+    <th>预存金额</th>
+    <th>收款人</th>
+    <th>备注</th>
+    <th>单据号</th>
+    <th>操作</th>
+  </tr>
+
+  <% @details.each do |detail| %>
+      <tr>
+        <td><%= detail.account.house_code %></td>
+        <td><%= detail.account.house.owner_name %></td>
+        <td><%= detail.account.item_name %></td>
+        <td><%= detail.money %></td>
+
+        <td>
+          <%= link_to '删除', detail, :confirm => '确定删除？', :method => :delete %>
+        </td>
+      </tr>
+  <% end %>
+</table>

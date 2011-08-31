@@ -1,0 +1,24 @@
+<table class="tableClass" cellspacing="0">
+  <tr>
+    <th>房号</th>
+    <th>收费项目</th>
+    <th>余额</th>
+    <th>锁定金额</th>
+    <th>操作</th>
+  </tr>
+
+  <% @accounts.each do |account| %>
+      <tr>
+        <td><%= account.house_code %></td>
+        <td><%= account.item_name %></td>
+        <td><%= account.money %></td>
+        <td></td>
+        <td>
+          <%= link_to '预存', account %>
+          <%= link_to '历史记录', edit_account_path(account) %>
+          <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
+          <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>
+        </td>
+      </tr>
+  <% end %>
+</table>

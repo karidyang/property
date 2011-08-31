@@ -10,7 +10,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110125025541) do
+ActiveRecord::Schema.define(:version => 20110831120557) do
+
+  create_table "account_details", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "account_type"
+    t.decimal  "money",        :precision => 8, :scale => 2
+    t.date     "trans_time"
+    t.string   "note"
+    t.string   "updateby"
+    t.integer  "record"
+    t.decimal  "unit_price",   :precision => 8, :scale => 2
+    t.decimal  "can_push",     :precision => 8, :scale => 2
+    t.integer  "receipt_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "accounts", :force => true do |t|
+    t.integer  "house_id"
+    t.string   "house_code"
+    t.decimal  "money",      :precision => 8, :scale => 2
+    t.integer  "item_id"
+    t.integer  "item_type"
+    t.string   "item_name"
+    t.integer  "plot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "areas", :force => true do |t|
     t.string  "name"

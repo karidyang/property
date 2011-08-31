@@ -28,10 +28,6 @@ class House < ActiveRecord::Base
   end
 
   def owner_names
-    owners.map {|owner| owner.name}.flatten.uniq.join(",")
-  end
-
-  def bind_charge(charge)
-    charges << charge unless !charges.include?(charge)
+    owners.map {|owner| owner.name}.flatten.uniq.join(',')
   end
 end

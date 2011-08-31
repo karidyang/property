@@ -1,35 +1,5 @@
 <h1>Listing accounts</h1>
+<%= render 'list' %>
+<br/>
 
-<table>
-  <tr>
-    <th>House</th>
-    <th>House code</th>
-    <th>Money</th>
-    <th>Item</th>
-    <th>Item type</th>
-    <th>Item name</th>
-    <th>Plot</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
-<% @accounts.each do |account| %>
-  <tr>
-    <td><%= account.house_id %></td>
-    <td><%= account.house_code %></td>
-    <td><%= account.money %></td>
-    <td><%= account.item_id %></td>
-    <td><%= account.item_type %></td>
-    <td><%= account.item_name %></td>
-    <td><%= account.plot_id %></td>
-    <td><%= link_to 'Show', account %></td>
-    <td><%= link_to 'Edit', edit_account_path(account) %></td>
-    <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Account', new_account_path %>

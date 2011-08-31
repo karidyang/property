@@ -1,6 +1,6 @@
 # coding: utf-8
 Property::Application.routes.draw do
-  resources :accounts
+  #resources :accounts
 
   root :to => 'houses#index'
   match 'houses/house_tree'=>'houses#house_tree'
@@ -24,6 +24,9 @@ Property::Application.routes.draw do
   match "login", :to => 'home#login'
   match "login_create", :to => 'home#login_create'
   match 'logout', :to => 'home#logout'
+  match 'accounts', :to => 'accounts#index'
+  match 'accounts/add_pre_money/:house_id' ,:to=>'accounts#add_pre_money'
+  match 'accounts/history/:id' , :to => 'accounts#history'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
