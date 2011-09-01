@@ -10,7 +10,7 @@ gem 'will_paginate', '3.0.pre2'
 gem 'authlogic'
 gem 'passenger'
 gem 'jquery-rails'
-
+gem 'json'
 # Use unicorn as the web server
 # gem 'unicorn'
 

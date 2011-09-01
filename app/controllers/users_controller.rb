@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html # add_pre_money.html.erb
       format.xml  { render :xml => @user }
     end
   end

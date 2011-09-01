@@ -4,7 +4,11 @@ Property::Application.routes.draw do
 
   root :to => 'houses#index'
   match 'houses/house_tree'=>'houses#house_tree'
+  match 'accounts', :to => 'accounts#index'
+  match 'accounts/add_pre_money', :to=>'accounts#add_pre_money'
+  match 'accounts/history/:id', :to => 'accounts#history'
 
+  match 'charges/get_unit_price/:id', :to =>'charges#get_unit_price'
   resources :charges
 
   resources :owners
@@ -24,63 +28,60 @@ Property::Application.routes.draw do
   match "login", :to => 'home#login'
   match "login_create", :to => 'home#login_create'
   match 'logout', :to => 'home#logout'
-  match 'accounts', :to => 'accounts#index'
-  match 'accounts/add_pre_money/:house_id' ,:to=>'accounts#add_pre_money'
-  match 'accounts/history/:id' , :to => 'accounts#history'
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+    # The priority is based upon order of creation:
+    # first created -> highest priority.
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
+    # Sample of regular route:
+    #   match 'products/:id' => 'catalog#view'
+    # Keep in mind you can assign values other than :controller and :action
 
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
+    # Sample of named route:
+    #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+    # This route can be invoked with purchase_url(:id => product.id)
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+    # Sample resource route (maps HTTP verbs to controller actions automatically):
+    #   resources :products
 
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+    # Sample resource route with options:
+    #   resources :products do
+    #     member do
+    #       get 'short'
+    #       post 'toggle'
+    #     end
+    #
+    #     collection do
+    #       get 'sold'
+    #     end
+    #   end
 
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
+    # Sample resource route with sub-resources:
+    #   resources :products do
+    #     resources :comments, :sales
+    #     resource :seller
+    #   end
 
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
+    # Sample resource route with more complex sub-resources
+    #   resources :products do
+    #     resources :comments
+    #     resources :sales do
+    #       get 'recent', :on => :collection
+    #     end
+    #   end
 
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+    # Sample resource route within a namespace:
+    #   namespace :admin do
+    #     # Directs /admin/products/* to Admin::ProductsController
+    #     # (app/controllers/admin/products_controller.rb)
+    #     resources :products
+    #   end
 
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+    # You can have the root of your site routed with "root"
+    # just remember to delete public/index.html.
+    # root :to => "welcome#index"
 
-  # See how all your routes lay out with "rake routes"
+    # See how all your routes lay out with "rake routes"
 
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
+    # This is a legacy wild controller route that's not recommended for RESTful applications.
+    # Note: This route will make all actions in every controller accessible via GET requests.
   match ':controller(/:action(/:id(.:format)))'
 end

@@ -1,24 +1,39 @@
-<%= form_for(@account) do |f| %>
-    <% if @account.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+<script type="text/javascript">
+  function change_unit_price(item){
+      var id = $(item).val();
+      var url = "/charges/get_unit_price/"+id;
+      $.getJSON(url,function(data){
+          $("#unitPrice").val(data.charge.price);
+      });
+  }
+  $(document).ready(function(){
 
-          <ul>
-            <% @account.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
-
+  });
+</script>
+<%= form_tag('add_pre_money') do %>
+    <%= hidden_field_tag 'house_id', @house.id %>
+    <%= hidden_field_tag 'house_code', @house.house_code %>
+    <%= hidden_field_tag 'plot_id', @house.plot.id %>
+    <%= radio_button_tag 'select_price',0 %>单价×数量
+    <%= radio_button_tag 'select_price',1 %>自定义金额
     <div class="field">
-      <%= f.label :money %>
-      <br/>
-      <%= f.text_field :money %>
+      <%= label_tag '项目' %>&nbsp;
+      <%= select_tag 'item_id', options_from_collection_for_select(@items,"id","item_name"),:onchange=>"change_unit_price(this)" %>
+    </div>
+    <div class="field">
+      <%= label_tag '单价' %>&nbsp;
+      <%= text_field_tag 'unitPrice', @items[0].price %>
+    </div>
+    <div class="field">
+      <%= label_tag '数量(金额为数量×单价）' %> &nbsp;
+      <%= text_field_tag 'record' %>
+    </div>
+    <div class="field">
+      <%= label_tag '锁定金额' %> &nbsp;
+      <%= text_field_tag 'can_push' %>
     </div>
 
-
     <div class="actions">
-      <%= f.submit %>
+      <%= submit_tag %>
     </div>
 <% end %>

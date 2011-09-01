@@ -29,7 +29,7 @@ class ChargesController < ApplicationController
     @charge = Charge.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html # add_pre_money.html.erb
       format.xml  { render :xml => @charge }
     end
   end
@@ -91,5 +91,10 @@ class ChargesController < ApplicationController
         respond_with (@charge)
       end
     end
+  end
+
+  def get_unit_price
+    @charge = Charge.find(params[:id])
+    render :json => @charge.to_json
   end
 end

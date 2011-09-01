@@ -40,7 +40,7 @@ class HousesController < ApplicationController
     @house = House.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html # add_pre_money.html.erb
       format.xml { render :xml => @house }
     end
   end
