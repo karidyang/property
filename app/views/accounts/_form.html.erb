@@ -6,9 +6,7 @@
           $("#unitPrice").val(data.charge.price);
       });
   }
-  $(document).ready(function(){
 
-  });
 </script>
 <%= form_tag('add_pre_money') do %>
     <%= hidden_field_tag 'house_id', @house.id %>

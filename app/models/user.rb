@@ -23,9 +23,10 @@ class User < ActiveRecord::Base
   end
 
   def role_names
-    role_name = []
-    roles.each { |role| role_name << role.name }
-    role_name
+    roles.map {|role| role.name}.flatten.uniq
+    #role_name = []
+    #roles.each { |role| role_name << role.name }
+    #role_name
   end
 
   def has_privilege?(model_name, operator_name, option={})
