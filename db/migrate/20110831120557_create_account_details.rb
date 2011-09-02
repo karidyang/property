@@ -17,5 +17,6 @@ class CreateAccountDetails < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :account_details
   end
 end
