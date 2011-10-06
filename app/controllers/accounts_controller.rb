@@ -2,7 +2,8 @@ class AccountsController < ApplicationController
   # GET /accounts
   # GET /accounts.xml
   def index
-    @accounts = Account.all
+    @house_id = params[:house_id]
+    @accounts = Account.where("house_id=?",@house_id)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,3 +1,10 @@
+<%= stylesheet_link_tag "jquery-ui/base/jquery.ui.all" %>
+
+<script type="text/javascript">
+  $(function(){
+      $( "input:submit,input:button, a, button","#main").button();
+  });
+</script>
 <h1>收费项列表</h1>
 <%= link_to '新建收费项', new_charge_path %>
 <table class="tableClass" cellspacing="0">
@@ -31,6 +38,6 @@
   </tr>
 <% end %>
 </table>
-
+<%= will_paginate @charges, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>
 <br />
 

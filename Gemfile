@@ -1,14 +1,13 @@
 source 'http://rubygems.org'
-gem 'rake' , '0.8.7'
+
 gem 'rails', '3.0.9'
 gem 'haml'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'mysql2','0.2.7'
 gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate'
 gem 'authlogic'
-gem 'passenger'
 gem 'jquery-rails'
 gem 'json'
 # Use unicorn as the web server

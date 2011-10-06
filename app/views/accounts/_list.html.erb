@@ -1,3 +1,11 @@
+<%= stylesheet_link_tag "jquery-ui/base/jquery.ui.all" %>
+
+<script type="text/javascript">
+  $(function(){
+      $( "input:submit,input:button, a, button","#main").button();
+  });
+</script>
+<%= link_to('新增预存款', :controller => :accounts, :action => :add_pre_money, :house_id => @house_id)  %>
 <table class="tableClass" cellspacing="0">
   <tr>
     <th>房号</th>
@@ -14,7 +22,6 @@
         <td><%= account.money %></td>
         <td></td>
         <td>
-          <%= link_to '预存', account %>
           <%= link_to '历史记录', edit_account_path(account) %>
           <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
           <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>

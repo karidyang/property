@@ -4,7 +4,7 @@ class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
   def index
-    @charges = Charge.all
+    @charges = Charge.paginate(:per_page => 10, :page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

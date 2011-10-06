@@ -38,7 +38,7 @@
           <%= link_to '编辑', edit_house_path(house) %>
           <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
           <%= link_to_add_owner(house) %>
-          <%= link_to_add_pre_money(house) %>
+          <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
         </td>
       </tr>
 

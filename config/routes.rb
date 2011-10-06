@@ -1,6 +1,6 @@
 # coding: utf-8
 Property::Application.routes.draw do
-  #resources :accounts
+
 
   root :to => 'houses#index'
   match 'houses/house_tree'=>'houses#house_tree'
@@ -24,6 +24,8 @@ Property::Application.routes.draw do
   resources :plots
 
   resources :companies
+
+  resources :accounts
 
   match "login", :to => 'home#login'
   match "login_create", :to => 'home#login_create'
