@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+.msg {
+    margin-bottom: 10px;
+    padding-right: 35px;
+    position: relative;
+}
+.msg p {
+    background-position: 10px 5px;
+    background-repeat: no-repeat;
+    font-size: 12px;
+    padding: 9px 10px 9px 40px;
+}
+.msg-ok p {
+    background-color: #FFFAC2;
+    background-image: url("../images/msg-ok.gif");
+    border: 1px solid #DBD6A2;
+    color: #5E5C40;
+}
+.msg-error p {
+    background-color: #F3C598;
+    background-image: url("../images/msg-error.gif");
+    border: 1px solid #E8B084;
+    color: #BA4C32;
+}

@@ -1,0 +1,79 @@
+@CHARSET "UTF-8";
+<style>
+#step-holder {
+    font-family: Tahoma;
+    height: 39px;
+    margin-bottom: 20px;
+}
+.step-no {
+    float: left;
+    font-size: 18px;
+    height: 29px;
+    line-height: 18px;
+    padding: 10px 0 0;
+    text-align: center;
+    width: 18px;
+}
+.step-no-off {
+    color: #CBCBCB;
+    float: left;
+    font-size: 18px;
+    height: 29px;
+    line-height: 18px;
+    padding: 10px 0 0;
+    text-align: center;
+    width: 18px;
+}
+.step-dark-left {
+    background: url("../images/forms/step_dark_left.gif") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    height: 27px;
+    padding: 13px 15px 0 25px;
+}
+.step-dark-left a {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+}
+.step-dark-right {
+    background: url("../images/forms/step_dark_right.gif") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 39px;
+    width: 12px;
+}
+.step-dark-round {
+    background: url("../images/forms/step_dark_round.gif") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 39px;
+    width: 8px;
+}
+.step-light-left {
+    background: url("../images/forms/step_light_left.gif") no-repeat scroll 0 0 transparent;
+    color: #CBCBCB;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    height: 39px;
+    padding: 13px 15px 0 25px;
+}
+.step-light-left a {
+    color: #CBCBCB;
+    font-size: 13px;
+    font-weight: bold;
+}
+.step-light-right {
+    background: url("../images/forms/step_light_right.gif") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 39px;
+    width: 12px;
+}
+.step-light-round {
+    background: url("../images/forms/step_light_round.gif") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 39px;
+    width: 8px;
+}
+</style>
