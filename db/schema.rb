@@ -21,11 +21,28 @@ ActiveRecord::Schema.define(:version => 20110831120557) do
     t.string   "updateby"
     t.integer  "record"
     t.decimal  "unit_price",   :precision => 8, :scale => 2
-    t.decimal  "can_push",     :precision => 8, :scale => 2
+    t.decimal  "can_push",     :precision => 8, :scale => 2, :default => 0.0
     t.integer  "receipt_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "accountdetails", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "account_type"
+    t.decimal  "money",        :precision => 8, :scale => 2
+    t.datetime "trans_time"
+    t.integer  "record"
+    t.decimal  "unit_price",   :precision => 8, :scale => 2
+    t.decimal  "can_push",     :precision => 8, :scale => 2
+    t.string   "note"
+    t.string   "updateby"
+    t.integer  "receipt_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "accountdetails", ["account_id"], :name => "index_accountDetails_on_account_id"
 
   create_table "accounts", :force => true do |t|
     t.integer  "house_id"

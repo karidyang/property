@@ -1,47 +1,79 @@
-<h1>房间列表</h1>
-<%= form_tag('/houses', :method=>:get) do %>
-    <div object_id="search">
-      <%= label_tag :plot_id, '选择小区' %>
-      <%= select_tag(:plot_id, options_for_select(all_plots)) %>
-      <%= label_tag :house_code, '房间号' %>
-      <%= text_field_tag :house_code, @house_code == 0 ? '' :@house_code %>
-      <%= submit_tag('查询', :name=>nil) %>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#house_table").dataTable();
+        <% if @current_user.has_privilege?('house', 'insert') %>
+        $("#btnAddHouse").click(function(){
+            document.location.href= '<%= new_house_path %>';
+        });
+        <% end %>
+    });
+</script>
+<div id="content" class="xfluid">
+  <div class="portlet x12">
+    <div class="portlet-header"><h4>房间列表</h4></div>
+    <div class="portlet-content">
+      <!-- 搜索区域 -->
+      <%= form_tag('/houses', :method=>:get) do %>
+          <div id="searchArea" style="min-height: 50px;">
+            <fieldset>
+              <legend>查询过滤</legend>
+
+              <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots)) %>
+              <%= label_tag :house_code, '房间号' %><%= text_field_tag :house_code, @house_code == 0 ? '' :@house_code %>
+              <%= submit_tag('查询', :name=>nil) %>
+
+            </fieldset>
+          </div>
+      <% end %>
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
+        <% if @current_user.has_privilege?('house', 'insert') %>
+        <button class='btn-icon btn-grey btn-plus' id='btnAddHouse'><span></span>添加房间</button>
+        <% end %>
+        <% if @current_user.has_privilege?('house', 'delete') %>
+        <button class="btn-icon btn-grey btn-cross" id="btnDelHouse"><span></span>删除选择行</button>
+        <% end %>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>小区</th>
+          <th>楼栋</th>
+          <th>房号</th>
+          <th>业主</th>
+          <th>建筑面积</th>
+          <th>实际面积</th>
+          <th>公摊面积</th>
+          <th>单元状况</th>
+          <th>使用类型</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for house in @houses %>
+            <tr>
+              <td><%= h house.plot.name %></td>
+              <td><%= h house.area.name %></td>
+              <td><%= h house.house_code %></td>
+              <td><%= h house.owner_names %></td>
+              <td><%= h house.builded_area %></td>
+              <td><%= h house.real_area %></td>
+              <td><%= h house.share_area %></td>
+              <td><%= h get_status(house.status) %></td>
+              <td><%= h get_use_type(house.use_type) %></td>
+              <td>
+                <%= link_to '编辑', edit_house_path(house) %>
+                <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
+                <%= link_to_add_owner(house) %>
+                <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
+              </td>
+            </tr>
+
+        <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @houses, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>
     </div>
-<% end %>
-<%= link_to '新建房间', new_house_path %>
-<table class="tableClass" cellspacing="0">
-  <tr>
-    <th>小区</th>
-    <th>楼栋</th>
-    <th>房号</th>
-    <th>业主</th>
-    <th>建筑面积</th>
-    <th>实际面积</th>
-    <th>公摊面积</th>
-    <th>单元状况</th>
-    <th>使用类型</th>
-    <th>操作</th>
-  </tr>
+  </div>
+</div>
 
-  <% for house in @houses %>
-      <tr>
-        <td><%= h house.plot.name %></td>
-        <td><%= h house.area.name %></td>
-        <td><%= h house.house_code %></td>
-        <td><%= h house.owner_names %></td>
-        <td><%= h house.builded_area %></td>
-        <td><%= h house.real_area %></td>
-        <td><%= h house.share_area %></td>
-        <td><%= h get_status(house.status) %></td>
-        <td><%= h get_use_type(house.use_type) %></td>
-        <td>
-          <%= link_to '编辑', edit_house_path(house) %>
-          <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
-          <%= link_to_add_owner(house) %>
-          <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
-        </td>
-      </tr>
-
-  <% end %>
-</table>
-<%= will_paginate @houses, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>

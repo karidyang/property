@@ -9,7 +9,11 @@ class HousesController < ApplicationController
       return
     end
     if params.has_key?('plot_id')
-      @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').paginate :page=>params[:page], :per_page=>5
+      if params.has_value?('house_code')
+        @houses = House.where("plot_id=? and house_code=?", params[:plot_id], params[:house_code]).order('house_code').paginate :page=>params[:page], :per_page=>5
+      else
+        @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').paginate :page=>params[:page], :per_page=>5
+      end
     else
       @houses = House.order('house_code').paginate :page=>params[:page], :per_page=>5
     end
@@ -34,6 +38,7 @@ class HousesController < ApplicationController
   # GET /houses/new.xml
   def new
     if !@current_user.has_privilege?('house', 'insert')
+      flash[:notice] = '您没有新增房间的权限'
       render_403
       return
     end

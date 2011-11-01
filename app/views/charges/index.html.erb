@@ -1,43 +1,66 @@
-<%= stylesheet_link_tag "jquery-ui/base/jquery.ui.all" %>
-
 <script type="text/javascript">
-  $(function(){
-      $( "input:submit,input:button, a, button","#main").button();
-  });
+    $(document).ready(function() {
+        $("#charges_table").dataTable();
+    });
 </script>
-<h1>收费项列表</h1>
-<%= link_to '新建收费项', new_charge_path %>
-<table class="tableClass" cellspacing="0">
-  <tr>
-    <th>收费项目名称</th>
-    <th>周期类型</th>
-    <th>单价</th>
-    <th>单价类型</th>
-    <th>数量</th>
-    <th>收费周期</th>
-    <th>滞纳金比率</th>
-    <th>是否退还</th>
-    <th>操作</th>
-  </tr>
+<div id="content" class="xfluid">
+  <div class="portlet x12">
+    <div class="portlet-header"><h4>收费项列表</h4></div>
+    <div class="portlet-content">
+      <!-- 搜索区域 -->
+      <%= form_tag('/houses', :method=>:get) do %>
+          <div id="searchArea" style="min-height: 50px;">
+            <fieldset>
+              <legend>查询过滤</legend>
 
-<% @charges.each do |charge| %>
-  <tr>
-    <td><%= charge.item_name %></td>
-    <td><%= get_period_type(charge.period_type) %></td>
-    <td><%= charge.price %></td>
-    <td><%= get_unit_type(charge.unit_type) %></td>
-    <td><%= charge.item_num %></td>
-    <td><%= get_period(charge.period) %></td>
-    <td><%= charge.fee_rate %></td>
-    <td><%= get_return_back(charge.return_back) %></td>
-    <td>
-    <%= link_to '编辑', edit_charge_path(charge) %>
-    <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
-    <%= link_to '设置房间', :controller=>'charges',:action=>'add_house',:id=>charge %>
-    </td>
-  </tr>
-<% end %>
-</table>
-<%= will_paginate @charges, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>
-<br />
+              <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots)) %>
+              
+              <%= submit_tag('查询', :name=>nil) %>
 
+            </fieldset>
+          </div>
+      <% end %>
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
+        <button class="btn-icon btn-grey btn-plus" id="btnAddHouse"><span></span><%= link_to '新建收费项', new_charge_path %>
+        </button>
+        <button class="btn-icon btn-grey btn-cross" id="btnDelHouse"><span></span>删除选择行</button>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>收费项目名称</th>
+          <th>周期类型</th>
+          <th>单价</th>
+          <th>单价类型</th>
+          <th>数量</th>
+          <th>收费周期</th>
+          <th>滞纳金比率</th>
+          <th>是否退还</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @charges.each do |charge| %>
+            <tr>
+              <td><%= charge.item_name %></td>
+              <td><%= get_period_type(charge.period_type) %></td>
+              <td><%= charge.price %></td>
+              <td><%= get_unit_type(charge.unit_type) %></td>
+              <td><%= charge.item_num %></td>
+              <td><%= get_period(charge.period) %></td>
+              <td><%= charge.fee_rate %></td>
+              <td><%= get_return_back(charge.return_back) %></td>
+              <td>
+                <%= link_to '编辑', edit_charge_path(charge) %>
+                <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
+                <%= link_to '设置房间', :controller=>'charges', :action=>'add_house', :id=>charge %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @charges, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>
+    </div>
+  </div>
+</div>
