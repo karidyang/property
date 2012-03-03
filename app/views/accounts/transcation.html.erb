@@ -1,0 +1,87 @@
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>转账</h4></div>
+    <div class="portlet-content">
+      <script type="text/javascript">
+
+
+          $(document).ready(function() {
+
+              $("#btnCancel").click(function() {
+
+                  document.location.href = "<%= houses_path %>";
+                  return false;
+              });
+
+              $("#btnReset").click(function() {
+                  $(":text").each(function() {
+                      $(this).val("");
+                  });
+                  $(":password").each(function() {
+                      $(this).val("");
+                  });
+                  $(":checkbox").each(function() {
+                      $(this).attr("checked", false);
+                  });
+                  $(":radio").each(function() {
+                      $(this).attr("checked", false);
+                  });
+                  $(":file").each(function() {
+                      $(this).val("");
+                  });
+                  $("textarea").each(function() {
+                      $(this).val("");
+                  });
+                  return false;
+              });
+              $("#btnSubmit").click(function() {
+
+                  var money = parseFloat($("#money").val());
+
+                  if (!isNaN(money)) {
+
+                      var result = confirm("你确定转入" + money + "元?");
+                      if (result) {
+                          $("form").submit();
+                      }
+                  }
+
+                  return false;
+              });
+
+          });
+
+
+      </script>
+      <%= form_tag('/accounts/transcation', :class=>'form label-inline') do %>
+          <%= hidden_field_tag 'house_id', @account.house.id %>
+
+          <%= hidden_field_tag 'account_id', @account.id %>
+          <%= hidden_field_tag 'item_type', 0 %>
+
+          <div class="field">
+            <%= label_tag '转入项目' %>
+
+            <%= select_tag 'item_id', options_from_collection_for_select(@items, "id", "item_name"),:class=>'medium' %>
+
+          </div>
+          <div class="field">
+            <%= label_tag '转入金额' %>
+            <%= text_field_tag 'money', 0.00, :class=>'medium' %>
+          </div>
+          <div class="field">
+            <%= label_tag '锁定金额' %>
+            <%= text_field_tag 'can_push', 0.00, :class=>'medium' %>
+          </div>
+
+          <div class="buttonrow">
+            <button id="btnSubmit" class="btn">提交</button>
+            <button id="btnReset" class="btn btn-orange">重置</button>
+            <button id="btnCancel" class="btn">取消</button>
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+

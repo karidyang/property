@@ -1,0 +1,67 @@
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>账单列表</h4></div>
+    <div class="portlet-content">
+
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
+
+        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>房间号</th>
+          <th>账单名称</th>
+          <th>账单日期</th>
+          <th>账单状态</th>
+          <th>账单金额</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @bills.each do |bill| %>
+            <tr>
+              <td><%= bill.house.house_code %></td>
+              <td><%= bill.bill_name %></td>
+              <td><%= bill.bill_date %></td>
+              <td><%= bill.bill_status %></td>
+              <td><%= bill.curr_money %></td>
+              <td>
+                <%= link_to '编辑', edit_bill_path(bill) %>
+                <%= link_to '删除', bill, confirm: '确定删除?', method: :delete %>
+              </td>
+            </tr>
+        <% end %>
+
+        </tbody>
+      </table>
+      <%= paginate @bills %>
+    </div>
+  </div>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>查询过滤</h4></div>
+    <div class="portlet-content">
+      <!-- 搜索区域 -->
+      <%= form_tag(bills_path, :method=>:get) do %>
+          <div id="searchArea" style="min-height: 50px;">
+            <fieldset>
+              <legend>查询过滤</legend>
+              <div class="field">
+                <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots), :class=>'medium') %>
+              </div>
+              <div class="field">
+                <%= label_tag :house_code, '房间号' %><%= text_field_tag(:house_code, nil, :class=>'medium') %>
+                <br/>
+              </div>
+              <div class="buttonrow">
+                <button class="btn">查询</button>
+              </div>
+
+            </fieldset>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
