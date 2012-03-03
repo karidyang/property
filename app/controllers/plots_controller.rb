@@ -1,37 +1,30 @@
 # coding: utf-8  
 class PlotsController < ApplicationController
   before_filter :require_user
+  around_filter do |controller, action|
+    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+      render_403
+    else
+      action.call
+    end
+  end
   # GET /plots
   # GET /plots.xml
   def index
     @plots = Plot.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @plots }
-    end
   end
 
   # GET /plots/1
   # GET /plots/1.xml
   def show
     @plot = Plot.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @plot }
-    end
   end
 
   # GET /plots/new
   # GET /plots/new.xml
   def new
     @plot = Plot.new
-
-    respond_to do |format|
-      format.html # add_pre_money.html.erb
-      format.xml  { render :xml => @plot }
-    end
   end
 
   # GET /plots/1/edit
@@ -44,15 +37,15 @@ class PlotsController < ApplicationController
   def create
     @plot = Plot.new(params[:plot])
 
-    respond_to do |format|
-      if @plot.save
-        format.html { redirect_to(@plot, :notice => 'Plot was successfully created.') }
-        format.xml  { render :xml => @plot, :status => :created, :location => @plot }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @plot.errors, :status => :unprocessable_entity }
-      end
+
+    if @plot.save
+      redirect_to(@plot, :notice => 'Plot was successfully created.')
+
+    else
+      render :action => "new"
+
     end
+
   end
 
   # PUT /plots/1
@@ -60,15 +53,15 @@ class PlotsController < ApplicationController
   def update
     @plot = Plot.find(params[:id])
 
-    respond_to do |format|
-      if @plot.update_attributes(params[:plot])
-        format.html { redirect_to(@plot, :notice => 'Plot was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @plot.errors, :status => :unprocessable_entity }
-      end
+
+    if @plot.update_attributes(params[:plot])
+      redirect_to(@plot, :notice => 'Plot was successfully updated.')
+
+    else
+      render :action => "edit"
+
     end
+
   end
 
   # DELETE /plots/1
@@ -76,6 +69,6 @@ class PlotsController < ApplicationController
   def destroy
     @plot = Plot.find(params[:id])
     @plot.destroy
-    respond_with(@plot,:location=>:back)
+    respond_with(@plot, :location=>:back)
   end
 end

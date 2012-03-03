@@ -1,6 +1,6 @@
 #coding:utf-8
 class CreateRoles < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :roles do |t|
       t.string :name
 
@@ -11,7 +11,5 @@ class CreateRoles < ActiveRecord::Migration
     role.save
   end
 
-  def self.down
-    drop_table :roles
-  end
+
 end

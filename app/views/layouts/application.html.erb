@@ -3,10 +3,9 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <title>铭智物业管理</title>
-  <%= stylesheet_link_tag 'screen', 'plugin', 'custom' %>
-  <%= javascript_include_tag 'jquery.min','jquery.colorize-2.0.0', %>
-  <%= javascript_include_tag 'jquery.ztree-2.6' %>
-  <%= javascript_include_tag 'slate', 'slate.portlet', 'plugin' %>
+  <%= stylesheet_link_tag 'application' %>
+  <%= javascript_include_tag 'application', %>
+  
   <%= csrf_meta_tag %>
 </head>
 <body>
@@ -23,8 +22,8 @@
         <p>
           Logged in as Admin <br> 您有 <a href="#">5 条新消息</a>
         </p>
-
-        <img src="/images/avatar.jpg" alt="avatar">
+        <%= image_tag("avatar.jpg") %>
+        
       </div>
       <!-- #info -->
 
@@ -34,12 +33,12 @@
     <div id="nav">
 
       <ul class="mega-container mega-grey">
-        <li class="mega mega-current"><a href="/" class="mega-link">我的首页</a></li>
+        <li class="mega mega-current"><%= link_to '我的首页',root_path,:class=>'mega-link' %></li>
         <li class="mega"><a href="#" class="mega-tab"> 小区管理 </a>
 
           <div class="mega-content mega-menu ">
             <ul>
-              <li><%= link_to '房屋管理', houses_path %></li>
+              <li><%= link_to '楼栋管理', areas_path %></li>
               <li><%= link_to '房屋管理', houses_path %></li>
               <li><%= link_to '业主管理', owners_path %></li>
             </ul>
@@ -52,7 +51,7 @@
             <ul>
               <li><%= link_to "收费项目及标准", charges_path %>
               </li>
-
+              <li><%= link_to "账单管理", bills_path %></li>
             </ul>
           </div>
         </li>

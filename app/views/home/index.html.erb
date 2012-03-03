@@ -1,234 +1,255 @@
-<%= javascript_include_tag 'tree' %>
 <script type="text/javascript">
-  function clickTreeNode(house_code){
-    alert(house_code);
-  } 
+    var setting = {
+        async: {
+            enable: true,
+            url:"/houses/house_tree",
+            type: 'post'
+        },
+        callback:{
+            onClick:click_house
+        }
+    };
+    var zTree1;
+
+    var nodes = [];
+
+
+    $(function() {
+        zTree1 = $.fn.zTree.init($("#house_tree"), setting);
+        /*$('#tt').datagrid({
+         url: 'http://localhost:3000/home/list',
+         title: 'DataGrid - ContextMenu',
+         width: 400,
+         height: 'auto',
+         fitColumns: true,
+         columns:[[
+         {field:'id',title:'Item ID',width:80},
+         {field:'name',title:'Product ID',width:120}
+         ]],
+         onHeaderContextMenu: function(e, field){
+         e.preventDefault();
+         if (!$('#tmenu').length){
+         createColumnMenu();
+         }
+         $('#tmenu').menu('show', {
+         left:e.pageX,
+         top:e.pageY
+         });
+         }
+         });
+
+         function createColumnMenu(){
+         var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
+         var fields = $('#tt').datagrid('getColumnFields');
+         for(var i=0; i<fields.length; i++){
+         $('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);
+         }
+         tmenu.menu({
+         onClick: function(item){
+         if (item.iconCls=='icon-ok'){
+         $('#tt').datagrid('hideColumn', item.text);
+         tmenu.menu('setIcon', {
+         target: item.target,
+         iconCls: 'icon-empty'
+         });
+         } else {
+         $('#tt').datagrid('showColumn', item.text);
+         tmenu.menu('setIcon', {
+         target: item.target,
+         iconCls: 'icon-ok'
+         });
+         }
+         }
+         });
+         }*/
+    });
+
+    function click_house(event, treeid, treeNode) {
+        alert(treeNode.tId + ", " + treeNode.name);
+    }
 </script>
-<div id="left">
-  <div id="tree"></div>
-</div>
-<div id="right">
-<input id="houseCode" name="houseCode" value="1-1-2-2" type="hidden">
 
-<input name="houseId" id="houseId" value="25" type="hidden">
-<!-- 基本信息开始 -->
-<div style="width: 99%; float: left; border: 1px solid rgb(211, 211, 211);">
-  <div class="toolbar">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="新增预存款" onclick="" type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="退款管理" onclick="" type="button">
-  </div>
-  <div class="table">
-    <table id="contentTable1" class="tableClass" style="text-align: center;" cellspacing="0">
-      <tbody>
-      <tr>
-        <th colspan="6">基本信息</th>
-      </tr>
-      <tr>
-        <td style="text-align: center;">房间号</td>
-        <td style="text-align: center;"><%= label_tag @house.house_code %></td>
-        <td style="text-align: center;">业主</td>
-        <td style="text-align: center;"><%= label_tag @house.owner_name %><span id="house-ownerName">曾迪华</span></td>
-        <td style="text-align: center;">房间类型</td>
-        <td style="text-align: center;"><span id="house-useType">住宅</span></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">建筑面积</td>
-        <td style="text-align: center;"><span id="house-buildArea">138.13</span> 平方米</td>
-        <td style="text-align: center;">车位号</td>
-        <td style="text-align: center;"><span id="car-id"></span></td>
-        <td style="text-align: center;">车牌号</td>
-        <td style="text-align: center;"><span id="car-no"></span></td>
-      </tr>
+<div id="content" class="xfluid">
 
-      </tbody>
-    </table>
-  </div>
-  <!-- 基本信息结束 -->
-
-  <!-- 预存款开始 -->
-
-  <!-- 预存款结束 -->
-</div>
-
-<div style="width: 99%; float: left; border: 1px solid rgb(211, 211, 211); margin-top: 20px;">
-  <div class="toolbar">
-    未缴费账单选择：&nbsp;<select name="billId" id="billId" onchange="$('#mainForm').submit();">
-    <option value="29857" selected="selected">2010年11月账单</option>
-
-
-  </select>
-
-    &nbsp;&nbsp;总欠费金额：$0.00&nbsp;
-
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  value="缴费"  type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  value="打印收据"  type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  value="临时费用"  type="button">
-
-
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  value="批量重置费用状态"  type="button">
-
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  id="search" value="费用查询" type="button">
+  <div class="portlet x2">
+    <div class="portlet-header"><h4>房间列表</h4></div>
+    <div class="portlet-content">
+      <div id="house_tree" class="ztree"></div>
+    </div>
   </div>
 
-  <!-- 费用开始 -->
-  <div class="table">
-    <table id="contentTable2" class="tableClass" cellspacing="0">
-      <tbody>
-      <tr>
-        <th style="text-align: left; width: 7%;">
-          <input id="selectAll" onchange="" type="checkbox"/>全选
-        </th>
-        <th>应收款项</th>
-        <th>费用期间</th>
-        <th>起数</th>
-        <th>止数</th>
-        <th>实数</th>
-        <th>单价</th>
-        <th>应收金额</th>
-        <th>滞纳金</th>
-        <th>现收金额</th>
-        <th>本次冲销</th>
-        <th>状态</th>
-        <th>单据号</th>
-      </tr>
 
-      <tr>
-        <td style="text-align: left;">
-
-          <input name="detailsId" id="" value="74579" disabled="disabled" type="checkbox">
+  <div class="portlet x7" style="height: 800px;">
+    <div class="portlet-header"></div>
+    <div class="portlet-content">
+      <div id="batchOpArea" style="min-height: 50px;">
+        <button class="btn-icon btn-grey btn-plus"><span></span>增加临时账单</button>
+        <button class="btn-icon btn-grey btn-plus"><span></span>预存款</button>
+        <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
+        <button class="btn-icon btn-grey btn-plus"><span></span>账单查询</button>
+        <button class="btn-icon btn-grey btn-plus"><span></span>缴费</button>
+        <button class="btn-icon btn-grey btn-plus"><span></span>打印收据</button>
+      </div>
+      <!-- 搜索区域 -->
+      <div id="searchArea" style="min-height: 50px;">
+        <fieldset>
 
 
-        </td>
-        <td style="text-align: center;">物业管理费</td>
-        <td style="text-align: center;">2010-11</td>
-        <td></td>
-        <td></td>
-        <td>138.13</td>
-        <td>0.75</td>
-        <td>103.6</td>
-        <td></td>
-        <td>103.6</td>
-        <td></td>
-        <td id="detail-74579">已收</td>
-        <td>
-
-          <a href="#">20101116125253</a>
-
-        </td>
-      </tr>
-
-      <tr>
-        <td style="text-align: left;">
-
-          <input name="detailsId"  value="74580" disabled="disabled" type="checkbox">
-
-
-        </td>
-        <td style="text-align: center;">生活垃圾清运费</td>
-        <td style="text-align: center;">2010-11</td>
-        <td></td>
-        <td></td>
-        <td>1.0</td>
-        <td>5.0</td>
-        <td>5.0</td>
-        <td></td>
-        <td>5.0</td>
-        <td></td>
-        <td id="detail-74580">已收</td>
-        <td>
-
-          <a href="#">20101116125253</a>
-
-        </td>
-      </tr>
-
-      <tr>
-        <td style="text-align: left;">
-
-          <input name="detailsId" id="detailsId" value="74581" disabled="disabled" type="checkbox">
-
-
-        </td>
-        <td style="text-align: center;">电表费用</td>
-        <td style="text-align: center;">2010-11</td>
-        <td>6609</td>
-        <td>6698</td>
-        <td>89.0</td>
-        <td>0.57</td>
-        <td>50.73</td>
-        <td></td>
-        <td>50.73</td>
-        <td></td>
-        <td id="detail-74581">已收</td>
-        <td>
-
-          <a href="#">20101116125253</a>
-
-        </td>
-      </tr>
-
-      <tr>
-        <td></td>
-        <td style="text-align: center;">合计</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>159.33</td>
-        <td>&nbsp;</td>
-        <td>159.33</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      </tbody>
-    </table>
+          <%= form_tag('/houses', :method=>:get) do %>
+              <label>缴费日期：</label><input id="start_time" name="start_time"/>
+              <label>到</label><input id="end_time" name="end_time"/>
+              <%= select_tag(:change_type, options_for_select(change_type_list)) %>
+              <%= submit_tag('查询', :name=>nil) %>
+          <% end %>
+        </fieldset>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>全选</th>
+          <th>费用名称</th>
+          <th>单价</th>
+          <th>应收</th>
+          <th>冲销</th>
+          <th>滞纳金</th>
+          <th>实付</th>
+          <th>起数</th>
+          <th>止数</th>
+          <th>开始日期</th>
+          <th>结束日期</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><input type="checkbox"/></td>
+          <td>物业管理费</td>
+          <td>1.00</td>
+          <td>100.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>100.00</td>
+          <td>100</td>
+          <td>100</td>
+          <td>2011-12-1</td>
+          <td>2011-12-31</td>
+          <td>详细</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"/></td>
+          <td>物业管理费</td>
+          <td>1.00</td>
+          <td>100.00</td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>100.00</td>
+          <td>100</td>
+          <td>100</td>
+          <td>2011-12-1</td>
+          <td>2011-12-31</td>
+          <td>详细</td>
+        </tr>
+        </tbody>
+      </table>
+      <table cellpadding="0" cellspacing="0" border="0" class="display">
+        <thead>
+        <tr>
+          <th>备注时间</th>
+          <th>主题</th>
+          <th>内容</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>2011-12-08 23:00:32</td>
+          <td>测试测试测试测试</td>
+          <td>还是测试测试测试测试测试测试的</td>
+          <td>详细 删除</td>
+        </tr>
+        <tr>
+          <td>2011-12-08 23:00:32</td>
+          <td>测试测试测试测试</td>
+          <td>还是测试测试测试测试测试测试的</td>
+          <td>详细 删除</td>
+        </tr>
+        <tr>
+          <td>2011-12-08 23:00:32</td>
+          <td>测试测试测试测试</td>
+          <td>还是测试测试测试测试测试测试的</td>
+          <td>详细 删除</td>
+        </tr>
+        <tr>
+          <td>2011-12-08 23:00:32</td>
+          <td>测试测试测试测试</td>
+          <td>还是测试测试测试测试测试测试的</td>
+          <td>详细 删除</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>基本信息</h4></div>
+    <div class="portlet-content">
+      <table cellpadding="0" cellspacing="0" border="0" class="display">
+        <tbody>
+        <tr>
+          <td>房号</td>
+          <td>1-1-1-1</td>
+        </tr>
+        <tr>
+          <td>业主</td>
+          <td>张三</td>
+        </tr>
+        <tr>
+          <td>面积</td>
+          <td>130平方米</td>
+        </tr>
+        <tr>
+          <td>房屋类型</td>
+          <td>商品房</td>
+        </tr>
+        </tbody>
+      </table>
 
-<!-- 费用结束 -->
+    </div>
+    <div class="portlet-header"><h4>车位信息</h4></div>
+    <div class="portlet-content">
+      <table cellpadding="0" cellspacing="0" border="0" class="display">
+        <tbody>
+        <tr>
+          <td>05</td>
+          <td>川A12345465</td>
+          <td>私人</td>
+          <td>未到期</td>
+        </tr>
+        <tr>
+          <td>05</td>
+          <td>川A12345465</td>
+          <td>私人</td>
+          <td>未到期</td>
+        </tr>
+        </tbody>
+      </table>
 
-<!-- 装修开始 -->
-<div style="width: 99%; float: left; border: 1px solid rgb(211, 211, 211); margin-top: 20px;">
-  <div class="toolbar">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="缴费"  type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="打印收据"  type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="装修申请"  type="button">
-    <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" value="装修项目"  type="button">
+    </div>
+    <div class="portlet-header"><h4>账户余额</h4></div>
+    <div class="portlet-content">
+      <table cellpadding="0" cellspacing="0" border="0" class="display">
+        <tbody>
+        <tr>
+          <td>物业管理费</td>
+          <td>1000.00</td>
+        </tr>
+        <tr>
+          <td>生活垃圾费</td>
+          <td>200.00</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
   </div>
-  <div class="table">
-    <table id="contentTable3" class="tableClass" cellspacing="0">
-      <tbody>
-      <tr>
-        <th style="text-align: left; width: 7%;">
-          <%= check_box_tag '全选' %>
-        <th class="th03">装修项目</th>
-        <th class="th02">开始日期</th>
-        <th class="th02">结束日期</th>
-        <th class="th02">实数</th>
-        <th class="th02">单价</th>
-        <th class="th02">应收金额</th>
-        <th class="th01">状态</th>
-        <th class="th03">单据号</th>
-        <th class="th01">操作</th>
-      </tr>
 
-      <tr>
-        <td style="text-align: left;"></td>
-        <td style="text-align: center;">合计:</td>
-        <td style="text-align: center;"></td>
-        <td style="text-align: center;"></td>
-        <td></td>
-        <td></td>
-        <td>$0.00</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
-
-  </div>
-  <!-- 装修结束 -->
-</div>
 </div>

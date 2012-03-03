@@ -1,62 +1,111 @@
+# coding: utf-8  
 class AccountsController < ApplicationController
+  before_filter :require_user
+  around_filter do |controller, action|
+    if @current_user.has_privilege?(controller.controller_name, controller.action_name)
+      action.call
+    else
+      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+      render_403
+    end
+  end
+
   # GET /accounts
   # GET /accounts.xml
   def index
     @house_id = params[:house_id]
-    @accounts = Account.where("house_id=?",@house_id)
+    @accounts = Account.where("house_id=?", @house_id).page params[:page]
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @accounts }
-    end
   end
 
-    # DELETE /accounts/1
-    # DELETE /accounts/1.xml
+  # DELETE /accounts/1
+  # DELETE /accounts/1.xml
   def destroy
-    @account = Account.find(params[:id])
-    @account.destroy
+    if @current_user.has_privilege?('accounts', 'delete')
+      @account = Account.find(params[:id])
+      @account.destroy if !@account.nil?
 
-    respond_to do |format|
-      format.html { redirect_to(accounts_url) }
-      format.xml { head :ok }
+      redirect_to(accounts_url)
+    else
+      flash[:notice] = "你没有删除预存款的权限，请联系管理员"
+      render_403
+
     end
+
   end
 
   def history
     @account = Account.find(params[:id])
-    @details = @account.in_details
+    @details = @account.account_details.page params[:page]
   end
 
   def add_pre_money
+    if @current_user.has_privilege?('accounts', 'insert')
+      flash[:notice] = "你没有添加预存款的权限，请联系管理员"
+      render_403
+      return
+    end
+
     if request.post?
-      @detail = AccountDetail.new
-      @detail.unit_price=params[:unitPrice]
-      @detail.record = params[:record]
-      @detail.can_push=params[:can_push]
-      @detail.account_type=1
-      @detail.money = @detail.record*@detail.unit_price
+      #@detail = AccountDetail.new
+      #@detail.unit_price=params[:unitPrice]
+      #@detail.record = params[:record]
+      #@detail.can_push=params[:can_push]
+      #@detail.money = params[:money]
+      #
+      #@account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
+      #@charge = Charge.find(params[:item_id])
+      #
+      #if @account.nil?
+      #  @account = Account.create(:house_id=>params[:house_id],
+      #                            :house_code=>params[:house_code],
+      #                            :item_id=>params[:item_id],
+      #                            :item_name=>@charge.item_name,
+      #                            :plot_id=>params[:plot_id])
+      #
+      #end
+      #
+      #@account.transcation_in(@detail)
 
-      @account = Account.find_by_item_id_and_house_id(params[:item_id],params[:house_id])
-      @charge = Charge.find(params[:item_id])
+      if Account.add_pre_money(params)
+        redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
+      else
+        @items = Charge.find_all_by_plot_id(@house.plot_id)
+        render 'add_pre_money'
+      end
+    else
+      @items = Charge.find_all_by_plot_id(@house.plot_id)
+      render 'add_pre_money'
+    end
+  end
 
-      if !@account
-        @account = Account.create(:house_id=>params[:house_id],
-                                  :house_code=>params[:house_code],
-                                  :item_id=>@charge.id,
-                                  :item_name=>@charge.item_name,
-                                  :plot_id=>params[:plot_id])
+  def delete_detail
+    @detail = AccountDetail.find(params['detail_id'])
+    @account = @detail.account
+    if @detail
+      if @account.del_detail(@detail)
+
+        redirect_to :controller => :accounts, :action => :history, :id => @account.id
+      end
+    end
+  end
+
+  def transcation
+    if request.post?
+
+      @src_account = Account.find(params[:account_id])
+
+      begin
+        @src_account.transcation_to(params)
+        redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
+      raise
 
       end
-
-      @account.transaction_in(@detail)
-      @account.save
-      redirect_to root_path
     else
-      @house = House.find(params[:house_id])
+      @account = Account.find(params[:account_id])
+      @src_item_id = params[:src_item_id]
+      @items = Charge.where("plot_id=? and id!=?", @account.plot_id, @src_item_id)
 
-      @items = Charge.where("plot_id=?", @house.plot_id)
-      render 'add_pre_money'
     end
   end
 end

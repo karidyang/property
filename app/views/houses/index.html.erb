@@ -1,14 +1,50 @@
 <script type="text/javascript">
+//    var oTable;
     $(document).ready(function() {
-        $("#house_table").dataTable();
+        
+
+        $("#dataList tbody").click(function(event) {
+            var tr = $(event.target.parentNode);
+            $(tr).toggleClass('row_selected');
+        });
+
+//        oTable = $('#dataList').dataTable({
+//            "bProcessing":     true,
+//            "bServerSide":     true,
+//            "iDisplayLength": 10,
+//            "sAjaxSource": "",
+//            "bFilter": true,
+//            "oLanguage": {
+//                "sEmptyTable": "表格中没有可用的数据",
+//                "sLengthMenu": "每页显示 _MENU_ 记录",
+//                "sZeroRecords": "抱歉 - 没有找到数据",
+//                "sInfo": "显示 _START_ 到 _END_  总共 _TOTAL_ 记录",
+//                "sInfoEmpty": "显示0到0 0记录",
+//                "sInfoFiltered": "(从总共 _MAX_ 条记录中过滤记录)",
+//                "sLoadingRecords": "请稍等 - 数据加载中...",
+//                "sProcessing": "正在处理...",
+//                "sSearch": "搜索:",
+//                "sZeroRecords": "没有结果显示",
+//                "oPaginate":{
+//                    "sNext": "下一页",
+//                    "sPrevious": "上一页"
+//                }
+//            }
+//
+//        });
+//        //去掉默认的全局搜索框
+//        $("#dataList_filter").hide();
+
         <% if @current_user.has_privilege?('house', 'insert') %>
-        $("#btnAddHouse").click(function(){
-            document.location.href= '<%= new_house_path %>';
+        $("#btnAddHouse").click(function() {
+            document.location.href = '<%= new_house_path %>';
         });
         <% end %>
+
     });
 </script>
 <div id="content" class="xfluid">
+  
   <div class="portlet x12">
     <div class="portlet-header"><h4>房间列表</h4></div>
     <div class="portlet-content">
@@ -28,10 +64,10 @@
       <!-- 批量操作区域 -->
       <div id="batchOpArea" style="min-height: 50px;">
         <% if @current_user.has_privilege?('house', 'insert') %>
-        <button class='btn-icon btn-grey btn-plus' id='btnAddHouse'><span></span>添加房间</button>
+            <button class='btn-icon btn-grey btn-plus' id='btnAddHouse'><span></span>添加房间</button>
         <% end %>
         <% if @current_user.has_privilege?('house', 'delete') %>
-        <button class="btn-icon btn-grey btn-cross" id="btnDelHouse"><span></span>删除选择行</button>
+            <button class="btn-icon btn-grey btn-cross" id="btnDelHouse"><span></span>删除选择行</button>
         <% end %>
       </div>
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
@@ -72,7 +108,7 @@
         <% end %>
         </tbody>
       </table>
-      <%= will_paginate @houses, :previous_label=>'<< 上一页', :next_label=>'下一页 >>' %>
+      <%= paginate @houses %>
     </div>
   </div>
 </div>

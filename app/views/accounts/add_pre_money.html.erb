@@ -1,10 +1,9 @@
-<%= stylesheet_link_tag "jquery-ui/base/jquery.ui.all" %>
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>新增预存款</h4></div>
+    <div class="portlet-content">
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>
 
-<script type="text/javascript">
-  $(function(){
-      $( "input:submit,input:button, a, button","#main").button();
-  });
-</script>
-<h1>新增预存款</h1>
-
-<%= render 'form' %>

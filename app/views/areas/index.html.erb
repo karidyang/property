@@ -1,30 +1,62 @@
-<h1>楼栋列表</h1>
-<% form_tag( areas_path, :method=>"get") do %>
-<div id="search">
-	<%= label_tag :plot_id, '选择小区'%>
-	<%= select_tag(:plot_id,options_for_select(all_plots) )%>
-	<%= submit_tag('查询')%>
-    <%= link_to '新建楼栋', new_area_path %>
-</div>
-<% end %>
-<table class="tableClass" cellspacing="0">
-  <tr>
-    <th>所属小区</th>
-    <th>楼栋名称</th>
-    <th>房间数量</th>
-	<th>操作</th>
-  </tr>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#btnAdd").click(function() {
+            document.location.href = '<%= new_area_path %>';
+        });
+    });
+</script>
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>楼栋列表</h4></div>
+    <div class="portlet-content">
 
-<% @areas.each do |area| %>
-  <tr>
-    <td><%= area.plot.name %></td>
-    <td><%= area.name %></td>
-    <td><%= area.house_num %></td>
-    <td>
-    <%= link_to '编辑', edit_area_path(area) %>
-    <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-<%= will_paginate @areas , :prev_label=>'<< 上一页', :next_label=>'下一页 >>'%>
-<br />
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
+        <button class="btn-icon btn-grey btn-plus" id="btnAdd"><span></span>新建楼栋</button>
+        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>所属小区</th>
+          <th>楼栋名称</th>
+          <th>房间数量</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @areas.each do |area| %>
+            <tr>
+              <td><%= area.plot.name %></td>
+              <td><%= area.name %></td>
+              <td><%= area.house_num %></td>
+              <td>
+                <%= link_to '编辑', edit_area_path(area) %>
+                <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate @areas %>
+    </div>
+  </div>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>查询过滤</h4></div>
+    <div class="portlet-content">
+      <!-- 搜索区域 -->
+      <%= form_tag(areas_path, :method=>:get) do %>
+          <div id="searchArea" style="min-height: 50px;">
+            <fieldset>
+              <legend>查询过滤</legend>
+
+              <%= label_tag :plot_id, '选择小区' %>
+              <%= select_tag(:plot_id, options_for_select(all_plots)) %>
+              <%= submit_tag('查询') %>
+
+            </fieldset>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

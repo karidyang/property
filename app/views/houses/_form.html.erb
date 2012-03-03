@@ -1,69 +1,98 @@
-<div id="content" class="xfluid">
-  <% if @house.errors.any? %>
-      <div class="portlet x12">
-        <div class="portlet-header">
-          <h4 style="color:red"><%= pluralize(@house.errors.count, "error") %> prohibited this house from being
-            saved:</h4></div>
-        <div class="portlet-content">
-          <ul>
-            <% @house.errors.full_messages.each do |msg| %>
-                <li><h5 style="color:red"><%= msg %></h5></li>
-            <% end %>
-          </ul>
-        </div>
+<% if @house.errors.any? %>
+    <div class="portlet x12">
+      <div class="portlet-header">
+        <h4 style="color:red"><%= pluralize(@house.errors.count, "error") %> 保存数据出错:</h4></div>
+      <div class="portlet-content">
+        <ul>
+          <% @house.errors.full_messages.each do |msg| %>
+              <li><h5 style="color:red"><%= msg %></h5></li>
+          <% end %>
+        </ul>
       </div>
-  <% end %>
-
-
-  <div class="portlet x9">
-    <div class="portlet-header"><h4>新建房间</h4></div>
-    <div class="portlet-content">
-      <%= form_for(@house, :html=>{:class=>'form label-inline', :id=>'sForm'}) do |f| %>
-          <div class="field">
-            <%= f.label "楼栋" %>
-
-              <%= f.select(:area_id, all_areas) %>
-            
-          </div>
-          <div class="field">
-            <%= f.label "房号" %>
-            <%= f.text_field :house_code, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= f.label "建筑面积" %>
-            <%= f.text_field :builded_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= f.label "实际面积" %>
-            <%= f.text_field :real_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= f.label "公摊面积" %>
-            <%= f.text_field :share_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= f.label "单元状况" %>
-
-              <%= f.select :status, all_status, :class=>"medium" %>
-
-          </div>
-          <div class="field">
-            <%= f.label "使用类型" %>
-
-              <%= f.select :use_type, all_use_type, :class=>"medium" %>
-
-          </div>
-          <div class="field">
-            <%= f.label "业主" %>
-            <%= f.text_field :owner_name, :class=>"medium" %>
-          </div>
-          <div class="buttonrow">
-            <button id="btnSubmit" class="btn">提交</button>
-            <button id="btnReset" class="btn btn-orange">重置</button>
-            <button id="btnCancel" class="btn">取消</button>
-
-          </div>
-      <% end %>
     </div>
+<% end %>
+
+
+<div class="portlet x9">
+  <div class="portlet-header"><h4><%= header_name %></h4></div>
+  <div class="portlet-content">
+    <%= form_for(@house, :html=>{:class=>'form label-inline', :id=>'sForm'}) do |f| %>
+        <div class="field">
+          <%= f.label "楼栋" %>
+
+          <%= f.select(:area_id, all_areas) %>
+
+        </div>
+        <div class="field">
+          <%= f.label "房号" %>
+          <%= f.text_field :house_code, :class=>"medium" %>
+        </div>
+        <div class="field">
+          <%= f.label "建筑面积" %>
+          <%= f.text_field :builded_area, :class=>"medium" %>
+        </div>
+        <div class="field">
+          <%= f.label "实际面积" %>
+          <%= f.text_field :real_area, :class=>"medium" %>
+        </div>
+        <div class="field">
+          <%= f.label "公摊面积" %>
+          <%= f.text_field :share_area, :class=>"medium" %>
+        </div>
+        <div class="field">
+          <%= f.label "单元状况" %>
+
+          <%= f.select :status, all_status, :class=>"medium" %>
+
+        </div>
+        <div class="field">
+          <%= f.label "使用类型" %>
+
+          <%= f.select :use_type, all_use_type, :class=>"medium" %>
+
+        </div>
+        <div class="field">
+          <%= f.label "业主" %>
+          <%= f.text_field :owner_name, :class=>"medium" %>
+        </div>
+        <div class="buttonrow">
+          <button id="btnSubmit" class="btn">提交</button>
+          <button id="btnReset" class="btn btn-orange">重置</button>
+          <button id="btnCancel" class="btn">取消</button>
+
+        </div>
+  <% end %>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+        $("#btnCancel").click(function() {
+
+            document.location.href = "<%= houses_path %>";
+            return false;
+        });
+
+        $("#btnReset").click(function() {
+            $(":text").each(function() {
+                $(this).val("");
+            });
+            $(":password").each(function() {
+                $(this).val("");
+            });
+            $(":checkbox").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":radio").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":file").each(function() {
+                $(this).val("");
+            });
+            $("textarea").each(function() {
+                $(this).val("");
+            });
+            return false;
+        });
+
+    });
+</script>

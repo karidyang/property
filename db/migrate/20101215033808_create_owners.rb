@@ -1,5 +1,5 @@
 class CreateOwners < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :owners do |t|
       t.string :name
       t.integer :age
@@ -14,7 +14,5 @@ class CreateOwners < ActiveRecord::Migration
     add_index :owners, :house_id
   end
 
-  def self.down
-    drop_table :owners
-  end
+
 end

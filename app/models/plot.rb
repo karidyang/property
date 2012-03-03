@@ -4,13 +4,15 @@ class Plot < ActiveRecord::Base
 
   def to_json
     #json = "{\"attr\":{\"id\":\"p-#{self.id}\",\"type\":1,\"rel\":\"plot\"},\"data\":\"#{self.name}\""
-    json = "{'id':'p-#{self.id}','name':'#{self.name}','open':'true',nocheck:true"
+    json = "{'id':'p-#{self.id}','name':'#{self.name}'"
     area_json = []
     areas.each do |area|
       area_json << area.to_json
     end
     if !area_json.empty?
-      json += ",'nodes':[#{area_json.join(",")}]}"
+      json += ",open:true,'childs':[#{area_json.join(",")}]}"
+    else
+      json += ",open:true,'childs':[]}"
     end
     json
   end

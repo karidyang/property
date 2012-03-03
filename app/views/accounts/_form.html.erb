@@ -1,37 +1,188 @@
 <script type="text/javascript">
-  function change_unit_price(item){
-      var id = $(item).val();
-      var url = "/charges/get_unit_price/"+id;
-      $.getJSON(url,function(data){
-          $("#unitPrice").val(data.charge.price);
-      });
-  }
+    function change_unit_price() {
+
+        if ($("#select_price_1").attr("checked") == "checked") {
+            return;
+        }
+        var id = $("#item_id").val();
+        var url = "/charges/get_unit_price/" + id;
+        $.getJSON(url, function(data) {
+            $("#unitPrice").val(data.price);
+        });
+    }
+
+    $(document).ready(function() {
+        $("#item_id").change(change_unit_price());
+        $("#btnCancel").click(function() {
+
+            document.location.href = "<%= houses_path %>";
+            return false;
+        });
+
+        $("#btnReset").click(function() {
+            $(":text").each(function() {
+                $(this).val("");
+            });
+            $(":password").each(function() {
+                $(this).val("");
+            });
+            $(":checkbox").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":radio").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":file").each(function() {
+                $(this).val("");
+            });
+            $("textarea").each(function() {
+                $(this).val("");
+            });
+            return false;
+        });
+        $("#btnSubmit").click(function() {
+            var money = 0;
+            var unitPrice = parseFloat($("#unitPrice").val());
+            var record = parseInt($("#record").val());
+            if (!isNaN(unitPrice) && !isNaN(record)) {
+                money = unitPrice * record;
+                var result = confirm("你确定预存" + money + "元?");
+                if (result) {
+                    $("form").submit();
+                }
+            }
+            
+            return false;
+        });
+        $("#record").bind("blur", function() {
+            if (!isNaN($(this).val())) {
+
+                var record = parseInt($(this).val());
+                if (record != 0) {
+                    $(this).removeAttr("style");
+                    var money = parseFloat($("#unitPrice").val() * record);
+                    $("#money").val(money);
+                } else {
+                    $(this).focus();
+                    alert("请填写正确的数量!");
+                }
+            } else {
+                $(this).val("");
+                $(this).attr("style", "border: 1px solid #ff0000;");
+                alert("请填写正确的数量!");
+                $(this).focus();
+            }
+        });
+
+        $("input[name=select_price]").change(function() {
+            if ($(this).val() == 0) {
+                change_unit_price();
+                $("#record").val('');
+                $("#money").val('');
+                $("#unitPrice").attr("readonly", "readonly");
+                $("#record").removeAttr("readonly");
+                $("#unitPrice").unbind("blur");
+                $("#record").bind("blur", function() {
+                    if (!isNaN($(this).val())) {
+
+                        var record = parseInt($(this).val());
+                        if (record != 0) {
+                            $(this).removeAttr("style");
+                            var money = parseFloat($("#unitPrice").val() * record);
+                            $("#money").val(money);
+                        } else {
+                            $(this).focus();
+                            alert("请填写正确的数量!");
+                        }
+                    } else {
+                        $(this).val("");
+                        $(this).attr("style", "border: 1px solid #ff0000;");
+                        alert("请填写正确的数量!");
+                        $(this).focus();
+                    }
+                });
+            } else {
+                $("#unitPrice").val('');
+                $("#money").val('');
+                $("#record").val(1);
+                $("#unitPrice").removeAttr("readonly");
+                $("#record").unbind("blur");
+                $("#record").attr("readonly", "readonly");
+                $("#unitPrice").bind("blur", function() {
+                    if (!isNaN($(this).val())) {
+
+                        var unitPrice = parseFloat($(this).val());
+                        if (unitPrice != 0) {
+                            $(this).removeAttr("style");
+                            var money = parseFloat(unitPrice * $("#record").val());
+                            $("#money").val(money);
+                        } else {
+                            $(this).focus();
+                            alert("请填写正确的数量!");
+                        }
+                    } else {
+                        $(this).val("");
+                        $(this).attr("style", "border: 1px solid #ff0000;");
+                        alert("请填写正确的数量!");
+                        $(this).focus();
+                    }
+                });
+            }
+
+        });
+
+
+    });
+
 
 </script>
-<%= form_tag('add_pre_money') do %>
+<%= form_tag('/accounts/add_pre_money', :class=>'form label-inline') do %>
     <%= hidden_field_tag 'house_id', @house.id %>
     <%= hidden_field_tag 'house_code', @house.house_code %>
     <%= hidden_field_tag 'plot_id', @house.plot.id %>
-    <%= radio_button_tag 'select_price',0 %>单价×数量
-    <%= radio_button_tag 'select_price',1 %>自定义金额
-    <div class="field">
-      <%= label_tag '项目' %>&nbsp;
-      <%= select_tag 'item_id', options_from_collection_for_select(@items,"id","item_name"),:onchange=>"change_unit_price(this)" %>
+    <%= hidden_field_tag 'item_type', 0 %>
+    <div class="controlset field">
+      <span class="label">类型选择</span>
+
+      <div class="controlset-pad">
+        <div class="radio" id="uniform-radio1">
+
+          <span><%= radio_button_tag 'select_price', 0, true %></span>
+        </div>
+        <label>单价×数量</label><br/>
+
+        <div class="radio" id="uniform-radio2">
+          <span><%= radio_button_tag 'select_price', 1, false %></span>
+        </div>
+        <label>自定义金额</label><br/>
+      </div>
     </div>
     <div class="field">
-      <%= label_tag '单价' %>&nbsp;
-      <%= text_field_tag 'unitPrice', @items[0].price %>
+      <%= label_tag '项目' %>
+
+      <%= select_tag 'item_id', options_from_collection_for_select(@items, "id", "item_name"), :onchange=>"change_unit_price(this)", :class=>'medium' %>
+
     </div>
     <div class="field">
-      <%= label_tag '数量(金额为数量×单价）' %> &nbsp;
-      <%= text_field_tag 'record' %>
+      <%= label_tag '单价' %>
+      <%= text_field_tag 'unitPrice', @items[0].price, :class=>'medium', :readonly=>'readonly' %>
     </div>
     <div class="field">
-      <%= label_tag '锁定金额' %> &nbsp;
-      <%= text_field_tag 'can_push' %>
+      <%= label_tag '数量' %>
+      <%= text_field_tag 'record', nil, :class=>'medium' %>
+    </div>
+    <div class="field">
+      <%= label_tag '金额(数量×单价)' %>
+      <%= text_field_tag 'money', nil, :class=>'medium' %>
+    </div>
+    <div class="field">
+      <%= label_tag '锁定金额' %>
+      <%= text_field_tag 'can_push', 0.00, :class=>'medium' %>
     </div>
 
-    <div class="actions">
-      <%= submit_tag %>
+    <div class="buttonrow">
+      <button id="btnSubmit" class="btn">提交</button>
+      <button id="btnReset" class="btn btn-orange">重置</button>
+      <button id="btnCancel" class="btn">取消</button>
     </div>
 <% end %>

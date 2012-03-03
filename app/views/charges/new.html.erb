@@ -1,5 +1,12 @@
-<h1>New charge</h1>
+<div id="content" class="xfluid">
 
-<%= render 'form' %>
+  <%= render :partial => 'form' ,:locals=>{:header_name=>'新增收费项目'} %>
 
-<%= link_to 'Back', charges_path %>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>操作列表</h4></div>
+    <div class="portlet-content">
+      <%= link_to '返回列表', charges_path %>
+    </div>
+  </div>
+</div>
+

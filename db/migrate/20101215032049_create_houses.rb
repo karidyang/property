@@ -1,5 +1,5 @@
 class CreateHouses < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :houses do |t|
       t.string :house_code
       t.integer :area_id, :null=>false
@@ -17,7 +17,5 @@ class CreateHouses < ActiveRecord::Migration
     add_index :houses, :plot_id
   end
 
-  def self.down
-    drop_table :houses
-  end
+
 end

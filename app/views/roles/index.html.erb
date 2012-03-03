@@ -19,4 +19,4 @@
 <br />
 
 <%= link_to 'New Role', new_role_path %>
-<%= will_paginate @houses , :prev_label=>'<< 上一页', :next_label=>'下一页 >>'%>
+<%= paginate @houses %>

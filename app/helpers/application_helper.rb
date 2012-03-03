@@ -1,7 +1,11 @@
 #coding: utf-8
 module ApplicationHelper
   def all_plots
-    Plot.all.map { |p| [p.name, p.id] }
+    @current_user.plots.map { |p| [p.name, p.id] }
+  end
+
+  def change_type_list
+    [['已缴费',0],['未缴费',1]]
   end
 
   def get(hash, set_value)

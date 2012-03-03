@@ -1,52 +1,71 @@
-<script type="text/javascript">
-    function clickTreeNode(house_code) {
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>业主列表</h4></div>
+    <div class="portlet-content">
 
-        $("#house_code").attr("value", house_code);
-        $("#searchForm").submit();
-    }
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
 
-</script>
-<fieldset style="height:585px;">
-  <legend style="font-size: 20px;">
-    业主列表
-  </legend>
-  <% form_tag('/owners', :method=>:get, :id=>"searchForm") do %>
-      <div object_id="search" >
-
-        <%= label_tag '选择小区' %>
-        <%= select_tag(:plot_id, options_for_select(all_plots)) %>
-        <%= label_tag '房间号' %>
-        <%= text_field_tag "house_code", @house_code == 0?'':@house_code %>
-        <%= submit_tag('查询') %>
+        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
       </div>
-  <% end %>
-  <table class="tableClass" cellspacing="0">
-    <tr>
-      <th>房号</th>
-      <th>姓名</th>
-      <th>年龄</th>
-      <th>性别</th>
-      <th>手机</th>
-      <th>身份证</th>
-      <th>合同号</th>
-      <th>操作</th>
-    </tr>
-    <% for owner in @owners %>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
         <tr>
-          <td><%= h owner.house.house_code %></td>
-          <td><%= h owner.name %></td>
-          <td><%= h owner.age %></td>
-          <td><%= h get_sex(owner.sex) %></td>
-          <td><%= h owner.phone %></td>
-          <td><%= h owner.id_card %></td>
-          <td><%= h owner.contract_no %></td>
-          <td>
-            <%= link_to '编辑', edit_owner_path(owner) %>
-            <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
-          </td>
+          <th>房号</th>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>性别</th>
+          <th>手机</th>
+          <th>身份证</th>
+          <th>合同号</th>
+          <th>操作</th>
         </tr>
-    <% end %>
-  </table>
-  <br/>
-  <%= will_paginate @owners, :prev_label=>'<< 上一页', :next_label=>'下一页 >>' %>
-</fieldset>
+        </thead>
+        <tbody>
+        <% for owner in @owners %>
+            <tr>
+              <td><%= h owner.house.house_code %></td>
+              <td><%= h owner.name %></td>
+              <td><%= h owner.age %></td>
+              <td><%= h get_sex(owner.sex) %></td>
+              <td><%= h owner.phone %></td>
+              <td><%= h owner.id_card %></td>
+              <td><%= h owner.contract_no %></td>
+              <td>
+                <%= link_to '编辑', edit_owner_path(owner) %>
+                <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
+              </td>
+            </tr>
+        <% end %>
+
+        </tbody>
+      </table>
+      <%= paginate @owners %>
+    </div>
+  </div>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>查询过滤</h4></div>
+    <div class="portlet-content">
+      <!-- 搜索区域 -->
+      <%= form_tag(owners_path, :method=>:get) do %>
+          <div id="searchArea" style="min-height: 50px;">
+            <fieldset>
+              <legend>查询过滤</legend>
+              <div class="field">
+                <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots), :class=>'medium') %>
+              </div>
+              <div class="field">
+                <%= label_tag :house_code, '房间号' %><%= text_field_tag(:house_code,  @house_code == 0?'':@house_code, :class=>'medium') %>
+                <br/>
+              </div>
+              <div class="buttonrow">
+                <button class="btn">查询</button>
+              </div>
+
+            </fieldset>
+          </div>
+      <% end %>
+    </div>
+    
+  </div>
+</div>

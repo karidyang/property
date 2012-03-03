@@ -1,5 +1,5 @@
 class CreateCharges < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :charges do |t|
       t.string :item_name
       t.integer :period_type
@@ -17,7 +17,4 @@ class CreateCharges < ActiveRecord::Migration
     add_index :charges, :plot_id
   end
 
-  def self.down
-    drop_table :charges
-  end
 end

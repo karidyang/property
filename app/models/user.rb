@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   attr_protected :state
   acts_as_authentic
   has_and_belongs_to_many :roles
+  has_and_belongs_to_many :plots
 
   validates_presence_of :name, :email
   before_create :default_value_for_create

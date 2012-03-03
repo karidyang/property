@@ -1,5 +1,5 @@
 class CreateCompanies < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :companies do |t|
       t.string :name
       t.string :address
@@ -8,7 +8,5 @@ class CreateCompanies < ActiveRecord::Migration
     end
   end
 
-  def self.down
-    drop_table :companies
-  end
+  
 end

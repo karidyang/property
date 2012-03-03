@@ -1,5 +1,5 @@
 class CreateUsers < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :users do |t|
       t.string :email, :null => false
       t.string :name, :null => false
@@ -21,7 +21,5 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :email
   end
 
-  def self.down
-    drop_table :users
-  end
+
 end

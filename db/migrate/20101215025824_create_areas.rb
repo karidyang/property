@@ -1,5 +1,5 @@
 class CreateAreas < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :areas do |t|
       t.string :name
       t.integer :house_num
@@ -7,7 +7,5 @@ class CreateAreas < ActiveRecord::Migration
     end
   end
 
-  def self.down
-    drop_table :areas
-  end
+
 end

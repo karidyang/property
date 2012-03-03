@@ -1,37 +1,30 @@
 # coding: utf-8  
 class RolesController < ApplicationController
   before_filter :require_user
+  around_filter do |controller, action|
+    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+      render_403
+    else
+      action.call
+    end
+  end
   # GET /roles
   # GET /roles.xml
   def index
-    @roles = Role.order('name').paginate :page => params[:param], :per_page => 5
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @roles }
-    end
+    @roles = Role.order('name').page params[:param]
   end
 
   # GET /roles/1
   # GET /roles/1.xml
   def show
     @role = Role.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml { render :xml => @role }
-    end
   end
 
   # GET /roles/new
   # GET /roles/new.xml
   def new
     @role = Role.new
-
-    respond_to do |format|
-      format.html # add_pre_money.html.erb
-      format.xml { render :xml => @role }
-    end
   end
 
   # GET /roles/1/edit
@@ -44,15 +37,15 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(params[:role])
 
-    respond_to do |format|
-      if @role.save
-        format.html { redirect_to(roles_url, :notice => '新建角色成功.') }
-        format.xml { render :xml => @role, :status => :created, :location => @role }
-      else
-        format.html { render :action => "new" }
-        format.xml { render :xml => @role.errors, :status => :unprocessable_entity }
-      end
+
+    if @role.save
+      redirect_to(roles_url, :notice => '新建角色成功.')
+
+    else
+      render :action => "new"
+
     end
+
   end
 
   # PUT /roles/1
@@ -60,15 +53,15 @@ class RolesController < ApplicationController
   def update
     @role = Role.find(params[:id])
 
-    respond_to do |format|
-      if @role.update_attributes(params[:role])
-        format.html { redirect_to(roles_url, :notice => '角色保存成功.') }
-        format.xml { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml { render :xml => @role.errors, :status => :unprocessable_entity }
-      end
+
+    if @role.update_attributes(params[:role])
+      redirect_to(roles_url, :notice => '角色保存成功.')
+
+    else
+      render :action => "edit"
+
     end
+
   end
 
   # DELETE /roles/1
@@ -76,6 +69,6 @@ class RolesController < ApplicationController
   def destroy
     @role = Role.find(params[:id])
     @role.destroy
-    respond_with(@role,:location=>:back)
+    respond_with(@role, :location=>:back)
   end
 end

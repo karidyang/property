@@ -1,37 +1,28 @@
 # coding: utf-8  
 class UsersController < ApplicationController
-  before_filter :require_user, :except => [:new,:create]
+  before_filter :require_user, :except => [:new, :create]
   # GET /users
   # GET /users.xml
   def index
-    @users = User.paginate(:per_page => 10, :page => params[:page])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
+    flash[:notice] = params[:name]
+    if params.has_key?('name')
+      @users = User.where("name like ?", "%#{params[:name]}%").page params[:page]
+    else
+      @users = User.page params[:page]
     end
+
   end
 
   # GET /users/1
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /users/new
   # GET /users/new.xml
   def new
     @user = User.new
-
-    respond_to do |format|
-      format.html # add_pre_money.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /users/1/edit
@@ -58,15 +49,15 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => '保存用户成功.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+
+    if @user.update_attributes(params[:user])
+      redirect_to(@user, :notice => '保存用户成功.')
+
+    else
+      render :action => "edit"
+
     end
+
   end
 
   # DELETE /users/1
@@ -74,16 +65,24 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    respond_with(@user,:location=>:back)
+    respond_with(@user, :location=>:back)
   end
 
   def add_role
     @user = User.find(params[:id])
     if request.post?
-      params[:user][:role_ids] ||= []
-      if @user.update_attributes(params[:user])
-        flash[:notice] = '用户角色保存成功.'
-        redirect_to :controller=>"users",:action=>"index"
+      if (params.include?(:user))
+        params[:user][:role_ids] ||= []
+        if @user.update_attributes(params[:user])
+          flash[:notice] = '用户角色保存成功.'
+          redirect_to :controller=>"users", :action=>"index"
+        end
+      else
+        @user.roles = []
+        if @user.save!
+          flash[:notice] = '用户角色保存成功.'
+          redirect_to :controller=>"users", :action=>"index"
+        end
       end
     else
       @roles = get_roles

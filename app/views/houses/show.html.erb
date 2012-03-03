@@ -1,44 +1,51 @@
-<p id="notice"><%= notice %></p>
+<div id="content" class="xfluid">
+  <div class="portlet x9">
+    <div class="portlet-header"></div>
+    <div class="portlet-content">
 
-<p>
-  <b>House code:</b>
-  <%= @house.house_code %>
-</p>
+          <div class="field">
+            <%= label_tag "楼栋" %>
 
-<p>
-  <b>Area:</b>
-  <%= @house.area_id %>
-</p>
+              <%= text_field_tag :area_name, @house.area.name %>
+            
+          </div>
+          <div class="field">
+            <%= label_tag "房号" %>
+            <%= text_field_tag :house_code, @house.house_code, :class=>"medium" %>
+          </div>
+          <div class="field">
+            <%= label_tag "建筑面积" %>
+            <%= text_field_tag :builded_area, @house.builded_area, :class=>"medium" %>
+          </div>
+          <div class="field">
+            <%= label_tag "实际面积" %>
+            <%= text_field_tag :real_area, @house.real_area, :class=>"medium" %>
+          </div>
+          <div class="field">
+            <%= label_tag "公摊面积" %>
+            <%= text_field_tag :share_area, @house.share_area, :class=>"medium" %>
+          </div>
+          <div class="field">
+            <%= label_tag "单元状况" %>
 
-<p>
-  <b>Builded area:</b>
-  <%= @house.builded_area %>
-</p>
+              <%= text_field_tag :status, get_status(@house.status), :class=>"medium" %>
 
-<p>
-  <b>Real area:</b>
-  <%= @house.real_area %>
-</p>
+          </div>
+          <div class="field">
+            <%= label_tag "使用类型" %>
 
-<p>
-  <b>Share area:</b>
-  <%= @house.share_area %>
-</p>
+              <%= text_field_tag :use_type, get_use_type(@house.use_type), :class=>"medium" %>
 
-<p>
-  <b>Status:</b>
-  <%= get_status(@house.status) %>
-</p>
+          </div>
+          <div class="field">
+            <%= label_tag "业主" %>
+            <%= text_field_tag :owner_names, @house.owner_names, :class=>"medium" %>
+          </div>
+          <div class="buttonrow">
+            <%= link_to "返回", houses_path, :class=>'btn' %>
 
-<p>
-  <b>Use type:</b>
-  <%= get_use_type(@house.use_type) %>
-</p>
+          </div>
 
-<p>
-  <b>Unit:</b>
-  <%= @house.unit_id %>
-</p>
-
-<%= link_to 'Edit', edit_house_path(@house) %> |
-<%= link_to 'Back', houses_path %>
+    </div>
+  </div>
+</div>

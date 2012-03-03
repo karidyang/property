@@ -1,34 +1,83 @@
-source 'http://rubygems.org'
+source 'http://ruby.taobao.org/'
 
-gem 'rails', '3.0.9'
-gem 'haml'
+gem 'rails', '3.1.1'
+gem 'rake','0.9.2.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'mysql2','0.2.7'
-gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'will_paginate'
-gem 'authlogic'
 gem 'jquery-rails'
+gem 'mysql2'
+gem 'sqlite3-ruby', :require => 'sqlite3'
+# gem 'moneta'
+
+gem 'yajl-ruby', :require => 'yajl'
+#gem 'nokogiri'
+gem 'authlogic'
 gem 'json'
-# Use unicorn as the web server
-# gem 'unicorn'
 
-# Deploy with Capistrano
+# Paginator
+gem "kaminari"
+gem 'will_paginate', '3.0.pre2'
+gem 'sass-rails'
+gem 'sass'
+# File Uploads
+# gem 'paperclip'
+# gem 'carrierwave'
+
+# gem 'devise', '~> 1.1.7'
+# gem "cancan"
+# gem "simple_form"
+# gem 'fastercsv' # for Ruby 1.8.7+
+# gem 'prawn'
+# gem "haml"
+# gem "haml-rails"
+# gem 'validates_timeliness', '~> 3.0.5'
+
+
+
+# gem 'acts-as-taggable-on'
+ 
+# gem 'hoptoad_notifier'
+# gem 'newrelic_rpm'
+
+gem 'SystemTimer' if RUBY_VERSION =~ /^1.8/
+
+group :test, :development do
+  gem "rspec", "~> 2.0"
+  gem "rspec-rails", "~> 2.0"
+  gem "factory_girl_rails"
+  gem "shoulda-matchers"
+  gem "rcov"
+  gem "delorean"
+  gem "watchr"
+  gem "spork", "~>0.9.0.rc"
+  # gem "capybara"
+  # gem 'yard'
+  # gem "bluecloth"
+end
+
+# State machine
+# gem 'aasm'
+# gem 'state_machine'
+
+# HTTP client
+# gem 'typhoeus'
+# gem 'rest-client', :require => 'restclient'
+
+# Memcached client 
+# gem "dalli"
+# gem "memcache-client", :require => "memcache"
+
+# Deployment tool
 # gem 'capistrano'
+# gem 'whiskey_disk'
 
-# To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
+# Debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
 # gem 'ruby-debug19'
 
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
+# Background Processing
+# gem 'delayed_job'
+# gem 'resque'
 
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
+# Full-text search engine
+# gem 'thinking-sphinx', '~> 2.0.2', :require => 'thinking_sphinx'

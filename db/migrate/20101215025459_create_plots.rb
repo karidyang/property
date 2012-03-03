@@ -1,5 +1,5 @@
 class CreatePlots < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :plots do |t|
       t.string :name
       t.string :developer
@@ -10,7 +10,5 @@ class CreatePlots < ActiveRecord::Migration
     end
   end
 
-  def self.down
-    drop_table :plots
-  end
+
 end

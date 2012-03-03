@@ -1,5 +1,5 @@
 class AddOwnerName < ActiveRecord::Migration
-  def self.up
+  def change
     add_column :houses, :owner_name,:string
     
     House.all.each do |house|
@@ -9,6 +9,5 @@ class AddOwnerName < ActiveRecord::Migration
     end
   end
 
-  def self.down
-  end
+
 end

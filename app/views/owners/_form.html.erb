@@ -1,39 +1,97 @@
-<%= form_for(@owner) do |f| %>
-  <% if @owner.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@owner.errors.count, "error") %> prohibited this owner from being saved:</h2>
-
-      <ul>
-      <% @owner.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<% if @owner.errors.any? %>
+    <div class="portlet x12">
+      <div class="portlet-header">
+        <h4 style="color:red"><%= pluralize(@owner.errors.count, "error") %> 保存数据出错:</h4></div>
+      <div class="portlet-content">
+        <ul>
+          <% @owner.errors.full_messages.each do |msg| %>
+              <li><h5 style="color:red"><%= msg %></h5></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  <% end %>
-  <%= f.hidden_field :house_id %>
-  <div class="field">
-    <%= f.label '姓名' %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label '年龄' %><br />
-    <%= f.text_field :age %>
-  </div>
-  <div class="field">
-    <%= f.label '性别' %><br />
-    <%= f.label '男' %><%= f.radio_button(:sex,true)%>
-    <%= f.label '女' %><%= f.radio_button(:sex,false)%>
-  </div>
-  <div class="field">
-    <%= f.label '电话' %><br />
-    <%= f.text_field :phone %>
-  </div>
-  <div class="field">
-    <%= f.label '身份证' %><br />
-    <%= f.text_field :id_card %>
-  </div>
-  
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>
+
+
+<div class="portlet x9">
+  <div class="portlet-header"><h4><%= header_name %></h4></div>
+  <div class="portlet-content">
+    <%= form_for(@owner, :html=>{:class=>'form label-inline', :id=>'sForm'}) do |f| %>
+        <%= f.hidden_field :house_id %>
+        <div class="field">
+          <%= f.label "姓名" %>
+
+          <%= f.text_field :name, :class=>"medium" %>
+
+        </div>
+        <div class="field">
+          <%= f.label "年龄" %>
+          <%= f.text_field :age, :class=>"medium" %>
+        </div>
+        <div class="controlset field">
+          <span class="label">性别</span>
+
+          <div class="controlset-pad">
+            <div class="radio" id="uniform-radio1">
+
+              <span><%= f.radio_button(:sex, true) %></span>
+            </div>
+            <label>男</label><br/>
+
+            <div class="radio" id="uniform-radio2">
+              <span><%= f.radio_button(:sex, false) %></span>
+            </div>
+            <label>女</label><br/>
+          </div>
+        </div>
+        
+        <div class="field">
+          <%= f.label "电话" %>
+          <%= f.text_field :phone, :class=>"medium" %>
+        </div>
+        <div class="field">
+          <%= f.label "身份证" %>
+          <%= f.text_field :id_card, :class=>"medium" %>
+        </div>
+
+        <div class="buttonrow">
+          <button id="btnSubmit" class="btn">提交</button>
+          <button id="btnReset" class="btn btn-orange">重置</button>
+          <button id="btnCancel" class="btn">取消</button>
+
+        </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#btnCancel").click(function() {
+
+            document.location.href = "<%= owners_path %>";
+            return false;
+        });
+
+        $("#btnReset").click(function() {
+            $(":text").each(function() {
+                $(this).val("");
+            });
+            $(":password").each(function() {
+                $(this).val("");
+            });
+            $(":checkbox").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":radio").each(function() {
+                $(this).attr("checked", false);
+            });
+            $(":file").each(function() {
+                $(this).val("");
+            });
+            $("textarea").each(function() {
+                $(this).val("");
+            });
+            return false;
+        });
+
+    });
+</script>

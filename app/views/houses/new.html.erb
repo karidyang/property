@@ -1,1 +1,12 @@
-<%= render 'form' %>
+<div id="content" class="xfluid">
+
+
+  <%= render :partial => 'form' ,:locals=>{:header_name=>'新建房间'} %>
+
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>操作列表</h4></div>
+    <div class="portlet-content">
+      <%= link_to '返回列表', houses_path %>
+    </div>
+  </div>
+</div>

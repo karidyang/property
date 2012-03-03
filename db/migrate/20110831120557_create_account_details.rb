@@ -1,5 +1,5 @@
 class CreateAccountDetails < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :account_details do |t|
       t.integer :account_id
       t.integer :account_type
@@ -16,7 +16,5 @@ class CreateAccountDetails < ActiveRecord::Migration
     end
   end
 
-  def self.down
-    drop_table :account_details
-  end
+
 end

@@ -1,23 +1,24 @@
 # coding: utf-8  
 class OwnersController < ApplicationController
   before_filter :require_user
+  around_filter do |controller, action|
+    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+      render_403
+    else
+      action.call
+    end
+  end
   # GET /owners
   # GET /owners.xml
   def index
     if params.has_key?('house_code')
       @house_code = params[:house_code]
-      house       = House.find_by_house_code(@house_code)
-      @owners     = WillPaginate::Collection.create(1, 10) do |pager|
-        pager.replace(house.owners)
-        unless pager.total_entries
-          # the pager didn't manage to guess the total count, do it manually
-          pager.total_entries = house.owners.size
-        end
-
-      end
+      house = House.find_by_house_code(@house_code)
+      @owners = house.owners.order('name')
     else
       @house_code = 0
-      @owners     = Owner.paginate :page=>params[:page], :order=>'house_id'
+      @owners = Owner.order('house_id').page params[:page]
     end
 
   end
@@ -32,7 +33,7 @@ class OwnersController < ApplicationController
   # GET /owners/new
   # GET /owners/new.xml
   def new
-    @owner          = Owner.new
+    @owner = Owner.new
     @owner.house_id = params[:house_id]
 
   end
@@ -45,14 +46,14 @@ class OwnersController < ApplicationController
   # POST /owners
   # POST /owners.xml
   def create
-    pt                      = params[:owner]
-    @owner                  = Owner.new(pt)
-    @owner.house_id         = params[:house] || pt[:house_id]
+    pt = params[:owner]
+    @owner = Owner.new(pt)
+    @owner.house_id = params[:house] || pt[:house_id]
     if @owner.save
       @house = @owner.house
       @house.owner_name = @owner.name
       @house.save
-      redirect_to(owners_url, :notice => 'Owner was successfully created.')
+      redirect_to({:controller=>:houses,:action=>:index, :plot_id=>@house.plot_id,:house_code=>@house.house_code}, :notice => '添加业主成功')
     else
       render :action => "new"
     end
@@ -62,10 +63,10 @@ class OwnersController < ApplicationController
   # PUT /owners/1.xml
   def update
 
-    @owner                  = Owner.find(params[:id])
+    @owner = Owner.find(params[:id])
     @owner.house.owner_name = @owner.name
     if @owner.update_attributes(params[:owner])
-      redirect_to(owners_url, :notice => 'Owner was successfully updated.')
+      redirect_to(owners_url, :notice => '更新业主信息成功')
     else
       render :action => "edit"
     end
@@ -75,10 +76,12 @@ class OwnersController < ApplicationController
   # DELETE /owners/1.xml
   def destroy
     @owner = Owner.find(params[:id])
-    @house = @owner.house
-    @house.owner_name = nil
-    @house.save
-    @owner.destroy
-    respond_with(@owner,:location=>:back)
+    if !owner.nil?
+      @house = @owner.house
+      @house.owner_name = nil
+      @house.save
+      @owner.destroy
+    end
+    redirect_to houses_path
   end
 end

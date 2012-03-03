@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110831120557) do
+ActiveRecord::Schema.define(:version => 20120226090952) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -26,23 +27,6 @@ ActiveRecord::Schema.define(:version => 20110831120557) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "accountdetails", :force => true do |t|
-    t.integer  "account_id"
-    t.integer  "account_type"
-    t.decimal  "money",        :precision => 8, :scale => 2
-    t.datetime "trans_time"
-    t.integer  "record"
-    t.decimal  "unit_price",   :precision => 8, :scale => 2
-    t.decimal  "can_push",     :precision => 8, :scale => 2
-    t.string   "note"
-    t.string   "updateby"
-    t.integer  "receipt_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "accountdetails", ["account_id"], :name => "index_accountDetails_on_account_id"
 
   create_table "accounts", :force => true do |t|
     t.integer  "house_id"
@@ -60,6 +44,39 @@ ActiveRecord::Schema.define(:version => 20110831120557) do
     t.string  "name"
     t.integer "house_num"
     t.integer "plot_id"
+  end
+
+  create_table "bill_items", :force => true do |t|
+    t.integer  "bill_id"
+    t.integer  "item_id"
+    t.string   "item_name"
+    t.decimal  "money",        :precision => 8, :scale => 2
+    t.date     "trans_time"
+    t.integer  "status"
+    t.decimal  "pay_money",    :precision => 8, :scale => 2
+    t.date     "pay_date"
+    t.integer  "house_id"
+    t.decimal  "unit_price",   :precision => 8, :scale => 2
+    t.integer  "record"
+    t.integer  "start_record"
+    t.integer  "end_record"
+    t.decimal  "push",         :precision => 8, :scale => 2
+    t.string   "operator"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "item_type"
+    t.integer  "plot_id"
+  end
+
+  create_table "bills", :force => true do |t|
+    t.string   "bill_name"
+    t.date     "bill_date"
+    t.integer  "bill_status"
+    t.decimal  "curr_money",  :precision => 10, :scale => 0
+    t.integer  "house_id"
+    t.integer  "plot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "charges", :force => true do |t|
@@ -104,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20110831120557) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "owner_name"
+    t.date     "receive_time"
   end
 
   add_index "houses", ["area_id"], :name => "index_houses_on_area_id"
@@ -130,6 +148,11 @@ ActiveRecord::Schema.define(:version => 20110831120557) do
     t.string  "address"
     t.string  "phone"
     t.integer "company_id"
+  end
+
+  create_table "plots_users", :id => false, :force => true do |t|
+    t.integer "plot_id", :null => false
+    t.integer "user_id", :null => false
   end
 
   create_table "privileges", :force => true do |t|

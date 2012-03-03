@@ -1,26 +1,54 @@
-<table class="tableClass" cellspacing="0">
-  <tr>
-    <th>房号</th>
-    <th>业主</th>
-    <th>收费项目</th>
-    <th>预存时间</th>
-    <th>预存金额</th>
-    <th>收款人</th>
-    <th>备注</th>
-    <th>单据号</th>
-    <th>操作</th>
-  </tr>
-
-  <% @details.each do |detail| %>
-      <tr>
-        <td><%= detail.account.house_code %></td>
-        <td><%= detail.account.house.owner_name %></td>
-        <td><%= detail.account.item_name %></td>
-        <td><%= detail.money %></td>
-
-        <td>
-          <%= link_to '删除', detail, :confirm => '确定删除？', :method => :delete %>
-        </td>
-      </tr>
-  <% end %>
-</table>
+<div id="content" class="xfluid">
+  <div class="portlet x7">
+    <div class="portlet-header"><h4>历史记录</h4></div>
+    <div class="portlet-content">
+      <!-- 批量操作区域 -->
+      <div id="batchOpArea" style="min-height: 50px;">
+        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
+      </div>
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+        <thead>
+        <tr>
+          <th>房号</th>
+          <th>业主</th>
+          <th>类型</th>
+          <th>收费项目</th>
+          <th>交易时间</th>
+          <th>交易金额</th>
+          <th>操作员</th>
+          <th>备注</th>
+          <th>单据号</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @details.each do |detail| %>
+            <tr>
+              <td><%= detail.account.house_code %></td>
+              <td><%= detail.account.house.owner_name %></td>
+              <td><%= get_account_type detail.account_type %></td>
+              <td><%= detail.account.item_name %></td>
+              <td><%= detail.trans_time %></td>
+              <td><%= detail.money %></td>
+              <td><%= detail.updateby %></td>
+              <td><%= detail.note %></td>
+              <td><%= detail.receipt_id %></td>
+              <td>
+                <%= del_detail detail.id %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate @details %>
+    </div>
+  </div>
+  <div class="portlet x3">
+    <div class="portlet-header"><h4>操作列表</h4></div>
+    <div class="portlet-content">
+      <div class="field">
+        <%= link_to '返回', :controller=>:accounts, :action=>:index, :house_id=>@account.house %>
+      </div>
+    </div>
+  </div>
+</div>
