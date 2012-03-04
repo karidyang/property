@@ -33,6 +33,7 @@ Property::Application.routes.draw do
   match "login", :to => 'home#login'
   match "login_create", :to => 'home#login_create'
   match 'logout', :to => 'home#logout'
+  match 'choose_plot', :to => 'home#choose_plot'
 
   match ':controller(/:action(/:id(.:format)))'
   # The priority is based upon order of creation:

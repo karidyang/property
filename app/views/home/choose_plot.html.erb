@@ -1,0 +1,16 @@
+<h1>欢迎来到铭智物业管理系统，请登录</h1>
+
+<div id="right">
+  <%= form_tag(choose_plot_path,:method => :get) do %>
+
+      <div class="field">
+        <%= label_tag :current_plot,'选择小区' %>
+        <%= select_tag :current_plot, options_for_select(all_plots)  %>
+        <br/>
+      </div>
+      <p>
+        <%= submit_tag('提交') %>
+      </p>
+  <% end %>
+</div>
+
