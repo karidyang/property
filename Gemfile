@@ -1,6 +1,6 @@
 source 'http://ruby.taobao.org/'
 
-gem 'rails', '3.1.1'
+gem 'rails'
 gem 'rake','0.9.2.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -17,8 +17,10 @@ gem 'json'
 # Paginator
 gem "kaminari"
 gem 'will_paginate', '3.0.pre2'
-gem 'sass-rails'
-gem 'sass'
+group :assets do
+  gem 'sass-rails',"~> 3.1.1"
+  gem 'sass',"~> 3.1.1"
+end
 # File Uploads
 # gem 'paperclip'
 # gem 'carrierwave'
