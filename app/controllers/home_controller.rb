@@ -22,7 +22,7 @@ class HomeController < ApplicationController
 
       redirect_back_or_default root_path
     else
-      render :action => :login
+      render :layout=>false, :action => :login
     end
   end
 
@@ -35,7 +35,7 @@ class HomeController < ApplicationController
     rows = []
     json = Hash.new
     @houses.each do |house|
-      h_json = {"id"=>house.id,"name"=>house.house_code}
+      h_json = {:id => house.id,:name =>house.house_code}
       rows << h_json
     end
     json['total'] = @houses.length
