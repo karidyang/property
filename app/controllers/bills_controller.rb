@@ -1,6 +1,7 @@
 # coding: utf-8 
 class BillsController < ApplicationController
   before_filter :require_user
+  before_filter :require_plot
   #around_filter do |controller, action|
   #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
   #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
@@ -12,7 +13,12 @@ class BillsController < ApplicationController
   # GET /bills
   # GET /bills.json
   def index
-    @bills = Bill.page params[:page]
+    if params[:house_code]
+      house = House.where("plot_id=? and house_code=?",current_plot,params[:house_code]).first
+      @bills = house.bills.page params[:page]
+    else
+      @bills = Bill.find_all_by_plot_id(current_plot).page params[:page]
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -56,6 +62,12 @@ class BillsController < ApplicationController
 
   def calculate
 
-    plot = Plot.find()
+    plot = Plot.find(current_plot)
+    plot.areas.each do |area|
+      area.houses.each do |house|
+        house.create_bill(Date.today, @current_user.name)
+      end
+    end
+    redirect_to :action => :index
   end
 end

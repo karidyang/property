@@ -9,10 +9,10 @@ class Plot < ActiveRecord::Base
     areas.each do |area|
       area_json << area.to_json
     end
-    if !area_json.empty?
-      json += ",open:true,'childs':[#{area_json.join(",")}]}"
-    else
+    if area_json.empty?
       json += ",open:true,'childs':[]}"
+    else
+      json += ",open:true,'childs':[#{area_json.join(",")}]}"
     end
     json
   end

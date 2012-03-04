@@ -52,6 +52,7 @@ class OwnersController < ApplicationController
     if @owner.save
       @house = @owner.house
       @house.owner_name = @owner.name
+      @house.receive_time = Date.today
       @house.save
       redirect_to({:controller=>:houses,:action=>:index, :plot_id=>@house.plot_id,:house_code=>@house.house_code}, :notice => '添加业主成功')
     else

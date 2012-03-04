@@ -5,7 +5,7 @@ class House < ActiveRecord::Base
   has_many :owners, :order => "name"
   has_many :accounts, :order => "item_name"
   has_and_belongs_to_many :charges
-  has_many :bills, :order => "bill_date"
+  has_many :bills, :class_name => "Bill", :order => "bill_date"
   has_many :unpay_bills, :class_name => "Bill", :conditions => "bill_status = 0"
 
   def to_json
@@ -31,7 +31,8 @@ class House < ActiveRecord::Base
     #1、是否有业主、是否业主已收房
     #2、查询本月是否已经生成账单，未生成则新建，否则追加
     #3、循环收费项，根据收费项生成账单详细
-    return if can_create_bill?
+    return if !can_create_bill?
+    logger.info "开始计算#{self.house_code}#{day.year}年#{day.month}月账单"
     begin
       Bill.transaction do
 
@@ -78,8 +79,8 @@ class House < ActiveRecord::Base
   end
 
   def can_create_bill?
+    return false if owners.empty? || self.receive_time.nil?
     result = true
-    result = false if owners.empty? || self.receive_time.nil?
 
     #收房日期大于当月20号
     today = Date.today

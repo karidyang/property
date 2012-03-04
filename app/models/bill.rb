@@ -16,7 +16,6 @@ class Bill < ActiveRecord::Base
       #付款
       :pay => 1
   }
-
   #账单付款
   def pay(item_ids = [])
 

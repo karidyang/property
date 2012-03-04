@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
     @meta_description = meta_description
   end
 
+  def current_plot
+    session[:current_plot]
+  end
+
   private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
@@ -71,6 +75,11 @@ class ApplicationController < ActionController::Base
         flash[:notice] = "You must be logged out to access this page"
         redirect_to root_path
       end
+    end
+
+    def require_plot
+      store_location
+      redirect_to choose_plot_path unless current_plot
     end
 
     def store_location

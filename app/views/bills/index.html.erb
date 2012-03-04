@@ -1,3 +1,10 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#btnCal").bind("click",function(){
+
+      });
+  });
+</script>
 <div id="content" class="xfluid">
   <div class="portlet x7">
     <div class="portlet-header"><h4>账单列表</h4></div>
@@ -7,6 +14,9 @@
       <div id="batchOpArea" style="min-height: 50px;">
 
         <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
+        <%= form_tag(:controller => :bills, :action => :calculate) do %>
+            <button class="btn-icon btn-grey btn-cross" id="btnCal"><span></span>计算小区当月账单</button>
+        <% end %>
       </div>
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
         <thead>
@@ -47,9 +57,7 @@
           <div id="searchArea" style="min-height: 50px;">
             <fieldset>
               <legend>查询过滤</legend>
-              <div class="field">
-                <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots), :class=>'medium') %>
-              </div>
+
               <div class="field">
                 <%= label_tag :house_code, '房间号' %><%= text_field_tag(:house_code, nil, :class=>'medium') %>
                 <br/>
