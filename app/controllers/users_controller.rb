@@ -71,7 +71,7 @@ class UsersController < ApplicationController
   def add_role
     @user = User.find(params[:id])
     if request.post?
-      if (params.include?(:user))
+      if params.include?(:user)
         params[:user][:role_ids] ||= []
         if @user.update_attributes(params[:user])
           flash[:notice] = '用户角色保存成功.'

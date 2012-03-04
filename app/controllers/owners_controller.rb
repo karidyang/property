@@ -1,14 +1,14 @@
 # coding: utf-8  
 class OwnersController < ApplicationController
   before_filter :require_user
-  around_filter do |controller, action|
-    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    else
-      action.call
-    end
-  end
+  #around_filter do |controller, action|
+  #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  else
+  #    action.call
+  #  end
+  #end
   # GET /owners
   # GET /owners.xml
   def index
@@ -76,7 +76,7 @@ class OwnersController < ApplicationController
   # DELETE /owners/1.xml
   def destroy
     @owner = Owner.find(params[:id])
-    if !owner.nil?
+    if owner
       @house = @owner.house
       @house.owner_name = nil
       @house.save

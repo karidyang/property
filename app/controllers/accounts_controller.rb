@@ -1,14 +1,14 @@
 # coding: utf-8  
 class AccountsController < ApplicationController
   before_filter :require_user
-  around_filter do |controller, action|
-    if @current_user.has_privilege?(controller.controller_name, controller.action_name)
-      action.call
-    else
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    end
-  end
+  #around_filter do |controller, action|
+  #  if @current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    action.call
+  #  else
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  end
+  #end
 
   # GET /accounts
   # GET /accounts.xml

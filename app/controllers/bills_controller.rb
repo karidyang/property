@@ -1,14 +1,14 @@
 # coding: utf-8 
 class BillsController < ApplicationController
   before_filter :require_user
-  around_filter do |controller, action|
-    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    else
-      action.call
-    end
-  end
+  #around_filter do |controller, action|
+  #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  else
+  #    action.call
+  #  end
+  #end
   # GET /bills
   # GET /bills.json
   def index
@@ -54,7 +54,8 @@ class BillsController < ApplicationController
     end
   end
 
-  def calucate
-    
+  def calculate
+
+    plot = Plot.find()
   end
 end

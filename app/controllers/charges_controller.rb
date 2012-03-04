@@ -77,7 +77,7 @@ class ChargesController < ApplicationController
   def destroy
     if @current_user.has_privilege?('charges', 'destroy')
       @charge = Charge.find(params[:id])
-      if !@charge.nil?
+      if @charge
         @charge.destroy
       end
 

@@ -1,14 +1,14 @@
 # coding: utf-8  
 class HousesController < ApplicationController
   before_filter :require_user
-  around_filter do |controller, action|
-    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    else
-      action.call
-    end
-  end
+  #around_filter do |controller, action|
+  #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  else
+  #    action.call
+  #  end
+  #end
   # GET /houses
   # GET /houses.xml
   def index
@@ -35,40 +35,43 @@ class HousesController < ApplicationController
   # GET /houses/new
   # GET /houses/new.xml
   def new
-    if !@current_user.has_privilege?('houses', 'insert')
+    if @current_user.has_privilege?('houses', 'insert')
+      @house = House.new
+    else
       flash[:notice] = '您没有新增房间的权限,请联系管理员'
       render_403
-      return
+
     end
-    @house = House.new
   end
 
   # GET /houses/1/edit
   def edit
-    if !@current_user.has_privilege?('houses', 'update')
+    if @current_user.has_privilege?('houses', 'update')
+      @house = House.find(params[:id])
+    else
       flash[:notice] = '您没有编辑房间的权限,请联系管理员'
       render_403
-      return
     end
-    @house = House.find(params[:id])
   end
 
   # POST /houses
   # POST /houses.xml
   def create
-    if !@current_user.has_privilege?('houses', 'insert')
+    if @current_user.has_privilege?('houses', 'insert')
+      @house = House.new(params[:house])
+      @area = @house.area
+      @house.plot = @area.plot
+
+      if @house.save
+        redirect_to(houses_url, :notice => '新建房间成功.')
+
+      else
+        render :action => "new"
+
+      end
+    else
       flash[:notice] = '您没有新增房间的权限,请联系管理员'
       render_403
-    end
-    @house = House.new(params[:house])
-    @area = @house.area
-    @house.plot = @area.plot
-
-    if @house.save
-      redirect_to(houses_url, :notice => '新建房间成功.')
-
-    else
-      render :action => "new"
 
     end
 
@@ -77,19 +80,17 @@ class HousesController < ApplicationController
   # PUT /houses/1
   # PUT /houses/1.xml
   def update
-    if !@current_user.has_privilege?('houses', 'update')
+    if @current_user.has_privilege?('houses', 'update')
+      @house = House.find(params[:id])
+
+      if @house.update_attributes(params[:house])
+        redirect_to(houses_url, :notice => '更新房间成功.')
+      else
+        render :action => "edit"
+      end
+    else
       flash[:notice] = '您没有编辑房间的权限,请联系管理员'
       render_403
-      return
-    end
-    @house = House.find(params[:id])
-
-
-    if @house.update_attributes(params[:house])
-      redirect_to(houses_url, :notice => '更新房间成功.')
-
-    else
-      render :action => "edit"
 
     end
 
@@ -98,28 +99,32 @@ class HousesController < ApplicationController
   # DELETE /houses/1
   # DELETE /houses/1.xml
   def destroy
-    if !@current_user.has_privilege?('houses', 'destroy')
+    if @current_user.has_privilege?('houses', 'destroy')
+      @house = House.find(params[:id])
+      if @house
+        @house.destroy
+      end
+      redirect_to(houses_url)
+    else
       flash[:notice] = '您没有删除房间的权限,请联系管理员'
       render_403
-      return
+
     end
-    @house = House.find(params[:id])
-    if !@house.nil?
-      @house.destroy
-    end
-    redirect_to(houses_url)
   end
 
   def house_tree
-    if !@current_user.has_privilege?('houses', 'select')
+    if @current_user.has_privilege?('houses', 'select')
+      @plots = @current_user.plots
+      logger.info "----------------------------------"
+      logger.info "session[:current_plot]=#{session[:current_plot]}"
+      logger.info "----------------------------------"
+
+      json = []
+      @plots.each { |plot| json << plot.to_json if plot.id==session[:current_plot] }
+      render :json => "[#{json.join(',')}]"
+    else
       render :json => "[]"
     end
-    @plots = @current_user.plots
-    json = []
-    @plots.each { |plot| json << plot.to_json }
-
-    render :json => "[#{json.join(',')}]"
-
   end
 
   def house_info

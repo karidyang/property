@@ -1,14 +1,14 @@
 # coding: utf-8  
 class PlotsController < ApplicationController
   before_filter :require_user
-  around_filter do |controller, action|
-    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    else
-      action.call
-    end
-  end
+  #around_filter do |controller, action|
+  #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  else
+  #    action.call
+  #  end
+  #end
   # GET /plots
   # GET /plots.xml
   def index
