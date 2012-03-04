@@ -54,5 +54,7 @@ class BillsController < ApplicationController
     end
   end
 
-
+  def calucate
+    
+  end
 end
