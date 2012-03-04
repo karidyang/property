@@ -12,7 +12,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :accountDetails, :account_id
+
   end
 
 

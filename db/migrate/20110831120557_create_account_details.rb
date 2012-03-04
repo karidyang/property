@@ -14,7 +14,8 @@ class CreateAccountDetails < ActiveRecord::Migration
 
       t.timestamps
     end
-  end
 
+    add_index :account_details, :account_id
+  end
 
 end

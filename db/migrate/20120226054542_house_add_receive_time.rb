@@ -1,9 +1,6 @@
 class HouseAddReceiveTime < ActiveRecord::Migration
-  def up
+  def change
     add_column :houses, :receive_time,:date
   end
 
-  def down
-    remove_column :houses, :receive_time
-  end
 end
