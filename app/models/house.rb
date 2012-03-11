@@ -12,6 +12,18 @@ class House < ActiveRecord::Base
     "{'id':'h-#{self.id}','name':'#{self.house_code}'}"
   end
 
+  def json
+    {id:self.id, house_code:self.house_code, owner_name:self.owner_names, builded_area:self.builded_area, use_type:self.get_use_type(self.use_type)}
+  end
+
+  def get_use_type(use_type)
+    {1=>'住宅', 2=>'商铺', 3=>'商服', 4=>'车库', 5=>'其他'}.each do |key, value|
+      if key.to_i==use_type
+        return value
+      end
+    end
+  end
+
   def add_charge(charge)
     if charges.include?(charge)
       charges << charge

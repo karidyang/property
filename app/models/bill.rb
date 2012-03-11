@@ -39,7 +39,7 @@ class Bill < ActiveRecord::Base
     end
   end
 
-  def self.current_month_bill(house_id, day)
+  def self.current_month_bill(house_id, day=Date.today)
     puts house_id, day
     first_day = day.at_beginning_of_month
     last_day = day.at_end_of_month

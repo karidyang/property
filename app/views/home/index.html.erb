@@ -65,7 +65,64 @@
     });
 
     function click_house(event, treeid, treeNode) {
-        alert(treeNode.tId + ", " + treeNode.name);
+        var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
+
+        $.post(url,{"house_code":treeNode.name},function(data){
+            if (data.house) {
+                $("#house_id").val(data.house.id);
+                var html = "<tbody><tr><td>房号</td><td>"+data.house.house_code+"</td>"+
+                        "</tr><tr><td>业主</td><td>"+data.house.owner_name+"</td>"+
+                        "</tr><tr><td>面积</td><td>"+data.house.builded_area+"平方米</td>"+
+                        "</tr><tr><td>房屋类型</td><td>"+data.house.use_type+"</td></tr></tbody>";
+
+                $("#house_base_info").html(html);
+            }
+            $("#accounts_table tbody tr").each(function(){$(this).remove();});
+            if (data.accounts) {
+                for (i = 0; i < data.accounts.length; i++) {
+                    var account = data.accounts[i];
+                    var account_html = "<tr>"+
+                            "<td>"+account.item_name+"</td>"+
+                            "<td>"+account.money+"</td>";
+                    $("#accounts_table tbody").append(account_html);
+                }
+
+
+            }
+
+            $("#bill_items_table tbody tr").each(function(){$(this).remove();});
+            if (data.bill_items) {
+
+                for (i = 0; i < data.bill_items.length; i++) {
+                    var obj = data.bill_items[i];
+                    var tr_row = "<tr>" +
+                            "<td><input type='checkbox'/></td>" +
+                            "<td>"+obj.item_name+"</td>" +
+                            "       <td>"+obj.unit_price+"</td>" +
+                            "       <td>"+obj.money+"</td>" +
+                            "       <td>"+obj.push+"</td>" +
+                            "       <td>0.00</td>" +
+                            "       <td>"+obj.pay_money+"</td>" +
+                            "       <td>"+obj.start_record+"</td>" +
+                            "       <td>"+obj.end_record+"</td>" +
+                            "       <td></td>" +
+                            "       <td></td>" +
+                            "       <td>详细</td>" +
+                            "       </tr>";
+
+                    $("#bill_items_table tbody").append(tr_row);
+                }
+
+            }
+
+        });
+
+    }
+
+    function add_pre_money(){
+        var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
+        url += "/"+$("#house_id").val();
+        document.location.href = url;
     }
 </script>
 
@@ -78,13 +135,13 @@
     </div>
   </div>
 
-
+  <input type="hidden" id="house_id" value="" />
   <div class="portlet x7" style="height: 800px;">
     <div class="portlet-header"></div>
     <div class="portlet-content">
       <div id="batchOpArea" style="min-height: 50px;">
         <button class="btn-icon btn-grey btn-plus"><span></span>增加临时账单</button>
-        <button class="btn-icon btn-grey btn-plus"><span></span>预存款</button>
+        <button class="btn-icon btn-grey btn-plus" onclick="add_pre_money()"><span></span>预存款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>账单查询</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>缴费</button>
@@ -103,7 +160,7 @@
           <% end %>
         </fieldset>
       </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="bill_items_table">
         <thead>
         <tr>
           <th>全选</th>
@@ -192,7 +249,7 @@
   <div class="portlet x3">
     <div class="portlet-header"><h4>基本信息</h4></div>
     <div class="portlet-content">
-      <table cellpadding="0" cellspacing="0" border="0" class="display">
+      <table id="house_base_info" cellpadding="0" cellspacing="0" border="0" class="display">
         <tbody>
         <tr>
           <td>房号</td>
@@ -236,7 +293,7 @@
     </div>
     <div class="portlet-header"><h4>账户余额</h4></div>
     <div class="portlet-content">
-      <table cellpadding="0" cellspacing="0" border="0" class="display">
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="accounts_table">
         <tbody>
         <tr>
           <td>物业管理费</td>

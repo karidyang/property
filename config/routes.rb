@@ -3,6 +3,7 @@ Property::Application.routes.draw do
 
   root :to => 'home#index'
   match 'houses/house_tree'=>'houses#house_tree'
+  match 'houses/hosue_info'=>'houses#house_info'
 
   match 'accounts', :to => 'accounts#index'
   match 'accounts/add_pre_money/:house_id', :to=>'accounts#add_pre_money'

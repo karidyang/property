@@ -103,7 +103,7 @@ class Account < ActiveRecord::Base
 
     end
 
-    account.transcation_in(@detail)
+    account.transcation_in(detail)
     account.save!
   end
 
@@ -133,4 +133,7 @@ class Account < ActiveRecord::Base
     Account.where("house_id=? and item_type=? and item_id=?", house_id, item_type, item_id).order("id desc").first
   end
 
+  def json
+    {item_name:self.item_name,money:self.money}
+  end
 end

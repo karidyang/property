@@ -39,4 +39,8 @@ class BillItem < ActiveRecord::Base
     last_day = date.at_end_of_month
     self.where("house_id = ? and item_id = ? and item_type=? and trans_time >= ? and trans_time <= ? ", house_id, charge_id, charge_type, first_day, last_day).first
   end
+
+  def json
+    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record}
+  end
 end

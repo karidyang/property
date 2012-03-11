@@ -45,7 +45,7 @@ class AccountsController < ApplicationController
       render_403
       return
     end
-
+    @house = House.find(params[:house_id])
     if request.post?
       #@detail = AccountDetail.new
       #@detail.unit_price=params[:unitPrice]
@@ -70,11 +70,11 @@ class AccountsController < ApplicationController
       if Account.add_pre_money(params)
         redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
       else
-        @items = Charge.find_all_by_plot_id(@house.plot_id)
+        @items = Charge.find_all_by_plot_id(session[:current_plot])
         render 'add_pre_money'
       end
     else
-      @items = Charge.find_all_by_plot_id(@house.plot_id)
+      @items = Charge.find_all_by_plot_id(session[:current_plot])
       render 'add_pre_money'
     end
   end

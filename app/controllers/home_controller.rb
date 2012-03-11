@@ -20,7 +20,7 @@ class HomeController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
 
-      render :action => :choose_plot
+      redirect_to :action => :choose_plot
     else
       render :layout => false, :action => :login
     end

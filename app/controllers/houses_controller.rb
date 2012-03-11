@@ -129,7 +129,25 @@ class HousesController < ApplicationController
 
   def house_info
     house_code = params[:house_code]
+    logger.debug("house_code=#{house_code}")
 
+    house = House.where("house_code=? and plot_id=?",house_code,session[:current_plot]).first
+
+    bill = Bill.current_month_bill(house.id)
+
+
+    bill_items_json = Array.new
+    bill.bill_items.each do |bill_item|
+      bill_items_json << bill_item.json
+    end
+
+    accounts_json = Array.new
+
+    accounts = house.accounts.each do |account|
+      accounts_json << account.json
+    end
+
+    render :json => {house:house.json,bill_items:bill_items_json,accounts:accounts_json}
   end
 
 end
