@@ -18,26 +18,41 @@ class Bill < ActiveRecord::Base
   }
   #账单付款
   def pay(item_ids = [])
+    if item_ids.empty?
+      return
+    end
 
     bill_items.each do |bi|
-      if !item_ids.empty? && item_ids.include?(bi.id)
-        bi.pay
-      else
+
+      if item_ids.include?(bi.id)
         bi.pay
       end
     end
+    check_status
   end
 
   #账单重置
   def reset(item_ids = [])
+    if item_ids.empty?
+      return
+    end
     bill_items.each do |bi|
-      if !item_ids.empty? && item_ids.include?(bi.id)
-        bi.reset
-      else
+      if item_ids.include?(bi.id)
         bi.reset
       end
     end
+    check_status
   end
+
+  def check_status
+    bill_items.each do |bi|
+      bill_status_sum += bi.status
+    end
+    if bill_status_sum == bill_items.size
+      self.bill_status = STATE[:pay]
+    end
+  end
+
 
   def self.current_month_bill(house_id, day=Date.today)
     puts house_id, day
