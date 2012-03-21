@@ -1,4 +1,8 @@
 Property::Application.routes.draw do
+  get "receipt/print"
+
+  get "receipt/show"
+
   resources :bills
 
   root :to => 'home#index'

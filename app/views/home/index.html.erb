@@ -65,49 +65,70 @@
     });
 
     function click_house(event, treeid, treeNode) {
+        refresh_house(treeNode.name);
+
+    }
+
+    function refresh_house(house_code) {
+        $("#selectAll").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
 
-        $.post(url,{"house_code":treeNode.name},function(data){
+        $.post(url, {"house_code":house_code}, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
-                var html = "<tbody><tr><td>房号</td><td>"+data.house.house_code+"</td>"+
-                        "</tr><tr><td>业主</td><td>"+data.house.owner_name+"</td>"+
-                        "</tr><tr><td>面积</td><td>"+data.house.builded_area+"平方米</td>"+
-                        "</tr><tr><td>房屋类型</td><td>"+data.house.use_type+"</td></tr></tbody>";
+                var html = "<tbody><tr><td>房号</td><td>" + data.house.house_code + "</td>" +
+                        "</tr><tr><td>业主</td><td>" + data.house.owner_name + "</td>" +
+                        "</tr><tr><td>面积</td><td>" + data.house.builded_area + "平方米</td>" +
+                        "</tr><tr><td>房屋类型</td><td>" + data.house.use_type + "</td></tr></tbody>";
 
                 $("#house_base_info").html(html);
             }
-            $("#accounts_table tbody tr").each(function(){$(this).remove();});
+            $("#accounts_table tbody tr").each(function () {
+                $(this).remove();
+            });
             if (data.accounts) {
                 for (i = 0; i < data.accounts.length; i++) {
                     var account = data.accounts[i];
-                    var account_html = "<tr>"+
-                            "<td>"+account.item_name+"</td>"+
-                            "<td>"+account.money+"</td>";
+                    var account_html = "<tr>" +
+                            "<td>" + account.item_name + "</td>" +
+                            "<td>" + account.money + "</td>";
                     $("#accounts_table tbody").append(account_html);
                 }
 
 
             }
 
-            $("#bill_items_table tbody tr").each(function(){$(this).remove();});
+            $("#bill_items_table tbody tr").each(function () {
+                $(this).remove();
+            });
             if (data.bill_items) {
 
                 for (i = 0; i < data.bill_items.length; i++) {
                     var obj = data.bill_items[i];
-                    var tr_row = "<tr>" +
-                            "<td><input type='checkbox'/></td>" +
-                            "<td>"+obj.item_name+"</td>" +
-                            "       <td>"+obj.unit_price+"</td>" +
-                            "       <td>"+obj.money+"</td>" +
-                            "       <td>"+obj.push+"</td>" +
+                    var tr_row = "<tr>";
+                    if (obj.status != 1) {
+                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
+                    } else {
+                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
+                    }
+
+                    tr_row += "<td>" + obj.item_name + "</td>" +
+                            "       <td>" + obj.trans_time + "</td>";
+                    if (obj.status == 0) {
+                        tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
+                    } else {
+                        tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+                    }
+
+                    tr_row += "       <td>" + obj.unit_price + "</td>" +
+                            "       <td>" + obj.money + "</td>" +
+                            "       <td>" + obj.push + "</td>" +
                             "       <td>0.00</td>" +
-                            "       <td>"+obj.pay_money+"</td>" +
-                            "       <td>"+obj.start_record+"</td>" +
-                            "       <td>"+obj.end_record+"</td>" +
-                            "       <td></td>" +
-                            "       <td></td>" +
-                            "       <td>详细</td>" +
+                            "       <td>" + obj.pay_money + "</td>" +
+                            "       <td>" + obj.start_record + "</td>" +
+                            "       <td>" + obj.end_record + "</td>" +
+                            "       <td><a href='javascript:void(0);'>123123123</a></td>" +
+                            "       <td><a href='javascript:void(0);'>详细</a></td>" +
                             "       </tr>";
 
                     $("#bill_items_table tbody").append(tr_row);
@@ -116,13 +137,83 @@
             }
 
         });
-
     }
 
-    function add_pre_money(){
+    function selectAllCheck(allCheckedObj, id) {
+        var isAll = $(allCheckedObj).attr("checked");
+        if (isAll) {
+            $(":checkbox").each(function () {
+                if (this.id == id) {
+                    if (!this.checked && !this.disabled) {
+                        this.checked = true;
+                    }
+                }
+            });
+        } else {
+            $(":checkbox").each(function () {
+                if (this.id == id) {
+                    if (this.checked && !this.disabled) {
+                        this.checked = false;
+                    }
+                }
+            });
+        }
+    }
+
+    function add_pre_money() {
         var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
-        url += "/"+$("#house_id").val();
+        url += "/" + $("#house_id").val();
         document.location.href = url;
+    }
+    function pay() {
+        var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
+        url += "?house_id=" + $("#house_id").val();
+        $("input[name='bill_item_ids']").each(function () {
+            if (this.checked && $("#bill_item_" + id).text() != '已收') {
+                url += "&bill_item_ids[]=" + this.value;
+            }
+        });
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                alert("缴费成功");
+                refresh_house(data.house_code);
+            }
+        });
+    }
+    function print() {
+        var url = "";
+        url += "?houseId=" + $('#house_id').val();
+        var flag = false;
+        var sum_checked = 0;
+        var hasNoPay = false;
+        $("input[name='bill_item_ids']").each(function () {
+            if (this.checked) {
+                if ($("#bill_item_" + this.value).text() == "已收") {
+                    url += "&bill_item_ids[]=" + this.value;
+                    flag = true;
+                    sum_checked += 1;
+
+                } else {
+                    hasNoPay = true;
+                }
+            }
+        });
+
+        if (hasNoPay) {
+            alert("包含有未缴费项目,请先缴费再打印收据!");
+            return;
+        }
+        if (!flag) {
+            alert("至少选择一个收费项!");
+            return;
+        }
+
+        if (sum_checked > 4) {
+            alert("最多只能选择4项!");
+            return;
+        }
+        var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+        window.open(url, '收据打印', sFeatures);
     }
 </script>
 
@@ -144,7 +235,7 @@
         <button class="btn-icon btn-grey btn-plus" onclick="add_pre_money()"><span></span>预存款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>账单查询</button>
-        <button class="btn-icon btn-grey btn-plus"><span></span>缴费</button>
+        <button class="btn-icon btn-grey btn-plus" onclick="pay()"><span></span>缴费</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>打印收据</button>
       </div>
       <!-- 搜索区域 -->
@@ -163,8 +254,10 @@
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="bill_items_table">
         <thead>
         <tr>
-          <th>全选</th>
+          <th><input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')" />全选</th>
           <th>费用名称</th>
+          <th>费用时间</th>
+          <th>费用状态</th>
           <th>单价</th>
           <th>应收</th>
           <th>冲销</th>
@@ -172,40 +265,12 @@
           <th>实付</th>
           <th>起数</th>
           <th>止数</th>
-          <th>开始日期</th>
-          <th>结束日期</th>
+          <th>单据号</th>
           <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td><input type="checkbox"/></td>
-          <td>物业管理费</td>
-          <td>1.00</td>
-          <td>100.00</td>
-          <td>0.00</td>
-          <td>0.00</td>
-          <td>100.00</td>
-          <td>100</td>
-          <td>100</td>
-          <td>2011-12-1</td>
-          <td>2011-12-31</td>
-          <td>详细</td>
-        </tr>
-        <tr>
-          <td><input type="checkbox"/></td>
-          <td>物业管理费</td>
-          <td>1.00</td>
-          <td>100.00</td>
-          <td>0.00</td>
-          <td>0.00</td>
-          <td>100.00</td>
-          <td>100</td>
-          <td>100</td>
-          <td>2011-12-1</td>
-          <td>2011-12-31</td>
-          <td>详细</td>
-        </tr>
+
         </tbody>
       </table>
       <table cellpadding="0" cellspacing="0" border="0" class="display">

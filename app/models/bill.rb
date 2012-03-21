@@ -17,7 +17,7 @@ class Bill < ActiveRecord::Base
       :pay => 1
   }
   #账单付款
-  def pay(item_ids = [])
+  def pay(item_ids = [], operator='系统')
     if item_ids.empty?
       return
     end
@@ -25,26 +25,31 @@ class Bill < ActiveRecord::Base
     bill_items.each do |bi|
 
       if item_ids.include?(bi.id)
-        bi.pay
+        bi.pay(operator)
       end
     end
     check_status
   end
 
   #账单重置
-  def reset(item_ids = [])
+  def reset(item_ids = [], operator='系统')
     if item_ids.empty?
-      return
-    end
-    bill_items.each do |bi|
-      if item_ids.include?(bi.id)
-        bi.reset
+      bill_items.each do |bi|
+        bi.reset(operator)
+      end
+
+    else
+      bill_items.each do |bi|
+        if item_ids.include?(bi.id)
+          bi.reset(operator)
+        end
       end
     end
     check_status
   end
 
   def check_status
+    bill_status_sum = 0
     bill_items.each do |bi|
       bill_status_sum += bi.status
     end

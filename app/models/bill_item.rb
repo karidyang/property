@@ -20,18 +20,24 @@ class BillItem < ActiveRecord::Base
       :pay => 1
   }
 
-  def pay
-    self.pay_money = self.money
-    self.pay_date = Date.today
-    self.status = STATE[:pay]
-    self.save!
+  def pay(operator='系统')
+    if self.status == STATE[:unpay]
+      self.pay_money = self.money
+      self.pay_date = Date.today
+      self.status = STATE[:pay]
+      self.operator=operator
+      self.save!
+    end
   end
 
-  def reset
-    self.pay_money = 0.0
-    self.pay_date = nil
-    self.status = STATE[:unpay]
-    self.save!
+  def reset(operator='系统')
+    if self.status == STATE[:pay]
+      self.pay_money = 0.0
+      self.pay_date = nil
+      self.status = STATE[:unpay]
+      self.operator=operator
+      self.save!
+    end
   end
 
   def self.find_by_date(house_id, charge_id, charge_type, date)
@@ -41,6 +47,6 @@ class BillItem < ActiveRecord::Base
   end
 
   def json
-    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record}
+    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record,trans_time:self.trans_time,status:self.status}
   end
 end

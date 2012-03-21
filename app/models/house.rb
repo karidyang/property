@@ -1,12 +1,12 @@
-# coding: utf-8  
+# coding: utf-8
 class House < ActiveRecord::Base
   belongs_to :area
   belongs_to :plot
   has_many :owners, :order => "name"
   has_many :accounts, :order => "item_name"
   has_and_belongs_to_many :charges
-  has_many :bills, :class_name => "Bill", :order => "bill_date"
-  has_many :unpay_bills, :class_name => "Bill", :conditions => "bill_status = 0"
+  has_many :bills, :class_name => "Bill", :order => "bill_date desc"
+  has_many :unpay_bills, :class_name => "Bill", :conditions => "bill_status = 0",:order=>'bill_date desc'
 
   def to_json
     "{'id':'h-#{self.id}','name':'#{self.house_code}'}"

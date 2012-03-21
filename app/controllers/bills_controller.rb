@@ -1,4 +1,4 @@
-# coding: utf-8 
+# coding: utf-8
 class BillsController < ApplicationController
   before_filter :require_user
   before_filter :require_plot
@@ -69,5 +69,43 @@ class BillsController < ApplicationController
       end
     end
     redirect_to :action => :index
+  end
+
+  def pay
+
+    bill_item_ids = params[:bill_item_ids].each{|itemId| itemId.to_i}
+
+    if billItemIds.empty?
+      result = {:result=>'fail',:msg=>'数组为空'}
+    else
+      house = House.find(params[:house_id])
+      bill_items = BillItem.find(bill_item_ids)
+      bill_items.each do |bi|
+        bi.pay(@current_user.name)
+        bi.bill.check_status
+      end
+      result = {:result => 'success',:msg => '缴费成功',:house_code => house.house_code}
+    end
+    render :json => result
+
+  end
+
+  def reset
+
+    bill_item_ids = params[:bill_item_ids].each{|itemId| itemId.to_i}
+
+    if billItemIds.empty?
+      result = {:result=>'fail',:msg=>'数组为空'}
+    else
+      house = House.find(params[:house_id])
+      bill_items = BillItem.find(bill_item_ids)
+      bill_items.each do |bi|
+        bi.reset(@current_user.name)
+        bi.bill.check_status
+      end
+      result = {:result => 'success',:msg => '重置成功',:house_code => house.house_code}
+    end
+    render :json => result
+
   end
 end
