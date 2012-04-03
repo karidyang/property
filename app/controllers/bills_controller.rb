@@ -108,4 +108,20 @@ class BillsController < ApplicationController
     render :json => result
 
   end
+
+  def push
+    bill_item_ids = params[:bill_item_ids].each {|itemId| itemId.to_i}
+      
+    if billItemIds.empty?
+      result = {:result=>'fail',:msg=>'数组为空'}
+    else
+      house = House.find(params[:house_id])
+      bill_items = BillItem.find(bill_item_ids)
+      bill_items.each do |bi|
+        bi.push @current_user.name
+        bi.bill.check_status
+      end
+      result = {:result => 'success',:msg => '重置成功',:house_code => house.house_code}
+    end
+  end
 end

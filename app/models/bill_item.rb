@@ -35,9 +35,70 @@ class BillItem < ActiveRecord::Base
       self.pay_money = 0.0
       self.pay_date = nil
       self.status = STATE[:unpay]
+      self.push_money = 0.0
       self.operator=operator
       self.save!
     end
+  end
+
+  def push(can_push=false, operator='系统')
+
+    @push_money = 0
+    if can_push
+      @push_money = push_money
+    end
+    if @push_money.zero?
+      self.push = 0
+      if self.pay_money == self.money
+        self.status = STATE[:pay]
+      else
+        self.status = STATE[:unpay]
+        self.pay_money = 0
+      end
+    else
+      if @push_money>= self.money
+
+        self.status = STATE[:pay]
+        self.pay_date = self.trans_time
+        self.operator = operator
+      else
+        self.status = STATE[:unpay]
+      end
+      self.pay_money = 0
+      self.push = @push_money
+    end
+  end
+
+  def push_money
+    #Account account = accountDao.findUniqueAccountByHouseAndItem(houseId, itemType.getType(), itemId)
+    account = Account.find_account_by_house(self.house_id, self.item_type, self.item_id)
+    return 0 if account.nil? || account.money==0
+    sum_push_money = 0
+    account.in_details.each do |account_item|
+      can_push = account_item.can_push
+      true_push_money = 0
+      trans_time = self.trans_time
+      if account_item.trans_time < trans_time
+        return 0 if account.money <= 0
+        if account.money >= self.money
+          true_push_money += self.money
+        else
+          true_push_money += account.money
+        end
+        banlance = (account.money - true_push_money).abs
+        if banlance < can_push
+          true_push_money = true_push_money - (can_push - banlance)
+          banlance = can_push
+        end
+        if true_push_money>0
+          puts "#{account.house_code}冲销[#{account.item_name}],金额: #{true_push_money}"
+          account.push(true_push_money, banlance, trans_time)
+          sum_push_money += true_push_money
+        end
+        break
+      end
+    end
+    sum_push_money
   end
 
   def self.find_by_date(house_id, charge_id, charge_type, date)
