@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120226090952) do
+ActiveRecord::Schema.define(:version => 20120321135833) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(:version => 20120226090952) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "account_details", ["account_id"], :name => "index_account_details_on_account_id"
 
   create_table "accounts", :force => true do |t|
     t.integer  "house_id"
@@ -50,29 +52,31 @@ ActiveRecord::Schema.define(:version => 20120226090952) do
     t.integer  "bill_id"
     t.integer  "item_id"
     t.string   "item_name"
-    t.decimal  "money",        :precision => 8, :scale => 2
+    t.decimal  "money"
     t.date     "trans_time"
     t.integer  "status"
-    t.decimal  "pay_money",    :precision => 8, :scale => 2
+    t.decimal  "pay_money"
     t.date     "pay_date"
     t.integer  "house_id"
-    t.decimal  "unit_price",   :precision => 8, :scale => 2
+    t.decimal  "unit_price"
     t.integer  "record"
     t.integer  "start_record"
     t.integer  "end_record"
-    t.decimal  "push",         :precision => 8, :scale => 2
+    t.decimal  "push"
     t.string   "operator"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "item_type"
     t.integer  "plot_id"
+    t.integer  "receipt_id"
+    t.string   "receipt_no"
   end
 
   create_table "bills", :force => true do |t|
     t.string   "bill_name"
     t.date     "bill_date"
     t.integer  "bill_status"
-    t.decimal  "curr_money",  :precision => 10, :scale => 0
+    t.decimal  "curr_money",  :precision => 8, :scale => 2
     t.integer  "house_id"
     t.integer  "plot_id"
     t.datetime "created_at"
@@ -163,6 +167,17 @@ ActiveRecord::Schema.define(:version => 20120226090952) do
   create_table "privileges_roles", :id => false, :force => true do |t|
     t.integer "role_id",      :null => false
     t.integer "privilege_id", :null => false
+  end
+
+  create_table "receipts", :force => true do |t|
+    t.string   "receipt_no"
+    t.integer  "house_id"
+    t.string   "house_code"
+    t.integer  "plot_id"
+    t.date     "print_date"
+    t.string   "print_user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roles", :force => true do |t|
