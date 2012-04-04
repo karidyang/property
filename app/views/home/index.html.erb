@@ -64,15 +64,16 @@
          }*/
     });
 
-    function click_house(event, treeid, treeNode) {
-        refresh_house(treeNode.name);
+function click_house(event, treeid, treeNode) {
+    $("#house_code").val(treeNode.name);
+    refresh_house(treeNode.name);
 
-    }
+}
 
-    function refresh_house(house_code) {
+    function refresh_house() {
         $("#selectAll").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
-
+        house_code = $("#house_code").val();
         $.post(url, {"house_code":house_code}, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
@@ -126,9 +127,13 @@
                             "       <td>0.00</td>" +
                             "       <td>" + obj.pay_money + "</td>" +
                             "       <td>" + obj.start_record + "</td>" +
-                            "       <td>" + obj.end_record + "</td>" +
-                            "       <td><a href='javascript:void(0);'>"+obj.receipt_no+"</a></td>" +
-                            "       <td><a href='javascript:void(0);'>详细</a></td>" +
+                            "       <td>" + obj.end_record + "</td>";
+                    if (obj.receipt_no == null) {
+                      tr_row += "  <td></td>";
+                    } else {
+                      tr_row += "       <td><a href='javascript:receipt_show("+obj.receipt_no+");'>"+obj.receipt_no+"</a></td>";
+                    }
+                    tr_row += "       <td><a href='javascript:void(0);'>详细</a></td>" +
                             "       </tr>";
 
                     $("#bill_items_table tbody").append(tr_row);
@@ -176,7 +181,7 @@
         $.post(url, function (data) {
             if (data.result == 'success') {
                 alert(data.msg);
-                refresh_house(data.house_code);
+                refresh_house();
             }
         });
     }
@@ -191,7 +196,7 @@
         $.post(url, function (data) {
             if (data.result == 'success') {
                 alert(data.msg);
-                refresh_house(data.house_code);
+                refresh_house();
             }
         });
     }
@@ -229,9 +234,17 @@
         }
         var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
         window.open(url, '收据打印', sFeatures);
-    }
-</script>
+        setInterval(refresh_house, 5000);
 
+    }
+function receipt_show(receipt_no) {
+  var url = "<%= url_for(:controller => :receipt, :action => :show) %>";
+  url += "?receipt_no=" + receipt_no;
+  var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+  window.open(url, '收据打印', sFeatures);
+}
+</script>
+<input type="hidden" id="house_code" value="" />
 <div id="content" class="xfluid">
 
   <div class="portlet x2">

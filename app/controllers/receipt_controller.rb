@@ -1,6 +1,8 @@
 #coding:utf-8
 class ReceiptController < ApplicationController
   def show
+    @receipt = Receipt.find_by_receipt_no(params[:receipt_no])
+    render :layout => nil
   end
 
   #打印收费单据
