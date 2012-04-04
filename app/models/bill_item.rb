@@ -1,6 +1,7 @@
 #coding:utf-8
 class BillItem < ActiveRecord::Base
   belongs_to :bill
+  belongs_to :receipt
 
   before_create :default_value_for_create
 
@@ -41,11 +42,11 @@ class BillItem < ActiveRecord::Base
     end
   end
 
-  def push(can_push=false, operator='系统')
+  def push_item(can_push=false, operator='系统')
 
     @push_money = 0
     if can_push
-      @push_money = push_money
+      @push_money = push_money(operator)
     end
     if @push_money.zero?
       self.push = 0
@@ -67,9 +68,10 @@ class BillItem < ActiveRecord::Base
       self.pay_money = 0
       self.push = @push_money
     end
+    self.save!
   end
 
-  def push_money
+  def push_money(operator = '系统')
     #Account account = accountDao.findUniqueAccountByHouseAndItem(houseId, itemType.getType(), itemId)
     account = Account.find_account_by_house(self.house_id, self.item_type, self.item_id)
     return 0 if account.nil? || account.money==0
@@ -78,7 +80,7 @@ class BillItem < ActiveRecord::Base
       can_push = account_item.can_push
       true_push_money = 0
       trans_time = self.trans_time
-      if account_item.trans_time < trans_time
+      #if account_item.trans_time < trans_time
         return 0 if account.money <= 0
         if account.money >= self.money
           true_push_money += self.money
@@ -92,11 +94,11 @@ class BillItem < ActiveRecord::Base
         end
         if true_push_money>0
           puts "#{account.house_code}冲销[#{account.item_name}],金额: #{true_push_money}"
-          account.push(true_push_money, banlance, trans_time)
+          account.push(true_push_money, banlance, trans_time, operator)
           sum_push_money += true_push_money
         end
         break
-      end
+      #end
     end
     sum_push_money
   end
@@ -108,6 +110,6 @@ class BillItem < ActiveRecord::Base
   end
 
   def json
-    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record,trans_time:self.trans_time,status:self.status}
+    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record,trans_time:self.trans_time,status:self.status,receipt_no:self.receipt_no}
   end
 end

@@ -103,7 +103,7 @@ class Bill < ActiveRecord::Base
     #  bill_item.pay_money = 0
     #  bill_item.push = push_money
     #end
-    bill_item.push(can_push)
+    bill_item.push_item(can_push)
 
     self.bill_items << bill_item
     self.curr_money = bill_items.map { |detail| detail.money }.inject { |sum, money| sum + money }

@@ -9,7 +9,7 @@ class Account < ActiveRecord::Base
 
   STATE = {
       :in => 0,
-      :ount => 1
+      :out => 1
   }
 
 
@@ -17,21 +17,23 @@ class Account < ActiveRecord::Base
     self.money = 0
   end
 
-  def transcation_in (detail)
+  def transcation_in (detail, operator='系统')
     self.money = self.money + detail.money
     detail.account_type = STATE[:in]
+    detail.updateby = operator
     detail.save
     account_details << detail
   end
 
-  def transcation_out (detail)
+  def transcation_out (detail, operator='系统')
     self.money = self.money - detail.money
     detail.account_type = STATE[:out]
+    detail.updateby = operator
     detail.save
     account_details << detail
   end
 
-  def transcation_to (params)
+  def transcation_to (params, operator='系统')
     dest_account = Account.find_by_item_id_and_house_id(params[:item_id], self.house.id)
     dest_item = Charge.find(params[:item_id])
 
@@ -50,10 +52,10 @@ class Account < ActiveRecord::Base
         :money => params[:money],
         :record => 1,
         :unit_price => params[:money],
-        :updateby => params[:updateby],
+        :updateby => operator,
         :note => params[:note]
     )
-    self.transcation_out(out_detail)
+    self.transcation_out(out_detail, operator)
     self.save
 
     in_detail = AccountDetail.new(
@@ -61,10 +63,10 @@ class Account < ActiveRecord::Base
         :money => params[:money],
         :record => 1,
         :unit_price => params[:money],
-        :updateby => params[:updateby],
+        :updateby => operator,
         :note => params[:note]
     )
-    dest_account.transcation_in(in_detail)
+    dest_account.transcation_in(in_detail, operator)
     dest_account.save
   end
 
@@ -82,13 +84,14 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def self.add_pre_money(params)
+  def self.add_pre_money(params, operator='系统')
     #@house = House.find(params[:house_id])
     detail = AccountDetail.new
     detail.unit_price=params[:unitPrice]
     detail.record = params[:record]
     detail.can_push=params[:can_push]
     detail.money = params[:money]
+    detail.updateby = operator
 
     account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
     charge = Charge.find(params[:item_id])
@@ -103,7 +106,7 @@ class Account < ActiveRecord::Base
 
     end
 
-    account.transcation_in(detail)
+    account.transcation_in(detail, operator)
     account.save!
   end
 
@@ -111,7 +114,7 @@ class Account < ActiveRecord::Base
     Charge.where("plot_id=?", self.plot_id)
   end
 
-  def push(true_push_money, banlance, trans_time)
+  def push(true_push_money, banlance, trans_time, operator = '系统')
     self.money = banlance
     account_item = AccountDetail.create(
         :account_type => STATE[:out],
@@ -119,8 +122,8 @@ class Account < ActiveRecord::Base
         :money => true_push_money,
         :record => 1,
         :unit_price => true_push_money,
-        :updateby => "系统",
-        :note => "用于冲消",
+        :updateby => operator,
+        :note => "用于冲销",
         :can_push => 0,
         :account => self
     )

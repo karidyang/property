@@ -67,7 +67,7 @@ class AccountsController < ApplicationController
       #
       #@account.transcation_in(@detail)
 
-      if Account.add_pre_money(params)
+      if Account.add_pre_money(params,@current_user.name)
         redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
       else
         @items = Charge.find_all_by_plot_id(session[:current_plot])
@@ -96,7 +96,7 @@ class AccountsController < ApplicationController
       @src_account = Account.find(params[:account_id])
 
       begin
-        @src_account.transcation_to(params)
+        @src_account.transcation_to(params,@current_user.name)
         redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
       raise
 

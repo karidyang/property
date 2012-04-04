@@ -106,11 +106,11 @@
                 for (i = 0; i < data.bill_items.length; i++) {
                     var obj = data.bill_items[i];
                     var tr_row = "<tr>";
-                    if (obj.status != 1) {
+//                    if (obj.status != 1) {
                         tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
-                    } else {
-                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
-                    }
+//                    } else {
+//                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
+//                    }
 
                     tr_row += "<td>" + obj.item_name + "</td>" +
                             "       <td>" + obj.trans_time + "</td>";
@@ -127,7 +127,7 @@
                             "       <td>" + obj.pay_money + "</td>" +
                             "       <td>" + obj.start_record + "</td>" +
                             "       <td>" + obj.end_record + "</td>" +
-                            "       <td><a href='javascript:void(0);'>123123123</a></td>" +
+                            "       <td><a href='javascript:void(0);'>"+obj.receipt_no+"</a></td>" +
                             "       <td><a href='javascript:void(0);'>详细</a></td>" +
                             "       </tr>";
 
@@ -169,27 +169,42 @@
         var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
         url += "?house_id=" + $("#house_id").val();
         $("input[name='bill_item_ids']").each(function () {
-            if (this.checked && $("#bill_item_" + id).text() != '已收') {
+            if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
                 url += "&bill_item_ids[]=" + this.value;
             }
         });
         $.post(url, function (data) {
             if (data.result == 'success') {
-                alert("缴费成功");
+                alert(data.msg);
+                refresh_house(data.house_code);
+            }
+        });
+    }
+    function push() {
+        var url = "<%=url_for(:controller => :bills,:action=>:push) %>";
+        url += "?house_id=" + $("#house_id").val();
+        $("input[name='bill_item_ids']").each(function () {
+            if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
+                url += "&bill_item_ids[]=" + this.value;
+            }
+        });
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                alert(data.msg);
                 refresh_house(data.house_code);
             }
         });
     }
     function print() {
-        var url = "";
-        url += "?houseId=" + $('#house_id').val();
+        var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
+        url += "?houseId=" + $('#house_id').val()+"&type=0";
         var flag = false;
         var sum_checked = 0;
         var hasNoPay = false;
         $("input[name='bill_item_ids']").each(function () {
             if (this.checked) {
                 if ($("#bill_item_" + this.value).text() == "已收") {
-                    url += "&bill_item_ids[]=" + this.value;
+                    url += "&item_ids[]=" + this.value;
                     flag = true;
                     sum_checked += 1;
 
@@ -236,7 +251,8 @@
         <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>账单查询</button>
         <button class="btn-icon btn-grey btn-plus" onclick="pay()"><span></span>缴费</button>
-        <button class="btn-icon btn-grey btn-plus"><span></span>打印收据</button>
+        <button class="btn-icon btn-grey btn-plus" onclick="push()"><span></span>使用预存款冲销</button>
+        <button class="btn-icon btn-grey btn-plus" onclick="print()"><span></span>打印收据</button>
       </div>
       <!-- 搜索区域 -->
       <div id="searchArea" style="min-height: 50px;">

@@ -142,7 +142,7 @@ class HousesController < ApplicationController
     end
     accounts_json = Array.new
 
-    accounts = house.accounts.each do |account|
+    house.accounts.each do |account|
       accounts_json << account.json
     end
 
