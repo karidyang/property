@@ -1,11 +1,11 @@
-source 'http://ruby.taobao.org/'
+source 'http://rubygems.org/'
 
 gem 'rails'
 gem 'rake','0.9.2.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'jquery-rails'
-gem 'mysql2'
+#gem 'mysql2'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'moneta'
 
@@ -41,17 +41,17 @@ end
 # gem 'hoptoad_notifier'
 # gem 'newrelic_rpm'
 
-gem 'SystemTimer' if RUBY_VERSION =~ /^1.8/
+#gem 'SystemTimer' if RUBY_VERSION =~ /^1.8/
 
 group :test, :development do
-  gem "rspec", "~> 2.0"
-  gem "rspec-rails", "~> 2.0"
+  #gem "rspec", "~> 2.0"
+  #gem "rspec-rails", "~> 2.0"
   gem "factory_girl_rails"
-  gem "shoulda-matchers"
-  gem "rcov"
+  #gem "shoulda-matchers"
+  #gem "rcov"
   gem "delorean"
-  gem "watchr"
-  gem "spork", "~>0.9.0.rc"
+  #gem "watchr"
+  #gem "spork", "~>0.9.0.rc"
   # gem "capybara"
   # gem 'yard'
   # gem "bluecloth"
