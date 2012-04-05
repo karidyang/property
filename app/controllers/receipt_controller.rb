@@ -2,6 +2,7 @@
 class ReceiptController < ApplicationController
   def show
     @receipt = Receipt.find_by_receipt_no(params[:receipt_no])
+    @receipt.init_info
     render :layout => nil
   end
 
@@ -20,7 +21,7 @@ class ReceiptController < ApplicationController
       end
       items.each do |item|
         if item.receipt.nil?
-          @receipt.add_item(item)
+          @receipt.add_item(item, @current_user.name)
         end
       end
     end

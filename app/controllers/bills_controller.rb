@@ -26,6 +26,16 @@ class BillsController < ApplicationController
     end
   end
 
+  def search
+    house = House.where("plot_id=? and house_code=?", current_plot, params[:house_code]).first
+    bill_items = BillItem.where("house_id=? and status = ? and trans_time between ? and ?", house.id, params[:charge_type], params[:start_time], params[:end_time])
+    bill_items_json = []
+    bill_items.each do |bill_item|
+      bill_items_json << bill_item.json
+    end  
+    render :json => {bill_items:bill_items_json}
+  end
+
   # GET /bills/1/edit
   def edit
     @bill = Bill.find(params[:id])

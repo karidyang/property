@@ -103,46 +103,78 @@ function click_house(event, treeid, treeNode) {
                 $(this).remove();
             });
             if (data.bill_items) {
-
-                for (i = 0; i < data.bill_items.length; i++) {
-                    var obj = data.bill_items[i];
-                    var tr_row = "<tr>";
-//                    if (obj.status != 1) {
-                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
-//                    } else {
-//                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
-//                    }
-
-                    tr_row += "<td>" + obj.item_name + "</td>" +
-                            "       <td>" + obj.trans_time + "</td>";
-                    if (obj.status == 0) {
-                        tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
-                    } else {
-                        tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
-                    }
-
-                    tr_row += "       <td>" + obj.unit_price + "</td>" +
-                            "       <td>" + obj.money + "</td>" +
-                            "       <td>" + obj.push + "</td>" +
-                            "       <td>0.00</td>" +
-                            "       <td>" + obj.pay_money + "</td>" +
-                            "       <td>" + obj.start_record + "</td>" +
-                            "       <td>" + obj.end_record + "</td>";
-                    if (obj.receipt_no == null) {
-                      tr_row += "  <td></td>";
-                    } else {
-                      tr_row += "       <td><a href='javascript:receipt_show("+obj.receipt_no+");'>"+obj.receipt_no+"</a></td>";
-                    }
-                    tr_row += "       <td><a href='javascript:void(0);'>详细</a></td>" +
-                            "       </tr>";
-
-                    $("#bill_items_table tbody").append(tr_row);
-                }
-
+              parse_bill_item(data.bill_items)
             }
 
         });
     }
+function search_bill_item() {
+  var url = "<%=url_for(:controller => :bills,:action => :search) %>";
+  var house_code = $("#house_code").val();
+  var start_time = $("#start_time").val();
+  var end_time = $("#end_time").val();
+  var charge_type = $("#charge_type").val();
+  if (house_code == '') {
+    alert("未选择房间");
+    return;
+  }
+  if (start_time == "") {
+    alert("未填写开始时间");
+    return;
+  }
+  if (end_time == "") {
+    alert("未填写结束时间");
+    return;
+  }
+  $.post(url,{"house_code":house_code,"start_time":start_time,"end_time":end_time,"charge_type":charge_type}, function(data) {
+            $("#bill_items_table tbody tr").each(function () {
+                $(this).remove();
+            });
+            if (data.bill_items) {
+              parse_bill_item(data.bill_items)
+            }
+
+        },"json");
+}
+
+function parse_bill_item(bill_items) {
+  for (i = 0; i < bill_items.length; i++) {
+    var obj = bill_items[i];
+    var tr_row = "<tr>";
+    //                    if (obj.status != 1) {
+    tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
+    //                    } else {
+    //                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
+    //                    }
+
+    tr_row += "<td>" + obj.item_name + "</td>" +
+      "       <td>" + obj.trans_time + "</td>";
+    if (obj.status == 0) {
+      tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
+    } else {
+      tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+    }
+
+    tr_row += "       <td>" + obj.unit_price + "</td>" +
+      "       <td>" + obj.money + "</td>" +
+      "       <td>" + obj.push + "</td>" +
+      "       <td>0.00</td>" +
+      "       <td>" + obj.pay_money + "</td>" +
+      "       <td>" + obj.start_record + "</td>" +
+      "       <td>" + obj.end_record + "</td>";
+    if (obj.receipt_no == null) {
+      tr_row += "  <td></td>";
+    } else {
+      tr_row += "       <td><a href='javascript:receipt_show("+obj.receipt_no+");'>"+obj.receipt_no+"</a></td>";
+    }
+    tr_row += "       <td><a href='javascript:void(0);'>详细</a></td>" +
+      "       </tr>";
+
+    $("#bill_items_table tbody").append(tr_row);
+  }
+
+
+}
 
     function selectAllCheck(allCheckedObj, id) {
         var isAll = $(allCheckedObj).attr("checked");
@@ -244,7 +276,6 @@ function receipt_show(receipt_no) {
   window.open(url, '收据打印', sFeatures);
 }
 </script>
-<input type="hidden" id="house_code" value="" />
 <div id="content" class="xfluid">
 
   <div class="portlet x2">
@@ -262,7 +293,7 @@ function receipt_show(receipt_no) {
         <button class="btn-icon btn-grey btn-plus"><span></span>增加临时账单</button>
         <button class="btn-icon btn-grey btn-plus" onclick="add_pre_money()"><span></span>预存款</button>
         <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
-        <button class="btn-icon btn-grey btn-plus"><span></span>账单查询</button>
+        <button class="btn-icon btn-grey btn-plus" onclick="search_bill_item()"><span></span>账单查询</button>
         <button class="btn-icon btn-grey btn-plus" onclick="pay()"><span></span>缴费</button>
         <button class="btn-icon btn-grey btn-plus" onclick="push()"><span></span>使用预存款冲销</button>
         <button class="btn-icon btn-grey btn-plus" onclick="print()"><span></span>打印收据</button>
@@ -272,13 +303,13 @@ function receipt_show(receipt_no) {
         <fieldset>
 
 
-          <%= form_tag('/houses', :method=>:get) do %>
+
+              <input type="hidden" id="house_code" value="" />
               <label>缴费日期：</label><input id="start_time" name="start_time"/>
               <label>到</label><input id="end_time" name="end_time"/>
-              <%= select_tag(:change_type, options_for_select(change_type_list)) %>
-              <%= submit_tag('查询', :name=>nil) %>
-          <% end %>
-        </fieldset>
+              <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
+              <input type="button" value="查询" onclick="search_bill_item()" />
+       </fieldset>
       </div>
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="bill_items_table">
         <thead>
