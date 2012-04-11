@@ -3,8 +3,6 @@ Property::Application.routes.draw do
 
   get "receipt/show"
 
-  resources :bills
-
   root :to => 'home#index'
   match 'houses/house_tree'=>'houses#house_tree'
   match 'houses/hosue_info'=>'houses#house_info'
@@ -17,6 +15,11 @@ Property::Application.routes.draw do
 
   match 'charges/get_unit_price/:id', :to =>'charges#get_unit_price'
   match 'users/add_role/:id', :to=>'users#add_role'
+
+  match 'bills/details/:id', :to => 'bills#details'
+
+  resources :bills
+
   resources :charges
 
   resources :owners

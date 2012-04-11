@@ -2,7 +2,7 @@
 class Area < ActiveRecord::Base
   belongs_to :plot
   has_many :houses, :order=>'house_code'
-
+  
   def to_json
     
     "{'id':'a-#{self.id}','name':'#{self.name}',open:true,childs:#{houses_json}}"

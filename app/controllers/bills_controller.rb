@@ -135,4 +135,13 @@ class BillsController < ApplicationController
     end
     render :json => result
   end
+
+  def show 
+    bill = Bill.find(params[:bill_id])
+    json = []
+    bill.bill_items.each do |item|
+      json << item.json
+    end
+    render :json => {:total=>1,:rows=>json}
+  end
 end

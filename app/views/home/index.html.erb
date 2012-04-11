@@ -167,8 +167,7 @@ function parse_bill_item(bill_items) {
     } else {
       tr_row += "       <td><a href='javascript:receipt_show("+obj.receipt_no+");'>"+obj.receipt_no+"</a></td>";
     }
-    tr_row += "       <td><a href='javascript:void(0);'>详细</a></td>" +
-      "       </tr>";
+    tr_row += "</tr>";
 
     $("#bill_items_table tbody").append(tr_row);
   }
@@ -275,6 +274,7 @@ function receipt_show(receipt_no) {
   var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
   window.open(url, '收据打印', sFeatures);
 }
+
 </script>
 <div id="content" class="xfluid">
 
@@ -326,7 +326,6 @@ function receipt_show(receipt_no) {
           <th>起数</th>
           <th>止数</th>
           <th>单据号</th>
-          <th>操作</th>
         </tr>
         </thead>
         <tbody>

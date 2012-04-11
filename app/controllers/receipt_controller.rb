@@ -10,7 +10,6 @@ class ReceiptController < ApplicationController
   def print
     type = params[:type].to_i
     item_ids = params[:item_ids].each {|id| id.to_i}
-
     if type == 0
       items = BillItem.find(item_ids)
       @receipt = nil
