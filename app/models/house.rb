@@ -105,5 +105,9 @@ class House < ActiveRecord::Base
     result
   end
 
-
+  class << self
+    def search(plot, params)
+      self.where("plot_id=? and house_code=?", plot, params[:house_code]).first
+    end
+  end
 end

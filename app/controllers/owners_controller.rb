@@ -18,7 +18,7 @@ class OwnersController < ApplicationController
       @owners = house.owners.order('name')
     else
       @house_code = 0
-      @owners = Owner.order('house_id').page params[:page]
+      @owners = Owner.order('house_id').paginate(:page=>params[:page])
     end
 
   end

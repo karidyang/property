@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   # GET /accounts.xml
   def index
     @house_id = params[:house_id]
-    @accounts = Account.where("house_id=?", @house_id).page params[:page]
+    @accounts = Account.where("house_id=?", @house_id).paginate(:page=>params[:page])
 
   end
 
@@ -36,7 +36,7 @@ class AccountsController < ApplicationController
 
   def history
     @account = Account.find(params[:id])
-    @details = @account.account_details.page params[:page]
+    @details = @account.account_details.paginate(:page=>params[:page])
   end
 
   def add_pre_money

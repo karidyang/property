@@ -112,4 +112,11 @@ class BillItem < ActiveRecord::Base
   def json
     {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record,trans_time:self.trans_time,status:self.status,receipt_no:self.receipt_no}
   end
+
+  class << self
+    def search_by_house(plot, params)
+      house = House.search(plot, params)
+      BillItem.where("house_id=? and status = ? and trans_time between ? and ?", house.id, params[:charge_type], params[:start_time], params[:end_time])
+    end
+  end
 end

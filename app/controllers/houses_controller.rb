@@ -16,12 +16,12 @@ class HousesController < ApplicationController
     if params.has_key?(:plot_id)
       @house_code = params[:house_code]
       if @house_code != ''
-        @houses = House.where("plot_id=? and house_code=?", params[:plot_id], @house_code).order('house_code').page params[:page]
+        @houses = House.where("plot_id=? and house_code=?", params[:plot_id], @house_code).order('house_code').paginate(:page=>params[:page])
       else
-        @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').page params[:page]
+        @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').paginate(:page=>params[:page])
       end
     else
-      @houses = House.order('house_code').page params[:page]
+      @houses = House.order('house_code').paginate(:page=>params[:page])
     end
 
   end

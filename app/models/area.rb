@@ -5,7 +5,7 @@ class Area < ActiveRecord::Base
   
   def to_json
     
-    "{'id':'a-#{self.id}','name':'#{self.name}',open:true,childs:#{houses_json}}"
+    "{'id':'a-#{self.id}','name':'#{self.name}',open:false,childs:#{houses_json}}"
   end
 
   def houses_json
@@ -23,7 +23,7 @@ class Area < ActiveRecord::Base
       end
       house_unit.each do |k, v|
 
-        json << "{'id':'u-#{k}','name':'#{k}单元',open:true,'childs':[#{v.join(",")}]}"
+        json << "{'id':'u-#{k}','name':'#{k}单元',open:false,'childs':[#{v.join(",")}]}"
       end
     
     end

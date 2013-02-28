@@ -12,7 +12,7 @@ class RolesController < ApplicationController
   # GET /roles
   # GET /roles.xml
   def index
-    @roles = Role.order('name').page params[:param]
+    @roles = Role.order('name').paginate(:page=>params[:page])
   end
 
   # GET /roles/1

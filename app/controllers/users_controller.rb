@@ -6,9 +6,9 @@ class UsersController < ApplicationController
   def index
     flash[:notice] = params[:name]
     if params.has_key?('name')
-      @users = User.where("name like ?", "%#{params[:name]}%").page params[:page]
+      @users = User.where("name like ?", "%#{params[:name]}%").paginate(:page=>params[:page])
     else
-      @users = User.page params[:page]
+      @users = User.paginate(:page=>params[:page])
     end
 
   end

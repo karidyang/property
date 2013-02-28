@@ -1,12 +1,12 @@
-source 'http://rubygems.org/'
+source 'http://ruby.taobao.org/'
 
 gem 'rails'
-gem 'rake','0.9.2.2'
+gem 'rake'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'jquery-rails'
-#gem 'mysql2'
-gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'mysql2'
+gem 'sqlite3'
 # gem 'moneta'
 
 gem 'yajl-ruby', :require => 'yajl'
@@ -16,7 +16,7 @@ gem 'json'
 
 # Paginator
 gem "kaminari"
-gem 'will_paginate', '3.0.pre2'
+gem 'will_paginate', "~> 3.0"
 group :assets do
   gem 'sass-rails',"~> 3.1.1"
   gem 'sass',"~> 3.1.1"

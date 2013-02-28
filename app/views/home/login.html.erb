@@ -1,26 +1,53 @@
-<h1>欢迎来到铭智物业管理系统，请登录</h1>
+<script type="text/javascript" src="assets/bootstrap.min.js"></script>
+<link href="assets/bootstrap.min.css" rel="stylesheet" media="screen" ≥
+<link href="assets/bootstrap-responsive.min.css" rel="stylesheet">
+<style type="text/css">
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
 
-<div id="right">
-  <%= form_for :user_session, :url => login_create_path do |f| %>
-      <%= render "shared/error_messages", :target => @user_session %>
-      <div class="field">
-        <%= f.label :email, "Email:" %>
-        <br/>
-        <%= f.text_field :email %>
-      </div>
-      <div class="field">
-        <%= f.label :password, "密码:" %>
-        <br/>
-        <%= f.password_field :password %>
-      </div>
-      <div class="field">
-        <%= f.check_box :remember_me, :class => "checkbox" %><%= f.label :remember_me, "一月之内不用再次登录" %>
-        <br/>
-      </div>
-      <p>
-        <button type="submit" class="button submit">登录</button>
-        或 <a href="<%= new_user_path %>">注册新用户</a>
-      </p>
+.form-signin {
+  max-width: 300px;
+  padding: 19px 29px 29px;
+  margin: 0 auto 20px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+  font-size: 16px;
+  height: auto;
+  margin-bottom: 15px;
+  padding: 7px 9px;
+}
+
+</style>
+<div class="container">
+  <%= render "shared/error_messages", :target => @user_session %>
+  <%= form_for :user_session, :url => login_create_path, :html => { :class => "form-signin"} do |f| %>
+  <h2 class="form-signin-heading">请登录</h2>
+  <%= f.text_field(:email,:class => "input-block-level",:placeholder => "john@example.com") %>
+  <%= f.password_field(:password,:class => "input-block-level",:placeholder => "password") %>
+
+  <label class="checkbox">
+    <%= f.check_box :remember_me, :class => "checkbox" %>
+    一月之内不用再次登录
+  </label>
+  <button type="submit" class="btn btn-large btn-primary">登录</button>
+
   <% end %>
 </div>
+
 

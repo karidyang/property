@@ -13,9 +13,9 @@ class AreasController < ApplicationController
   # GET /areas.xml
   def index
     if params.has_key?('plot_id')
-      @areas = Area.where("plot_id=?", params[:plot_id]).order('name').page params[:page]
+      @areas = Area.where("plot_id=?", params[:plot_id]).order('name').paginate(:page=>params[:page])
     else
-      @areas = Area.order('name').page params[:page]
+      @areas = Area.order('name').paginate(:page=>params[:page])
     end
     respond_with (@areas)
   end

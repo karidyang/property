@@ -15,9 +15,10 @@ class BillsController < ApplicationController
   def index
     if params[:house_code]
       house = House.where("plot_id=? and house_code=?",current_plot,params[:house_code]).first
-      @bills = house.bills.page params[:page]
+      @bills = house.bills.paginate(:page=>params[:page])
     else
-      @bills = Bill.find_all_by_plot_id(current_plot).page params[:page]
+      #@bills = Bill.find_all_by_plot_id(current_plot).paginate(:page=>params[:page])
+      @bills = Bill.where("plot_id=?" ,current_plot).paginate(:page=>params[:page])
     end
 
     respond_to do |format|
@@ -27,12 +28,12 @@ class BillsController < ApplicationController
   end
 
   def search
-    house = House.where("plot_id=? and house_code=?", current_plot, params[:house_code]).first
-    bill_items = BillItem.where("house_id=? and status = ? and trans_time between ? and ?", house.id, params[:charge_type], params[:start_time], params[:end_time])
+
+    bill_items = BillItem.search_by_house(current_plot, params)
     bill_items_json = []
     bill_items.each do |bill_item|
       bill_items_json << bill_item.json
-    end  
+    end
     render :json => {bill_items:bill_items_json}
   end
 
@@ -73,7 +74,9 @@ class BillsController < ApplicationController
   def calculate
 
     plot = Plot.find(current_plot)
+    logger.info "plot name is #{plot.name}"
     plot.areas.each do |area|
+      logger.info "area is #{area.id}"
       area.houses.each do |house|
         house.create_bill(Date.today, @current_user.name)
       end

@@ -8,32 +8,32 @@
 #
 # And be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
-#development:
-#  adapter: mysql2
-#  encoding: utf8
-#  reconnect: false
-#  database: property_development
-#  pool: 5
-#  username: mzsoft
-#  password: "mzsoft"
-#  host: 192.168.1.100
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
-  
+ adapter: mysql2
+ encoding: utf8
+ reconnect: false
+ database: property_development
+ pool: 5
+ username: mzsoft
+ password: "mzsoft"
+ host: "www.wuyeren.net"
+# development:
+#   adapter: sqlite3
+#   database: db/development.sqlite3
+#   pool: 5
+#   timeout: 5000
+
 test:
   adapter: sqlite3
   database: db/test.sqlite3
   pool: 5
   timeout: 5000
 
-production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+# production:
+#   adapter: sqlite3
+#   database: db/production.sqlite3
+#   pool: 5
+#   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -48,12 +48,12 @@ production:
 #  password:
 #  host: localhost
 #
-#production:
-#  adapter: mysql2
-#  encoding: utf8
-#  reconnect: false
-#  database: property_production
-#  pool: 5
-#  username: root
-#  password:
-#  host: localhost
+production:
+ adapter: mysql2
+ encoding: utf8
+ reconnect: false
+ database: property_production
+ pool: 5
+ username: mzsoft
+ password: "mzsoft"
+ host: localhost

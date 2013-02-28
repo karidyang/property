@@ -2,8 +2,8 @@
 class Account < ActiveRecord::Base
   belongs_to :house
   has_many :account_details, :dependent => :delete_all, :order => 'trans_time desc'
-  has_many :in_details, :class_name => 'AccountDetail', :conditions => 'account_type=0'
-  has_many :out_details, :class_name => 'AccountDetail', :conditions => 'account_type=1'
+  has_many :in_details, :class_name     => 'AccountDetail', :conditions => 'account_type=0'
+  has_many :out_details, :class_name    => 'AccountDetail', :conditions => 'account_type=1'
 
   before_create :default_money
 
@@ -38,33 +38,35 @@ class Account < ActiveRecord::Base
     dest_item = Charge.find(params[:item_id])
 
     if dest_account.nil?
-      dest_account = Account.create(:house_id => self.house.id,
+        dest_account = Account.create(
+                                    :house_id   => self.house.id,
                                     :house_code => self.house.house_code,
-                                    :item_id => params[:item_id],
-                                    :item_type => params[:item_type],
-                                    :item_name => dest_item.item_name,
-                                    :plot_id => self.plot_id)
+                                    :item_id    => params[:item_id],
+                                    :item_type  => params[:item_type],
+                                    :item_name  => dest_item.item_name,
+                                    :plot_id    => self.plot_id
+                                    )
 
     end
 
     out_detail = AccountDetail.new(
         :account_type => STATE[:out],
-        :money => params[:money],
-        :record => 1,
-        :unit_price => params[:money],
-        :updateby => operator,
-        :note => params[:note]
+        :money        => params[:money],
+        :record       => 1,
+        :unit_price   => params[:money],
+        :updateby     => operator,
+        :note         => params[:note]
     )
     self.transcation_out(out_detail, operator)
     self.save
 
     in_detail = AccountDetail.new(
         :account_type => STATE[:in],
-        :money => params[:money],
-        :record => 1,
-        :unit_price => params[:money],
-        :updateby => operator,
-        :note => params[:note]
+        :money        => params[:money],
+        :record       => 1,
+        :unit_price   => params[:money],
+        :updateby     => operator,
+        :note         => params[:note]
     )
     dest_account.transcation_in(in_detail, operator)
     dest_account.save
@@ -86,12 +88,12 @@ class Account < ActiveRecord::Base
 
   def self.add_pre_money(params, operator='系统')
     #@house = House.find(params[:house_id])
-    detail = AccountDetail.new
-    detail.unit_price=params[:unitPrice]
-    detail.record = params[:record]
-    detail.can_push=params[:can_push]
-    detail.money = params[:money]
-    detail.updateby = operator
+    detail            = AccountDetail.new
+    detail.unit_price =params[:unitPrice]
+    detail.record     = params[:record]
+    detail.can_push   =params[:can_push]
+    detail.money      = params[:money]
+    detail.updateby   = operator
 
     account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
     charge = Charge.find(params[:item_id])
@@ -118,14 +120,14 @@ class Account < ActiveRecord::Base
     self.money = banlance
     account_item = AccountDetail.create(
         :account_type => STATE[:out],
-        :trans_time => trans_time,
-        :money => true_push_money,
-        :record => 1,
-        :unit_price => true_push_money,
-        :updateby => operator,
-        :note => "用于冲销",
-        :can_push => 0,
-        :account => self
+        :trans_time   => trans_time,
+        :money        => true_push_money,
+        :record       => 1,
+        :unit_price   => true_push_money,
+        :updateby     => operator,
+        :note         => "用于冲销",
+        :can_push     => 0,
+        :account      => self
     )
     account_details << account_item
     out_details << account_item

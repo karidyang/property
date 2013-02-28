@@ -12,7 +12,7 @@ class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
   def index
-    @charges = Charge.page params[:page]
+    @charges = Charge.paginate(:page=>params[:page])
   end
 
   # GET /charges/new

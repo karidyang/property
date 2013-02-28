@@ -20,7 +20,7 @@
         <h4>Welcome <%= user_name_tag @current_user %> </h4>
 
         <p>
-          Logged in as Admin <br> 您有 <a href="#">5 条新消息</a>
+          <a href="<%= logout_path %>">退出</a> <br> 您有 <a href="#">5 条新消息</a>
         </p>
         <%= image_tag("avatar.jpg") %>
         
