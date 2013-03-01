@@ -1,7 +1,7 @@
 Property::Application.routes.draw do
-  get "receipt/print"
+  get 'receipt/print'
 
-  get "receipt/show"
+  get 'receipt/show'
 
   root :to => 'home#index'
   match 'houses/house_tree'=>'houses#house_tree'
@@ -38,8 +38,8 @@ Property::Application.routes.draw do
 
   resources :accounts
 
-  match "login", :to => 'home#login'
-  match "login_create", :to => 'home#login_create'
+  match 'login', :to => 'home#login'
+  match 'login_create', :to => 'home#login_create'
   match 'logout', :to => 'home#logout'
   match 'choose_plot', :to => 'home#choose_plot'
 

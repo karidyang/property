@@ -14,11 +14,11 @@ class BillsController < ApplicationController
   # GET /bills.json
   def index
     if params[:house_code]
-      house = House.where("plot_id=? and house_code=?",current_plot,params[:house_code]).first
+      house = House.where('plot_id=? and house_code=?',current_plot,params[:house_code]).first
       @bills = house.bills.paginate(:page=>params[:page])
     else
       #@bills = Bill.find_all_by_plot_id(current_plot).paginate(:page=>params[:page])
-      @bills = Bill.where("plot_id=?" ,current_plot).paginate(:page=>params[:page])
+      @bills = Bill.where('plot_id=?' ,current_plot).paginate(:page=>params[:page])
     end
 
     respond_to do |format|
@@ -37,27 +37,6 @@ class BillsController < ApplicationController
     render :json => {bill_items:bill_items_json}
   end
 
-  # GET /bills/1/edit
-  def edit
-    @bill = Bill.find(params[:id])
-  end
-
-
-  # PUT /bills/1
-  # PUT /bills/1.json
-  def update
-    @bill = Bill.find(params[:id])
-
-    respond_to do |format|
-      if @bill.update_attributes(params[:bill])
-        format.html { redirect_to @bill, notice: 'Bill was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @bill.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # DELETE /bills/1
   # DELETE /bills/1.json

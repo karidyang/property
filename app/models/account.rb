@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
   has_many :out_details, :class_name    => 'AccountDetail', :conditions => 'account_type=1'
 
   before_create :default_money
-
+  self.per_page = 10
   STATE = {
       :in => 0,
       :out => 1

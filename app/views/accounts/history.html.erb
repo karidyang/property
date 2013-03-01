@@ -1,54 +1,64 @@
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>历史记录</h4></div>
-    <div class="portlet-content">
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>房号</th>
-          <th>业主</th>
-          <th>类型</th>
-          <th>收费项目</th>
-          <th>交易时间</th>
-          <th>交易金额</th>
-          <th>操作员</th>
-          <th>备注</th>
-          <th>单据号</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @details.each do |detail| %>
-            <tr>
-              <td><%= detail.account.house_code %></td>
-              <td><%= detail.account.house.owner_name %></td>
-              <td><%= get_account_type detail.account_type %></td>
-              <td><%= detail.account.item_name %></td>
-              <td><%= detail.trans_time %></td>
-              <td><%= detail.money %></td>
-              <td><%= detail.updateby %></td>
-              <td><%= detail.note %></td>
-              <td><%= detail.receipt_id %></td>
-              <td>
-                <%= del_detail detail.id %>
-              </td>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
+<fieldset>
+  <legend>历史记录</legend>
+  <div class="container">
+    <div class="pull-left input-append">
+
+      <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+
+    </div>
+    <div class="pull-right input-prepend">
+      <%= link_to '返回', accounts_path, :action => :index, :house_id => @account.house, :class => 'btn' %>
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'detail_id')">全选
+          </label>
+        </th>
+        <th>房号</th>
+        <th>业主</th>
+        <th>类型</th>
+        <th>收费项目</th>
+        <th>交易时间</th>
+        <th>交易金额</th>
+        <th>操作员</th>
+        <th>备注</th>
+        <th>单据号</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @details.each do |detail| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="detail_id" value="<%= detail.id %>">
+              </label>
+            </td>
+            <td><%= detail.account.house_code %></td>
+            <td><%= detail.account.house.owner_name %></td>
+            <td><%= get_account_type detail.account_type %></td>
+            <td><%= detail.account.item_name %></td>
+            <td><%= detail.trans_time %></td>
+            <td><%= detail.money %></td>
+            <td><%= detail.updateby %></td>
+            <td><%= detail.note %></td>
+            <td><%= detail.receipt_id %></td>
+            <td>
+              <%= del_detail detail.id %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-left">
       <%= paginate @details %>
     </div>
+
+
   </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>操作列表</h4></div>
-    <div class="portlet-content">
-      <div class="field">
-        <%= link_to '返回', :controller=>:accounts, :action=>:index, :house_id=>@account.house %>
-      </div>
-    </div>
-  </div>
-</div>
+</fieldset>

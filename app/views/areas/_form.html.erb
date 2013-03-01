@@ -1,77 +1,39 @@
-<% if @area.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@area.errors.count, "error") %> 保存数据出错:</h2>
+<%= render :partial => 'shared/error_messages', :locals => {:target => @area} %>
+<%= form_for(@area, :html => {:class => 'form-horizontal'}) do |f| %>
 
-      <ul>
-        <% @area.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
+    <fieldset>
+      <legend><%= header_name %></legend>
+
+      <div class="control-group">
+        <label class="control-label">选择小区</label>
+
+        <div class="controls">
+          <%= f.select(:plot_id, all_plots) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">楼栋名称</label>
+
+        <div class="controls">
+          <%= f.text_field :name %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">房间数量</label>
+
+        <div class="controls">
+          <%= f.text_field :house_num %>
+        </div>
+      </div>
+
+      <div class="control-group">
+
+        <div class="controls">
+          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+          <a href="<%= areas_path %>" class="btn">返回</a>
+        </div>
+      </div>
+    </fieldset>
 <% end %>
 
 
-<div class="portlet x9">
-  <div class="portlet-header"><h4><%= header_name %></h4></div>
-  <div class="portlet-content">
-    <%= form_for(@area, :html=>{:class=>'form label-inline'}) do |f| %>
-        <div class="field">
-          <%= label_tag '选择小区' %>
-          <%= f.select(:plot_id, all_plots) %>
-
-        </div>
-
-        <div class="field">
-          <%= f.label '楼栋名称' %>
-
-          <%= f.text_field :name, :class=>"medium" %>
-        </div>
-
-        <div class="field">
-          <%= f.label '房间数量' %>
-
-          <%= f.text_field :house_num, :class=>"medium" %>
-        </div>
-
-    <% end %>
-    <div class="buttonrow">
-      <button id="btnSubmit" class="btn">提交</button>
-      <button id="btnReset" class="btn btn-orange">重置</button>
-      <button id="btnCancel" class="btn">取消</button>
-
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#btnCancel").click(function() {
-
-            document.location.href = "<%= areas_path %>";
-            return false;
-        });
-
-        $("#btnReset").click(function() {
-            $(":text").each(function() {
-                $(this).val("");
-            });
-            $(":password").each(function() {
-                $(this).val("");
-            });
-            $(":checkbox").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":radio").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":file").each(function() {
-                $(this).val("");
-            });
-            $("textarea").each(function() {
-                $(this).val("");
-            });
-            return false;
-        });
-
-    });
-</script>

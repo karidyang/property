@@ -1,38 +1,38 @@
-<%= form_for(@user) do |f| %>
-    <% if @user.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-          <ul>
-            <% @user.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
+<%= render :partial => 'shared/error_messages', :locals => {:target => @user} %>
+<%= form_for(@user, :html => {:class => 'form-horizontal'}) do |f| %>
+    <fieldset>
+      <legend><%= header_name %></legend>
+      <div class="control-group">
+        <%= f.label '邮箱', :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :email %>
         </div>
-    <% end %>
+      </div>
+      <div class="control-group">
+        <%= f.label '密码', :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :password %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label '确认密码', :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :password_confirmation %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label '姓名', :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :name %>
+        </div>
+      </div>
+      <div class="control-group">
 
-    <div class="field">
-      <%= f.label '邮箱' %>
-      <br/>
-      <%= f.text_field :email %>
-    </div>
-    <div class="field">
-      <%= f.label '密码' %>
-      <br/>
-      <%= f.password_field :password %>
-    </div>
-    <div class="field">
-      <%= f.label :password_confirmation %>
-      <br/>
-      <%= f.password_field :password_confirmation %>
-    </div>
-    <div class="field">
-      <%= f.label '姓名' %>
-      <br/>
-      <%= f.text_field :name %>
-    </div>
+        <div class="controls">
+          <button id="btnSubmit" class="btn btn-primary">提交</button>
+          <a href="<%= root_path %>" class="btn">返回</a>
+        </div>
+      </div>
 
-    <div class="actions">
-      <%= f.submit %>
-    </div>
+    </fieldset>
 <% end %>

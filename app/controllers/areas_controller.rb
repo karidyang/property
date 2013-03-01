@@ -13,7 +13,7 @@ class AreasController < ApplicationController
   # GET /areas.xml
   def index
     if params.has_key?('plot_id')
-      @areas = Area.where("plot_id=?", params[:plot_id]).order('name').paginate(:page=>params[:page])
+      @areas = Area.where('plot_id=?', params[:plot_id]).order('name').paginate(:page=>params[:page])
     else
       @areas = Area.order('name').paginate(:page=>params[:page])
     end
@@ -23,7 +23,7 @@ class AreasController < ApplicationController
   def plot_areas
     @plot = Plot.find(params[:id])
     @areas = @plot.areas
-    render :action => "index"
+    render :action => 'index'
   end
 
   # GET /areas/1
@@ -40,7 +40,7 @@ class AreasController < ApplicationController
       @area = Area.new
       respond_with (@area)
     else
-      flash[:notice] = "你没有添加楼栋的权限，请联系管理员"
+      flash[:notice] = '你没有添加楼栋的权限，请联系管理员'
       render_403
     end
   end
@@ -50,7 +50,7 @@ class AreasController < ApplicationController
     if @current_user.has_privilege?('areas', 'update')
       @area = Area.find(params[:id])
     else
-      flash[:notice] = "你没有修改楼栋的权限，请联系管理员"
+      flash[:notice] = '你没有修改楼栋的权限，请联系管理员'
       render_403
     end
   end
@@ -64,11 +64,11 @@ class AreasController < ApplicationController
         redirect_to(area_path, :notice => 'Area was successfully created.')
 
       else
-        render :action => "new"
+        render :action => 'new'
 
       end
     else
-      flash[:notice] = "你没有添加楼栋的权限，请联系管理员"
+      flash[:notice] = '你没有添加楼栋的权限，请联系管理员'
       render_403
     end
 
@@ -83,11 +83,11 @@ class AreasController < ApplicationController
         redirect_to(area_path, :notice => 'Area was successfully updated.')
 
       else
-        render :action => "edit"
+        render :action => 'edit'
 
       end
     else
-      flash[:notice] = "你没有修改楼栋的权限，请联系管理员"
+      flash[:notice] = '你没有修改楼栋的权限，请联系管理员'
       render_403
 
     end
@@ -105,7 +105,7 @@ class AreasController < ApplicationController
       redirect_to area_path
     else
 
-      flash[:notice] = "你没有删除楼栋的权限，请联系管理员"
+      flash[:notice] = '你没有删除楼栋的权限，请联系管理员'
       render_403
     end
   end

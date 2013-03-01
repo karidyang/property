@@ -19,10 +19,10 @@ class ApplicationController < ActionController::Base
 
   def render_optional_error_file(status_code)
     status = status_code.to_s
-    if ["403", "404", "422", "500"].include?(status)
-      render :template => "/errors/#{status}.html.erb", :status => status, :layout => "application"
+    if %w['403' '404' '422' '500'].include?(status)
+      render :template => "/errors/#{status}.html.erb", :status => status, :layout => 'application'
     else
-      render :template => "/errors/unknown.html.erb", :status => status, :layout => "application"
+      render :template => '/errors/unknown.html.erb', :status => status, :layout => 'application'
     end
   end
 
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
     def require_user
       unless current_user
         store_location
-        flash[:notice] = "You must be logged in to access this page"
+        flash[:notice] = 'You must be logged in to access this page'
         redirect_to login_path
       end
     end
@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
     def require_no_user
       if current_user
         store_location
-        flash[:notice] = "You must be logged out to access this page"
+        flash[:notice] = 'You must be logged out to access this page'
         redirect_to root_path
       end
     end

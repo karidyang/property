@@ -13,16 +13,10 @@ class HousesController < ApplicationController
   # GET /houses.xml
   def index
 
-    if params.has_key?(:plot_id)
-      @house_code = params[:house_code]
-      if @house_code != ''
-        @houses = House.where("plot_id=? and house_code=?", params[:plot_id], @house_code).order('house_code').paginate(:page=>params[:page])
-      else
-        @houses = House.where("plot_id=?", params[:plot_id]).order('house_code').paginate(:page=>params[:page])
-      end
-    else
-      @houses = House.order('house_code').paginate(:page=>params[:page])
-    end
+      house_code = params[:house_code]
+      plot_id = params[:plot_id] || session[:current_plot]
+      #logger.info "plot_id=#{plot_id}, house_code=#{house_code}"
+      @houses = House.find_house(plot_id, house_code).paginate(:page=>params[:page])
 
   end
 
@@ -66,7 +60,7 @@ class HousesController < ApplicationController
         redirect_to(houses_url, :notice => '新建房间成功.')
 
       else
-        render :action => "new"
+        render :action => 'new'
 
       end
     else
@@ -86,7 +80,7 @@ class HousesController < ApplicationController
       if @house.update_attributes(params[:house])
         redirect_to(houses_url, :notice => '更新房间成功.')
       else
-        render :action => "edit"
+        render :action => 'edit'
       end
     else
       flash[:notice] = '您没有编辑房间的权限,请联系管理员'
@@ -131,7 +125,7 @@ class HousesController < ApplicationController
     house_code = params[:house_code]
     logger.debug("house_code=#{house_code}")
 
-    house = House.where("house_code=? and plot_id=?",house_code,session[:current_plot]).first
+    house = House.where('house_code=? and plot_id=?',house_code,session[:current_plot]).first
 
 
     bill_items_json = Array.new

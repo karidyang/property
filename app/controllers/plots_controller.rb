@@ -42,7 +42,7 @@ class PlotsController < ApplicationController
       redirect_to(@plot, :notice => 'Plot was successfully created.')
 
     else
-      render :action => "new"
+      render :action => 'new'
 
     end
 
@@ -58,7 +58,7 @@ class PlotsController < ApplicationController
       redirect_to(@plot, :notice => 'Plot was successfully updated.')
 
     else
-      render :action => "edit"
+      render :action => 'edit'
 
     end
 

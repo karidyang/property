@@ -1,62 +1,61 @@
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#btnAdd").click(function() {
+    $(document).ready(function () {
+        $("#btnAdd").click(function () {
             document.location.href = '<%= new_area_path %>';
         });
     });
-</script>
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>楼栋列表</h4></div>
-    <div class="portlet-content">
 
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-        <button class="btn-icon btn-grey btn-plus" id="btnAdd"><span></span>新建楼栋</button>
-        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
+
+</script>
+<fieldset>
+  <legend>楼栋列表</legend>
+  <div class="container">
+
+    <form>
+      <div class="input-append">
+
+        <input type="text" class="span2" placeholder="楼栋名称">
+        <button type="button" class="btn">Search</button>
+        <%= link_to '新建', new_area_path, :class => 'btn' %>
+        <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>所属小区</th>
-          <th>楼栋名称</th>
-          <th>房间数量</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @areas.each do |area| %>
-            <tr>
-              <td><%= area.plot.name %></td>
-              <td><%= area.name %></td>
-              <td><%= area.house_num %></td>
-              <td>
-                <%= link_to '编辑', edit_area_path(area) %>
-                <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete %></td>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
+    </form>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'area_id')">全选
+          </label>
+        </th>
+        <th>所属小区</th>
+        <th>楼栋名称</th>
+        <th>房间数量</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @areas.each do |area| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="area_id" value="<%= area.id %>">
+              </label>
+            </td>
+            <td><%= area.plot.name %></td>
+            <td><%= area.name %></td>
+            <td><%= area.house_num %></td>
+            <td>
+              <%= link_to '编辑', edit_area_path(area), :class => 'btn' %>
+              <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete, :class => 'btn' %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
       <%= paginate @areas %>
     </div>
   </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>查询过滤</h4></div>
-    <div class="portlet-content">
-      <!-- 搜索区域 -->
-      <%= form_tag(areas_path, :method=>:get) do %>
-          <div id="searchArea" style="min-height: 50px;">
-            <fieldset>
-              <legend>查询过滤</legend>
-
-              <%= label_tag :plot_id, '选择小区' %>
-              <%= select_tag(:plot_id, options_for_select(all_plots)) %>
-              <%= submit_tag('查询') %>
-
-            </fieldset>
-          </div>
-      <% end %>
-    </div>
-  </div>
-</div>
-
+</fieldset>

@@ -1,27 +1,50 @@
-<h1>Listing companies</h1>
-
-<%= link_to 'New Company', new_company_path %>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Telphone</th>
-    <th>Email</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-  <% @companies.each do |company| %>
+<fieldset>
+  <legend>公司列表</legend>
+  <div class="container">
+    <div class="input-append">
+      <%= link_to '新增', new_company_path, :class => 'btn' %>
+      <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
       <tr>
-    <td><%= company.name %></td>
-    <td><%= company.address %></td>
-    <td><%= company.telphone %></td>
-    <td><%= company.email %></td>
-    <td><%= link_to 'Edit', edit_company_path(company) %></td>
-    <td><%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-  <% end %>
-</table>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'company_id')">全选
+          </label>
+        </th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Telphone</th>
+        <th>Email</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @companies.each do |company| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="company_id" value="<%= company.id %>">
+              </label>
+            </td>
+            <td><%= company.name %></td>
+            <td><%= company.address %></td>
+            <td><%= company.telphone %></td>
+            <td><%= company.email %></td>
+            <td>
+              <%= link_to 'Edit', edit_company_path(company) %>
+              <%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+      <%= paginate @companies %>
+    </div>
 
-<br />
-
+  </div>
+</fieldset>

@@ -1,71 +1,59 @@
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>业主列表</h4></div>
-    <div class="portlet-content">
-
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-
-        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>房号</th>
-          <th>姓名</th>
-          <th>年龄</th>
-          <th>性别</th>
-          <th>手机</th>
-          <th>身份证</th>
-          <th>合同号</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% for owner in @owners %>
-            <tr>
-              <td><%= h owner.house.house_code %></td>
-              <td><%= h owner.name %></td>
-              <td><%= h owner.age %></td>
-              <td><%= h get_sex(owner.sex) %></td>
-              <td><%= h owner.phone %></td>
-              <td><%= h owner.id_card %></td>
-              <td><%= h owner.contract_no %></td>
-              <td>
-                <%= link_to '编辑', edit_owner_path(owner) %>
-                <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
-              </td>
-            </tr>
-        <% end %>
-
-        </tbody>
-      </table>
-      <%= paginate @owners %>
-    </div>
-  </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>查询过滤</h4></div>
-    <div class="portlet-content">
-      <!-- 搜索区域 -->
-      <%= form_tag(owners_path, :method=>:get) do %>
-          <div id="searchArea" style="min-height: 50px;">
-            <fieldset>
-              <legend>查询过滤</legend>
-              <div class="field">
-                <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots), :class=>'medium') %>
-              </div>
-              <div class="field">
-                <%= label_tag :house_code, '房间号' %><%= text_field_tag(:house_code,  @house_code == 0?'':@house_code, :class=>'medium') %>
-                <br/>
-              </div>
-              <div class="buttonrow">
-                <button class="btn">查询</button>
-              </div>
-
-            </fieldset>
-          </div>
+<fieldset>
+  <legend>业主列表</legend>
+  <div class="container">
+    <div class="input-append">
+      <%= form_tag(owners_path, :method => :get) do %>
+          <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
+          <button type="submit" class="btn">搜索</button>
+          <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       <% end %>
     </div>
-    
   </div>
-</div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'owner_id')">全选
+          </label>
+        </th>
+        <th>房号</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>手机</th>
+        <th>身份证</th>
+        <th>合同号</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @owners.each do |owner| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="owner_id" value="<%= owner.id %>">
+              </label>
+            </td>
+            <td><%= h owner.house.house_code %></td>
+            <td><%= h owner.name %></td>
+            <td><%= h owner.age %></td>
+            <td><%= h get_sex(owner.sex) %></td>
+            <td><%= h owner.phone %></td>
+            <td><%= h owner.id_card %></td>
+            <td><%= h owner.contract_no %></td>
+            <td>
+              <%= link_to '编辑', edit_owner_path(owner) %>
+              <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+      <%= paginate @owners %>
+    </div>
+
+  </div>
+</fieldset>

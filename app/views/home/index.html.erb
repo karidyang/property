@@ -2,11 +2,11 @@
     var setting = {
         async: {
             enable: true,
-            url:"/houses/house_tree",
+            url: "/houses/house_tree",
             type: 'post'
         },
-        callback:{
-            onClick:click_house
+        callback: {
+            onClick: click_house
         }
     };
     var zTree1;
@@ -14,7 +14,7 @@
     var nodes = [];
 
 
-    $(function() {
+    $(function () {
         zTree1 = $.fn.zTree.init($("#house_tree"), setting);
         /*$('#tt').datagrid({
          url: 'http://localhost:3000/home/list',
@@ -64,17 +64,17 @@
          }*/
     });
 
-function click_house(event, treeid, treeNode) {
-    $("#house_code").val(treeNode.name);
-    refresh_house(treeNode.name);
+    function click_house(event, treeid, treeNode) {
+        $("#house_code").val(treeNode.name);
+        refresh_house(treeNode.name);
 
-}
+    }
 
     function refresh_house() {
         $("#selectAll").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
         house_code = $("#house_code").val();
-        $.post(url, {"house_code":house_code}, function (data) {
+        $.post(url, {"house_code": house_code}, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
                 var html = "<tbody><tr><td>房号</td><td>" + data.house.house_code + "</td>" +
@@ -103,77 +103,77 @@ function click_house(event, treeid, treeNode) {
                 $(this).remove();
             });
             if (data.bill_items) {
-              parse_bill_item(data.bill_items)
+                parse_bill_item(data.bill_items)
             }
 
         });
     }
-function search_bill_item() {
-  var url = "<%=url_for(:controller => :bills,:action => :search) %>";
-  var house_code = $("#house_code").val();
-  var start_time = $("#start_time").val();
-  var end_time = $("#end_time").val();
-  var charge_type = $("#charge_type").val();
-  if (house_code == '') {
-    alert("未选择房间");
-    return;
-  }
-  if (start_time == "") {
-    alert("未填写开始时间");
-    return;
-  }
-  if (end_time == "") {
-    alert("未填写结束时间");
-    return;
-  }
-  $.post(url,{"house_code":house_code,"start_time":start_time,"end_time":end_time,"charge_type":charge_type}, function(data) {
+    function search_bill_item() {
+        var url = "<%=url_for(:controller => :bills,:action => :search) %>";
+        var house_code = $("#house_code").val();
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        var charge_type = $("#charge_type").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
+        if (start_time == "") {
+            alert("未填写开始时间");
+            return;
+        }
+        if (end_time == "") {
+            alert("未填写结束时间");
+            return;
+        }
+        $.post(url, {"house_code": house_code, "start_time": start_time, "end_time": end_time, "charge_type": charge_type}, function (data) {
             $("#bill_items_table tbody tr").each(function () {
                 $(this).remove();
             });
             if (data.bill_items) {
-              parse_bill_item(data.bill_items)
+                parse_bill_item(data.bill_items)
             }
 
-        },"json");
-}
-
-function parse_bill_item(bill_items) {
-  for (i = 0; i < bill_items.length; i++) {
-    var obj = bill_items[i];
-    var tr_row = "<tr>";
-    //                    if (obj.status != 1) {
-    tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
-    //                    } else {
-    //                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
-    //                    }
-
-    tr_row += "<td>" + obj.item_name + "</td>" +
-      "       <td>" + obj.trans_time + "</td>";
-    if (obj.status == 0) {
-      tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
-    } else {
-      tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+        }, "json");
     }
 
-    tr_row += "       <td>" + obj.unit_price + "</td>" +
-      "       <td>" + obj.money + "</td>" +
-      "       <td>" + obj.push + "</td>" +
-      "       <td>0.00</td>" +
-      "       <td>" + obj.pay_money + "</td>" +
-      "       <td>" + obj.start_record + "</td>" +
-      "       <td>" + obj.end_record + "</td>";
-    if (obj.receipt_no == null) {
-      tr_row += "  <td></td>";
-    } else {
-      tr_row += "       <td><a href='javascript:receipt_show("+obj.receipt_no+");'>"+obj.receipt_no+"</a></td>";
+    function parse_bill_item(bill_items) {
+        for (i = 0; i < bill_items.length; i++) {
+            var obj = bill_items[i];
+            var tr_row = "<tr>";
+            //                    if (obj.status != 1) {
+            tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
+            //                    } else {
+            //                        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' checked='checked' disabled='disabled' /></td>";
+            //                    }
+
+            tr_row += "<td>" + obj.item_name + "</td>" +
+                    "       <td>" + obj.trans_time + "</td>";
+            if (obj.status == 0) {
+                tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
+            } else {
+                tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+            }
+
+            tr_row += "       <td>" + obj.unit_price + "</td>" +
+                    "       <td>" + obj.money + "</td>" +
+                    "       <td>" + obj.push + "</td>" +
+                    "       <td>0.00</td>" +
+                    "       <td>" + obj.pay_money + "</td>" +
+                    "       <td>" + obj.start_record + "</td>" +
+                    "       <td>" + obj.end_record + "</td>";
+            if (obj.receipt_no == null) {
+                tr_row += "  <td></td>";
+            } else {
+                tr_row += "       <td><a href='javascript:receipt_show(" + obj.receipt_no + ");'>" + obj.receipt_no + "</a></td>";
+            }
+            tr_row += "</tr>";
+
+            $("#bill_items_table tbody").append(tr_row);
+        }
+
+
     }
-    tr_row += "</tr>";
-
-    $("#bill_items_table tbody").append(tr_row);
-  }
-
-
-}
 
     function selectAllCheck(allCheckedObj, id) {
         var isAll = $(allCheckedObj).attr("checked");
@@ -233,7 +233,7 @@ function parse_bill_item(bill_items) {
     }
     function print() {
         var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
-        url += "?houseId=" + $('#house_id').val()+"&type=0";
+        url += "?houseId=" + $('#house_id').val() + "&type=0";
         var flag = false;
         var sum_checked = 0;
         var hasNoPay = false;
@@ -268,12 +268,12 @@ function parse_bill_item(bill_items) {
         setInterval(refresh_house, 5000);
 
     }
-function receipt_show(receipt_no) {
-  var url = "<%= url_for(:controller => :receipt, :action => :show) %>";
-  url += "?receipt_no=" + receipt_no;
-  var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
-  window.open(url, '收据打印', sFeatures);
-}
+    function receipt_show(receipt_no) {
+        var url = "<%= url_for(:controller => :receipt, :action => :show) %>";
+        url += "?receipt_no=" + receipt_no;
+        var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+        window.open(url, '收据打印', sFeatures);
+    }
 
 </script>
 <div id="content" class="xfluid">
@@ -285,7 +285,8 @@ function receipt_show(receipt_no) {
     </div>
   </div>
 
-  <input type="hidden" id="house_id" value="" />
+  <input type="hidden" id="house_id" value=""/>
+
   <div class="portlet x7" style="height: 800px;">
     <div class="portlet-header"></div>
     <div class="portlet-content">
@@ -303,18 +304,17 @@ function receipt_show(receipt_no) {
         <fieldset>
 
 
-
-              <input type="hidden" id="house_code" value="" />
-              <label>缴费日期：</label><input id="start_time" name="start_time"/>
-              <label>到</label><input id="end_time" name="end_time"/>
-              <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
-              <input type="button" value="查询" onclick="search_bill_item()" />
-       </fieldset>
+          <input type="hidden" id="house_code" value=""/>
+          <label>缴费日期：</label><input id="start_time" name="start_time"/>
+          <label>到</label><input id="end_time" name="end_time"/>
+          <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
+          <input type="button" value="查询" onclick="search_bill_item()"/>
+        </fieldset>
       </div>
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="bill_items_table">
         <thead>
         <tr>
-          <th><input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')" />全选</th>
+          <th><input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选</th>
           <th>费用名称</th>
           <th>费用时间</th>
           <th>费用状态</th>

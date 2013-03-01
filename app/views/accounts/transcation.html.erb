@@ -1,87 +1,64 @@
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>转账</h4></div>
-    <div class="portlet-content">
-      <script type="text/javascript">
+<script type="text/javascript">
 
 
-          $(document).ready(function() {
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
 
-              $("#btnCancel").click(function() {
+            var money = parseFloat($("#money").val());
 
-                  document.location.href = "<%= houses_path %>";
-                  return false;
-              });
+            if (!isNaN(money)) {
 
-              $("#btnReset").click(function() {
-                  $(":text").each(function() {
-                      $(this).val("");
-                  });
-                  $(":password").each(function() {
-                      $(this).val("");
-                  });
-                  $(":checkbox").each(function() {
-                      $(this).attr("checked", false);
-                  });
-                  $(":radio").each(function() {
-                      $(this).attr("checked", false);
-                  });
-                  $(":file").each(function() {
-                      $(this).val("");
-                  });
-                  $("textarea").each(function() {
-                      $(this).val("");
-                  });
-                  return false;
-              });
-              $("#btnSubmit").click(function() {
+                var result = confirm("你确定转入" + money + "元?");
+                if (result) {
+                    $("form").submit();
+                }
+            }
 
-                  var money = parseFloat($("#money").val());
+            return false;
+        });
 
-                  if (!isNaN(money)) {
-
-                      var result = confirm("你确定转入" + money + "元?");
-                      if (result) {
-                          $("form").submit();
-                      }
-                  }
-
-                  return false;
-              });
-
-          });
+    });
 
 
-      </script>
-      <%= form_tag('/accounts/transcation', :class=>'form label-inline') do %>
-          <%= hidden_field_tag 'house_id', @account.house.id %>
+</script>
+<%= form_tag('/accounts/transcation', :class => 'form-horizontal') do %>
+    <%= hidden_field_tag 'house_id', @account.house.id %>
 
-          <%= hidden_field_tag 'account_id', @account.id %>
-          <%= hidden_field_tag 'item_type', 0 %>
+    <%= hidden_field_tag 'account_id', @account.id %>
+    <%= hidden_field_tag 'item_type', 0 %>
+    <fieldset>
+      <legend>转账</legend>
 
-          <div class="field">
-            <%= label_tag '转入项目' %>
+      <div class="control-group">
+        <label class="control-label">转入项目</label>
 
-            <%= select_tag 'item_id', options_from_collection_for_select(@items, "id", "item_name"),:class=>'medium' %>
+        <div class="controls">
+          <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'item_name') %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">转入金额</label>
 
-          </div>
-          <div class="field">
-            <%= label_tag '转入金额' %>
-            <%= text_field_tag 'money', 0.00, :class=>'medium' %>
-          </div>
-          <div class="field">
-            <%= label_tag '锁定金额' %>
-            <%= text_field_tag 'can_push', 0.00, :class=>'medium' %>
-          </div>
+        <div class="controls">
+          <%= text_field_tag 'money', nil, :placeholder => '0.00' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">锁定金额</label>
 
-          <div class="buttonrow">
-            <button id="btnSubmit" class="btn">提交</button>
-            <button id="btnReset" class="btn btn-orange">重置</button>
-            <button id="btnCancel" class="btn">取消</button>
-          </div>
-      <% end %>
+        <div class="controls">
+          <%= text_field_tag 'can_push', nil, :placeholder => '0.00' %>
+        </div>
+      </div>
 
-    </div>
-  </div>
-</div>
+      <div class="control-group">
+
+        <div class="controls">
+          <button id="btnSubmit" class="btn btn-primary">提交</button>
+          <a href="<%= houses_path %>" class="btn">返回</a>
+        </div>
+      </div>
+    </fieldset>
+<% end %>
+
 

@@ -1,49 +1,55 @@
-<script type="text/javascript">
-  $(document).ready(function(){
-      $("#btnAdd").click(function(){
-          document.location.href="<%= url_for :controller => :accounts, :action => :add_pre_money, :house_id => @house_id %>";
-      });
-  });
-</script>
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>预存款列表</h4></div>
-    <div class="portlet-content">
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
+<fieldset>
+  <legend>预存款列表</legend>
+  <div class="container">
+    <div class="input-append">
 
-        <button class="btn-icon btn-grey btn-plus" id="btnAdd">
-          <span></span>新增预存款
-        </button>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>房号</th>
-          <th>收费项目</th>
-          <th>余额</th>
-          <th>锁定金额</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @accounts.each do |account| %>
-            <tr>
-              <td><%= account.house_code %></td>
-              <td><%= account.item_name %></td>
-              <td><%= account.money %></td>
-              <td><%= account.can_push %></td>
-              <td>
-                <%= account_history account %>
-                <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
-                <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>
-                <%= link_to '转存其他项目', :controller => :accounts, :action => :transcation,:account_id=>account.id,:src_item_id=>account.item_id %>
-              </td>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
+      <%= link_to '新增预存款', :controller => :accounts, :action => :add_pre_money, :house_id => @house_id, :class => 'btn' %>
+      <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
     </div>
   </div>
-</div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'account_id')">全选
+          </label>
+        </th>
+        <th>房号</th>
+        <th>收费项目</th>
+        <th>余额</th>
+        <th>锁定金额</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @accounts.each do |account| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="account_id" value="<%= account.id %>">
+              </label>
+            </td>
+            <td><%= account.house_code %></td>
+            <td><%= account.item_name %></td>
+            <td><%= account.money %></td>
+            <td><%= account.can_push %></td>
+            <td>
+              <%= account_history account %>
+              <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
+              <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>
+              <%= link_to '转存其他项目', :controller => :accounts, :action => :transcation, :account_id => account.id, :src_item_id => account.item_id %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+      <%= paginate @accounts %>
+    </div>
+
+  </div>
+</fieldset>
+
 

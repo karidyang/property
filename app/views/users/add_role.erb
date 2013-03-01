@@ -16,16 +16,16 @@
   <div class="portlet x12">
     <div class="portlet-header"><h4>设置用户角色</h4></div>
     <div class="portlet-content">
-      <%= form_tag :action=>'add_role' do %>
+      <%= form_tag :action => 'add_role' do %>
           <div class="field">
             <%= h @user.email %>
-            </div>
+          </div>
           <div class="field">
             <%= label_tag '角色' %>
             <% for role in @roles %>
-                    <%= check_box_tag 'user[role_ids][]', role.id, @user.roles.include?(role) %>
-                    <%= role.name %>
-                <% end %>
+                <%= check_box_tag 'user[role_ids][]', role.id, @user.roles.include?(role) %>
+                <%= role.name %>
+            <% end %>
           </div>
           <div class="field">
             <button id="btnSubmit" class="btn">保存</button>
@@ -37,10 +37,12 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(document).ready(function(){
-      $("#btnCancel").click(function(){
-          document.location.href='<%= users_path %>';
-      });
-      $("#btnSubmit").click(function(){$("form").submit();});
-  });
+    $(document).ready(function () {
+        $("#btnCancel").click(function () {
+            document.location.href = '<%= users_path %>';
+        });
+        $("#btnSubmit").click(function () {
+            $("form").submit();
+        });
+    });
 </script>

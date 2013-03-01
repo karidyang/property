@@ -1,22 +1,32 @@
-<h1>Listing roles</h1>
+<fieldset>
+  <legend>权限列表</legend>
+  <div class="container">
+    <div class="input-append">
+      <%= link_to '新增', new_role_path, :class => 'btn' %>
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
 
-<table>
-  <tr>
-    <th>角色名称</th>
-    <th></th>
-    <th></th>
-  </tr>
+        <th>角色名称</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @roles.each do |role| %>
+          <tr>
+            <td><%= role.name %></td>
+            <td>
+              <%= link_to '编辑', edit_role_path(role) %>
+              <%= link_to '删除', role, :confirm => '你确定吗?', :method => :delete %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @roles %>
 
-<% @roles.each do |role| %>
-  <tr>
-    <td><%= role.name %></td>
-    <td><%= link_to 'Edit', edit_role_path(role) %></td>
-    <td><%= link_to 'Destroy', role, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Role', new_role_path %>
-<%= paginate @houses %>
+  </div>
+</fieldset>

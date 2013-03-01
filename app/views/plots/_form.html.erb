@@ -1,38 +1,34 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @plot} %>
 <%= form_for(@plot) do |f| %>
-  <% if @plot.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@plot.errors.count, "error") %> prohibited this plot from being saved:</h2>
 
-      <ul>
-      <% @plot.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label '小区名称:' %><br />
-    <%= f.text_field :name %>
-  </div>
     <div class="field">
-      <%= f.label '联系电话:' %><br />
+      <%= f.label '小区名称:' %>
+      <br/>
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label '联系电话:' %>
+      <br/>
       <%= f.text_field :phone %>
     </div>
     <div class="field">
-    <%= f.label '开发单位:' %><br />
-    <%= f.text_field :developer %>
-  </div>
+      <%= f.label '开发单位:' %>
+      <br/>
+      <%= f.text_field :developer %>
+    </div>
     <div class="field">
-    <%= f.label '建筑单位:' %><br />
-    <%= f.text_field :constructor %>
-  </div>
+      <%= f.label '建筑单位:' %>
+      <br/>
+      <%= f.text_field :constructor %>
+    </div>
     <div class="field">
-    <%= f.label '地址:' %><br />
-    <%= f.text_field :address %>
-  </div>
+      <%= f.label '地址:' %>
+      <br/>
+      <%= f.text_field :address %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

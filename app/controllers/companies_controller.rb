@@ -1,13 +1,13 @@
 # coding: utf-8  
 class CompaniesController < ApplicationController
-  around_filter do |controller, action|
-    if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-      flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
-      render_403
-    else
-      action.call
-    end
-  end
+  #around_filter do |controller, action|
+  #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
+  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    render_403
+  #  else
+  #    action.call
+  #  end
+  #end
   # GET /companies
   # GET /companies.xml
   def index
@@ -40,7 +40,7 @@ class CompaniesController < ApplicationController
     if @company.save
       redirect_to(@company, :notice => 'Company was successfully created.')
     else
-      render :action => "new"
+      render :action => 'new'
 
     end
 
@@ -54,7 +54,7 @@ class CompaniesController < ApplicationController
       redirect_to(@company, :notice => 'Company was successfully updated.')
 
     else
-      render :action => "edit"
+      render :action => 'edit'
 
     end
 

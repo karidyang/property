@@ -1,24 +1,79 @@
 <style type="text/css">
-    body {font-size: 12px;text-align:center;}
-    #report {margin-left:auto;margin-right:auto; width:180mm;}
-    #report-title {width:100%; text-align:center; clear:both;}
-    #report-title p {text-align:center;}
-    #table {float:left; width:100%; clear:both;}
-    #table table th {font-size: 12px;border-top:1px solid black;}
-    #table table td {text-align:right;font-size: 12px;}
-    #table table td.left {text-align:left;}
-    #report-end {width:100%; height:45px; clear:both;}
-    .inline {width:100%; float:left; clear:both; height:20px;}
+    body {
+        font-size: 12px;
+        text-align: center;
+    }
 
-    .border-left-bottom {border-left:1px solid black;border-bottom:1px solid black;}
-    .border-right-bottom {border-right:1px solid black;border-bottom:1px solid black;}
-    .border-left-right-bottom {border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black;}
+    #report {
+        margin-left: auto;
+        margin-right: auto;
+        width: 180mm;
+    }
+
+    #report-title {
+        width: 100%;
+        text-align: center;
+        clear: both;
+    }
+
+    #report-title p {
+        text-align: center;
+    }
+
+    #table {
+        float: left;
+        width: 100%;
+        clear: both;
+    }
+
+    #table table th {
+        font-size: 12px;
+        border-top: 1px solid black;
+    }
+
+    #table table td {
+        text-align: right;
+        font-size: 12px;
+    }
+
+    #table table td.left {
+        text-align: left;
+    }
+
+    #report-end {
+        width: 100%;
+        height: 45px;
+        clear: both;
+    }
+
+    .inline {
+        width: 100%;
+        float: left;
+        clear: both;
+        height: 20px;
+    }
+
+    .border-left-bottom {
+        border-left: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .border-right-bottom {
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .border-left-right-bottom {
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
 </style>
 <!--startprint-->
 <div id="report">
   <div id="report-title">
     <div class="inline">
-      <div style="float:left; width:100%; text-align:center;font-size: 15px; "><%=@receipt.company_info %></div>
+      <div style="float:left; width:100%; text-align:center;font-size: 15px; "><%= @receipt.company_info %></div>
     </div>
     <div class="inline">
       <div style="float:left; width:100%; text-align:center;font-size: 15px; ">收&nbsp;款&nbsp;单</div>
@@ -27,12 +82,12 @@
       <div style="float:right; width:100%; text-align:right; ">页码：第1页&nbsp;共1页</div>
     </div>
     <div class="inline">
-      <div style="float:left; width:58%; text-align:left; ">今收到：<%=@receipt.house_info %></div>
-      <div style="float:right; width:42%; text-align:right; ">单据号：<%=@receipt.receipt_no %></div>
+      <div style="float:left; width:58%; text-align:left; ">今收到：<%= @receipt.house_info %></div>
+      <div style="float:right; width:42%; text-align:right; ">单据号：<%= @receipt.receipt_no %></div>
     </div>
   </div>
   <div id="table">
-    <table style="width:100%; " cellpadding="0" cellspacing="0" >
+    <table style="width:100%; " cellpadding="0" cellspacing="0">
       <tr>
         <th class="left border-left-bottom">应收款项</th>
         <th class="left border-left-bottom">费用期间</th>
@@ -48,19 +103,19 @@
       </tr>
       <% @receipt.details.each do |detail| %>
 
-        <tr>
-          <td class="left border-left-bottom"><span style="padding-left: 5px;"><%=detail.item_name %></span></td>
-          <td class="left border-left-bottom"><%=detail.trans_time.strftime("%Y-%m") %></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.start_record %></span></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.end_record %></span></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.record %></span></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.unit_price %></span></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.money %></span></td>
-          <td class="border-left-bottom">0.0</td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.pay_money %></span></td>
-          <td class="border-left-bottom"><span style="padding-right: 5px;"><%=detail.push %></span></td>
-          <td class="border-left-right-bottom">0.0</td>
-        </tr>
+          <tr>
+            <td class="left border-left-bottom"><span style="padding-left: 5px;"><%= detail.item_name %></span></td>
+            <td class="left border-left-bottom"><%= detail.trans_time.strftime("%Y-%m") %></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.start_record %></span></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.end_record %></span></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.record %></span></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.unit_price %></span></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.money %></span></td>
+            <td class="border-left-bottom">0.0</td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.pay_money %></span></td>
+            <td class="border-left-bottom"><span style="padding-right: 5px;"><%= detail.push %></span></td>
+            <td class="border-left-right-bottom">0.0</td>
+          </tr>
       <% end %>
       <tr>
         <td class="left border-left-bottom"><span style="padding-left: 5px;">合计</span></td>
@@ -69,9 +124,9 @@
         <td class="border-left-bottom">&nbsp;</td>
         <td class="border-left-bottom">&nbsp;</td>
         <td class="border-left-bottom">&nbsp;</td>
-        <td class="border-left-bottom"><span style="padding-right: 5px;"><%=@receipt.total_money%></span></td>
+        <td class="border-left-bottom"><span style="padding-right: 5px;"><%= @receipt.total_money %></span></td>
         <td class="border-left-bottom">&nbsp;</td>
-        <td class="border-left-bottom"><span style="padding-right: 5px;"><%=@receipt.total_pay_money %></span></td>
+        <td class="border-left-bottom"><span style="padding-right: 5px;"><%= @receipt.total_pay_money %></span></td>
         <td class="border-left-bottom">&nbsp;</td>
         <td class="border-left-right-bottom">&nbsp;</td>
       </tr>
@@ -80,16 +135,16 @@
   <div id="report-end">
     <div class="inline">
       <div style="text-align:left;width:100%;">
-        说明：请核对是否正确，如有错误，请联系管理处更改！<%=@receipt.phone %>
+        说明：请核对是否正确，如有错误，请联系管理处更改！<%= @receipt.phone %>
       </div>
     </div>
     <div class="inline">
-      <div id="note" style="float:left; width:60%;text-align:left; ">备注: </div>
-      <div style="float:right; width:20%; text-align:right; ">收款人：<%=@receipt.print_user %></div>
+      <div id="note" style="float:left; width:60%;text-align:left; ">备注:</div>
+      <div style="float:right; width:20%; text-align:right; ">收款人：<%= @receipt.print_user %></div>
     </div>
     <div class="inline">
-      <div style="float:left; width:60%;text-align:left; ">物业公司：<%=@receipt.company_info %></div>
-      <div style="float:right; width:20%; text-align:right; ">打印日期：<%=@receipt.print_date %></div>
+      <div style="float:left; width:60%;text-align:left; ">物业公司：<%= @receipt.company_info %></div>
+      <div style="float:right; width:20%; text-align:right; ">打印日期：<%= @receipt.print_date %></div>
     </div>
   </div>
 </div>

@@ -6,8 +6,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :plots
 
   validates_presence_of :name, :email
+  validates_uniqueness_of :email
   before_create :default_value_for_create
-
+  self.per_page = 10
   def default_value_for_create
     self.state = STATE[:normal]
   end

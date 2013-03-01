@@ -42,7 +42,7 @@ class RolesController < ApplicationController
       redirect_to(roles_url, :notice => '新建角色成功.')
 
     else
-      render :action => "new"
+      render :action => 'new'
 
     end
 
@@ -58,7 +58,7 @@ class RolesController < ApplicationController
       redirect_to(roles_url, :notice => '角色保存成功.')
 
     else
-      render :action => "edit"
+      render :action => 'edit'
 
     end
 

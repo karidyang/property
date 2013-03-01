@@ -56,7 +56,7 @@ class OwnersController < ApplicationController
       @house.save
       redirect_to({:controller=>:houses,:action=>:index, :plot_id=>@house.plot_id,:house_code=>@house.house_code}, :notice => '添加业主成功')
     else
-      render :action => "new"
+      render :action => 'new'
     end
   end
 
@@ -69,7 +69,7 @@ class OwnersController < ApplicationController
     if @owner.update_attributes(params[:owner])
       redirect_to(owners_url, :notice => '更新业主信息成功')
     else
-      render :action => "edit"
+      render :action => 'edit'
     end
   end
 

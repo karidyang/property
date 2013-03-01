@@ -6,41 +6,19 @@
         }
         var id = $("#item_id").val();
         var url = "/charges/get_unit_price/" + id;
-        $.getJSON(url, function(data) {
+        $.getJSON(url, function (data) {
             $("#unitPrice").val(data.price);
         });
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#item_id").change(change_unit_price());
-        $("#btnCancel").click(function() {
+        $("#btnCancel").click(function () {
 
             document.location.href = "<%= houses_path %>";
             return false;
         });
-
-        $("#btnReset").click(function() {
-            $(":text").each(function() {
-                $(this).val("");
-            });
-            $(":password").each(function() {
-                $(this).val("");
-            });
-            $(":checkbox").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":radio").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":file").each(function() {
-                $(this).val("");
-            });
-            $("textarea").each(function() {
-                $(this).val("");
-            });
-            return false;
-        });
-        $("#btnSubmit").click(function() {
+        $("#btnSubmit").click(function () {
             var money = 0;
             var unitPrice = parseFloat($("#unitPrice").val());
             var record = parseInt($("#record").val());
@@ -51,10 +29,10 @@
                     $("form").submit();
                 }
             }
-            
+
             return false;
         });
-        $("#record").bind("blur", function() {
+        $("#record").bind("blur", function () {
             if (!isNaN($(this).val())) {
 
                 var record = parseInt($(this).val());
@@ -74,7 +52,7 @@
             }
         });
 
-        $("input[name=select_price]").change(function() {
+        $("input[name=select_price]").change(function () {
             if ($(this).val() == 0) {
                 change_unit_price();
                 $("#record").val('');
@@ -82,7 +60,7 @@
                 $("#unitPrice").attr("readonly", "readonly");
                 $("#record").removeAttr("readonly");
                 $("#unitPrice").unbind("blur");
-                $("#record").bind("blur", function() {
+                $("#record").bind("blur", function () {
                     if (!isNaN($(this).val())) {
 
                         var record = parseInt($(this).val());
@@ -108,7 +86,7 @@
                 $("#unitPrice").removeAttr("readonly");
                 $("#record").unbind("blur");
                 $("#record").attr("readonly", "readonly");
-                $("#unitPrice").bind("blur", function() {
+                $("#unitPrice").bind("blur", function () {
                     if (!isNaN($(this).val())) {
 
                         var unitPrice = parseFloat($(this).val());
@@ -136,53 +114,69 @@
 
 
 </script>
-<%= form_tag('/accounts/add_pre_money', :class=>'form label-inline') do %>
+
+<%= form_tag('/accounts/add_pre_money', :class => 'form-horizontal') do %>
     <%= hidden_field_tag 'house_id', @house.id %>
     <%= hidden_field_tag 'house_code', @house.house_code %>
     <%= hidden_field_tag 'plot_id', @house.plot.id %>
     <%= hidden_field_tag 'item_type', 0 %>
-    <div class="controlset field">
-      <span class="label">类型选择</span>
+    <fieldset>
+      <legend>新增预存款</legend>
+      <div class="control-group">
+        <label class="control-label">类型选择</label>
 
-      <div class="controlset-pad">
-        <div class="radio" id="uniform-radio1">
-
-          <span><%= radio_button_tag 'select_price', 0, true %></span>
+        <div class="controls">
+          <label class="radio">
+            <%= radio_button_tag 'select_price', 0, true %>
+            单价×数量
+          </label>
+          <label class="radio">
+            <%= radio_button_tag 'select_price', 1, false %>
+            自定义金额
+          </label>
         </div>
-        <label>单价×数量</label><br/>
-
-        <div class="radio" id="uniform-radio2">
-          <span><%= radio_button_tag 'select_price', 1, false %></span>
-        </div>
-        <label>自定义金额</label><br/>
       </div>
-    </div>
-    <div class="field">
-      <%= label_tag '项目' %>
+      <div class="control-group">
+        <label class="control-label">项目</label>
 
-      <%= select_tag 'item_id', options_from_collection_for_select(@items, "id", "item_name"), :onchange=>"change_unit_price(this)" %>
+        <div class="controls">
+          <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'item_name'), :onchange => 'change_unit_price(this)' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">单价</label>
 
-    </div>
-    <div class="field">
-      <%= label_tag '单价' %>
-      <%= text_field_tag 'unitPrice', @items[0].price, :class=>'medium', :readonly=>'readonly' %>
-    </div>
-    <div class="field">
-      <%= label_tag '数量' %>
-      <%= text_field_tag 'record', nil, :class=>'medium' %>
-    </div>
-    <div class="field">
-      <%= label_tag '金额(数量×单价)' %>
-      <%= text_field_tag 'money', nil, :class=>'medium' %>
-    </div>
-    <div class="field">
-      <%= label_tag '锁定金额' %>
-      <%= text_field_tag 'can_push', 0.00, :class=>'medium' %>
-    </div>
+        <div class="controls">
+          <%= text_field_tag 'unitPrice', @items[0].price, :readonly => 'readonly' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">数量</label>
 
-    <div class="buttonrow">
-      <button id="btnSubmit" class="btn">提交</button>
-      <button id="btnReset" class="btn btn-orange">重置</button>
-      <button id="btnCancel" class="btn">取消</button>
-    </div>
+        <div class="controls">
+          <%= text_field_tag 'record', nil, :placeholder => '数量' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">金额(数量×单价)</label>
+
+        <div class="controls">
+          <%= text_field_tag 'money', nil %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">锁定金额</label>
+
+        <div class="controls">
+          <%= text_field_tag 'can_push', nil, :placeholder => '0.00' %>
+        </div>
+      </div>
+      <div class="control-group">
+
+        <div class="controls">
+          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+          <a href="<%= houses_path %>" class="btn">返回</a>
+        </div>
+      </div>
+    </fieldset>
 <% end %>

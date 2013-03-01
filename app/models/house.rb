@@ -1,12 +1,31 @@
 # coding: utf-8
 class House < ActiveRecord::Base
+
+  validates_presence_of :builded_area, :message => '建筑面积不能为空'
+  validates_presence_of :real_area, :message => '实际面积不能为空'
+  validates_presence_of :share_area,:message => '公摊面积不能为空'
+  validates_format_of :house_code, :with => /\d*-\d*-\d*-\d*/,:message => '房间号规则不正确，请参考1-1-1-1'
+  validates :house_code, :presence => {:message=>'房间号不能为空'}
+
+
   belongs_to :area
   belongs_to :plot
-  has_many :owners, :order => "name"
-  has_many :accounts, :order => "item_name"
+  has_many :owners, :order => 'name'
+  has_many :accounts, :order => 'item_name'
   has_and_belongs_to_many :charges
-  has_many :bills, :class_name => "Bill", :order => "bill_date desc"
-  has_many :unpay_bills, :class_name => "Bill", :conditions => "bill_status = 0",:order=>'bill_date desc'
+  has_many :bills, :class_name => 'Bill', :order => 'bill_date desc'
+  has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0',:order=>'bill_date desc'
+  self.per_page = 10
+
+  def self.find_house(plot_id, house_code)
+    if plot_id.nil? && house_code.nil?
+      self.order('house_code')
+    elsif house_code.nil?
+      self.where('plot_id=?', plot_id).order('house_code')
+    else
+      self.where('plot_id=? and house_code=?', plot_id, house_code).order('house_code')
+    end
+  end
 
   def to_json
     "{'id':'h-#{self.id}','name':'#{self.house_code}'}"
@@ -107,7 +126,7 @@ class House < ActiveRecord::Base
 
   class << self
     def search(plot, params)
-      self.where("plot_id=? and house_code=?", plot, params[:house_code]).first
+      self.where('plot_id=? and house_code=?', plot, params[:house_code]).first
     end
   end
 end

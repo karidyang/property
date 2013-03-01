@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   # GET /accounts.xml
   def index
     @house_id = params[:house_id]
-    @accounts = Account.where("house_id=?", @house_id).paginate(:page=>params[:page])
+    @accounts = Account.where('house_id=?', @house_id).paginate(:page=>params[:page])
 
   end
 
@@ -27,7 +27,7 @@ class AccountsController < ApplicationController
 
       redirect_to(accounts_url)
     else
-      flash[:notice] = "你没有删除预存款的权限，请联系管理员"
+      flash[:notice] = '你没有删除预存款的权限，请联系管理员'
       render_403
 
     end
@@ -41,7 +41,7 @@ class AccountsController < ApplicationController
 
   def add_pre_money
     if @current_user.has_privilege?('accounts', 'insert')
-      flash[:notice] = "你没有添加预存款的权限，请联系管理员"
+      flash[:notice] = '你没有添加预存款的权限，请联系管理员'
       render_403
       return
     end
@@ -104,7 +104,7 @@ class AccountsController < ApplicationController
     else
       @account = Account.find(params[:account_id])
       @src_item_id = params[:src_item_id]
-      @items = Charge.where("plot_id=? and id!=?", @account.plot_id, @src_item_id)
+      @items = Charge.where('plot_id=? and id!=?', @account.plot_id, @src_item_id)
 
     end
   end

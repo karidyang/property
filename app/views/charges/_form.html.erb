@@ -1,115 +1,91 @@
-<% if @charge.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@charge.errors.count, "error") %> 保存数据出错:</h2>
+<%= render :partial => 'shared/error_messages', :locals => {:target => @charge} %>
 
-      <ul>
-        <% @charge.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
+<%= form_for(@charge, :html => {:class => 'form-horizontal'}) do |f| %>
+
+    <fieldset>
+      <legend><%= header_name %></legend>
+
+      <div class="control-group">
+        <label class="control-label">选择小区</label>
+
+        <div class="controls">
+          <%= f.select(:plot_id, all_plots) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">费用名称</label>
+
+        <div class="controls">
+          <%= f.text_field :item_name %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">项目类型</label>
+
+        <div class="controls">
+          <%= f.select(:period_type, all_period_type) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">计费周期</label>
+
+        <div class="controls">
+          <%= f.select(:period, all_period) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">单价类型</label>
+
+        <div class="controls">
+          <%= f.select(:unit_type, all_unit_type) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">单价</label>
+
+        <div class="controls">
+          <%= f.text_field :price %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">数量</label>
+
+        <div class="controls">
+          <%= f.text_field :item_num %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">滞纳金比率</label>
+
+        <div class="controls">
+          <%= f.text_field :fee_rate %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">是否退还</label>
+
+        <div class="controls">
+          <%= f.select(:return_back, all_return_back) %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">备注</label>
+
+        <div class="controls">
+          <%= f.text_field :note %>
+        </div>
+      </div>
+
+      <div class="control-group">
+
+        <div class="controls">
+          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+          <a href="<%= charges_path %>" class="btn">返回</a>
+        </div>
+      </div>
+    </fieldset>
 <% end %>
 
-
-<div class="portlet x9">
-  <div class="portlet-header"><h4><%= header_name %></h4></div>
-  <div class="portlet-content">
-    <%= form_for(@charge, :html=>{:class=>'form label-inline', :id=>'sForm'}) do |f| %>
-        <div class="field">
-          <%= label_tag '选择小区' %>
-          <%= f.select(:plot_id, all_plots) %>
-
-        </div>
-
-        <div class="field">
-          <%= f.label '费用名称' %>
-
-          <%= f.text_field :item_name, :class=>"medium" %>
-        </div>
-        <div class="field">
-          <%= f.label '项目类型' %>
-
-          <%= f.select(:period_type, all_period_type, :class=>"medium") %>
-        </div>
-        <div class="field">
-          <%= f.label '计费周期' %>
-
-          <%= f.select(:period, all_period, :class=>"medium") %>
-        </div>
-        <div class="field">
-          <%= f.label '单价类型' %>
-
-          <%= f.select(:unit_type, all_unit_type, :class=>"medium") %>
-        </div>
-        <div class="field">
-          <%= f.label '单价' %>
-
-          <%= f.text_field :price, :class=>"medium" %>
-        </div>
-        <div class="field">
-          <%= f.label '数量' %>
-
-          <%= f.text_field :item_num, :class=>"medium" %>
-        </div>
-        <div class="field">
-          <%= f.label '滞纳金比率' %>
-
-          <%= f.text_field :fee_rate, :class=>"medium" %>
-        </div>
-        <div class="field">
-          <%= f.label '是否退还' %>
-
-          <%= f.select(:return_back, all_return_back, :class=>"medium") %>
-        </div>
-        <div class="field">
-          <%= f.label '备注' %>
-
-          <%= f.text_field :note, :class=>"medium" %>
-        </div>
-        <div class="buttonrow">
-          <button id="btnSubmit" class="btn">提交</button>
-          <button id="btnReset" class="btn btn-orange">重置</button>
-          <button id="btnCancel" class="btn">取消</button>
-
-        </div>
-  <% end %>
-  </div>
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(document).ready(function() {
-        $("#btnCancel").click(function() {
-
-            document.location.href = "<%= charges_path %>";
-            return false;
-        });
-
-        $("#btnReset").click(function() {
-            $(":text").each(function() {
-                $(this).val("");
-            });
-            $(":password").each(function() {
-                $(this).val("");
-            });
-            $(":checkbox").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":radio").each(function() {
-                $(this).attr("checked", false);
-            });
-            $(":file").each(function() {
-                $(this).val("");
-            });
-            $("textarea").each(function() {
-                $(this).val("");
-            });
-            return false;
-        });
-
-    });
-    });
-</script>
 
 
 

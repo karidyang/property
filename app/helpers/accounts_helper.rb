@@ -1,7 +1,7 @@
 #coding:utf-8
 module AccountsHelper
   def account_history(account)
-    link_to('历史记录', :controller => "accounts", :action => "history", :id => account.id)
+    link_to('历史记录', :controller => 'accounts', :action => 'history', :id => account.id)
   end
 
   def del_detail(detail_id)

@@ -12,7 +12,12 @@ class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
   def index
-    @charges = Charge.paginate(:page=>params[:page])
+    if params[:item_name].nil?
+      @charges = Charge.paginate(:page => params[:page])
+    else
+      @charges = Charge.where('item_name=?', params[:item_name]).paginate(:page => params[:page])
+    end
+
   end
 
   # GET /charges/new
@@ -21,7 +26,7 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'insert')
       @charge = Charge.new
     else
-      flash[:notice] = "你没有新建收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有新建收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -31,7 +36,7 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'update')
       @charge = Charge.find(params[:id])
     else
-      flash[:notice] = "你没有修改收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -44,11 +49,11 @@ class ChargesController < ApplicationController
       if @charge.save
         redirect_to(charges_path, :notice => '新建收费项目成功.')
       else
-        render :action => "new"
+        render :action => 'new'
 
       end
     else
-      flash[:notice] = "你没有新建收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有新建收费项目的权限，请联系管理员'
       render_403
     end
 
@@ -63,10 +68,10 @@ class ChargesController < ApplicationController
         redirect_to(charges_path, :notice => '更新收费项目成功.')
 
       else
-        render :action => "edit"
+        render :action => 'edit'
       end
     else
-      flash[:notice] = "你没有修改收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
 
@@ -83,7 +88,7 @@ class ChargesController < ApplicationController
 
       redirect_to charges_path
     else
-      flash[:notice] = "你没有删除收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有删除收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -102,7 +107,7 @@ class ChargesController < ApplicationController
         end
       end
     else
-      flash[:notice] = "你没有修改收费项目的权限，请联系管理员"
+      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
   end

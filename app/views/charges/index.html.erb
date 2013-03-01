@@ -1,73 +1,64 @@
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#btnAdd").click(function() {
-            document.location.href = '<%= new_charge_path %>';
-        });
-    });
-</script>
-<div id="content" class="xfluid">
-  <div class="portlet x9">
-    <div class="portlet-header"><h4>收费项列表</h4></div>
-    <div class="portlet-content">
+<fieldset>
+  <legend>收费项目列表</legend>
+  <div class="container">
+    <div class="input-append">
+      <%= form_tag(charges_path, :method => :get) do %>
+          <%= text_field_tag :item_name, nil, :class => 'span2', :placeholder => '项目名称' %>
+          <button type="submit" class="btn">搜索</button>
+          <%= link_to '新增', new_charge_path, :class => 'btn' %>
+          <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+      <% end %>
 
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-        <button class="btn-icon btn-grey btn-plus" id="btnAdd"><span></span>新建收费项</button>
-        <button class="btn-icon btn-grey btn-cross" id="btnDel"><span></span>删除选择行</button>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>收费项目名称</th>
-          <th>周期类型</th>
-          <th>单价</th>
-          <th>单价类型</th>
-          <th>数量</th>
-          <th>收费周期</th>
-          <th>滞纳金比率</th>
-          <th>是否退还</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @charges.each do |charge| %>
-            <tr>
-              <td><%= charge.item_name %></td>
-              <td><%= get_period_type(charge.period_type) %></td>
-              <td><%= charge.price %></td>
-              <td><%= get_unit_type(charge.unit_type) %></td>
-              <td><%= charge.item_num %></td>
-              <td><%= get_period(charge.period) %></td>
-              <td><%= charge.fee_rate %></td>
-              <td><%= get_return_back(charge.return_back) %></td>
-              <td>
-                <%= link_to '编辑', edit_charge_path(charge) %>
-                <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
-                <%= link_to '设置房间', :controller=>'charges', :action=>'add_house', :id=>charge %>
-              </td>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
+
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'charge_id')">全选
+          </label>
+        </th>
+        <th>收费项目名称</th>
+        <th>周期类型</th>
+        <th>单价</th>
+        <th>单价类型</th>
+        <th>数量</th>
+        <th>收费周期</th>
+        <th>滞纳金比率</th>
+        <th>是否退还</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @charges.each do |charge| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="charge_id" value="<%= charge.id %>">
+              </label>
+            </td>
+            <td><%= charge.item_name %></td>
+            <td><%= get_period_type(charge.period_type) %></td>
+            <td><%= charge.price %></td>
+            <td><%= get_unit_type(charge.unit_type) %></td>
+            <td><%= charge.item_num %></td>
+            <td><%= get_period(charge.period) %></td>
+            <td><%= charge.fee_rate %></td>
+            <td><%= get_return_back(charge.return_back) %></td>
+            <td>
+              <%= link_to '编辑', edit_charge_path(charge) %>
+              <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
+              <%= link_to '设置房间', :controller => 'charges', :action => 'add_house', :id => charge %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
       <%= paginate @charges %>
     </div>
   </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>查询过滤</h4></div>
-    <div class="portlet-content">
-      <!-- 搜索区域 -->
-      <%= form_tag(charges_path, :method=>:get) do %>
-          <div id="searchArea" style="min-height: 50px;">
-            <fieldset>
-              <legend>查询过滤</legend>
-
-              <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots)) %>
-
-              <%= submit_tag('查询', :name=>nil) %>
-
-            </fieldset>
-          </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+</fieldset>

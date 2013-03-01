@@ -1,21 +1,20 @@
-<%= form_for(@role) do |f| %>
-  <% if @role.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@role.errors.count, "error") %> prohibited this role from being saved:</h2>
+<%= render :partial => 'shared/error_messages', :locals => {:target => @role} %>
+<%= form_for(@role, :html => {:class => 'form-horizontal'}) do |f| %>
+    <fieldset>
+      <legend><%= header_name %></legend>
+      <div class="control-group">
+        <%= f.label '角色名', :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :name %>
+        </div>
+      </div>
+      <div class="control-group">
 
-      <ul>
-      <% @role.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <div class="controls">
+          <button id="btnSubmit" class="btn btn-primary">提交</button>
+          <a href="<%= owners_path %>" class="btn">返回</a>
+        </div>
+      </div>
 
-  <div class="field">
-    <%= f.label '角色名' %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    </fieldset>
 <% end %>

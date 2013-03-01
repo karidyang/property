@@ -106,7 +106,7 @@ class BillItem < ActiveRecord::Base
   def self.find_by_date(house_id, charge_id, charge_type, date)
     first_day = date.at_beginning_of_month
     last_day = date.at_end_of_month
-    self.where("house_id = ? and item_id = ? and item_type=? and trans_time >= ? and trans_time <= ? ", house_id, charge_id, charge_type, first_day, last_day).first
+    self.where('house_id = ? and item_id = ? and item_type=? and trans_time >= ? and trans_time <= ? ', house_id, charge_id, charge_type, first_day, last_day).first
   end
 
   def json
@@ -116,7 +116,7 @@ class BillItem < ActiveRecord::Base
   class << self
     def search_by_house(plot, params)
       house = House.search(plot, params)
-      BillItem.where("house_id=? and status = ? and trans_time between ? and ?", house.id, params[:charge_type], params[:start_time], params[:end_time])
+      BillItem.where('house_id=? and status = ? and trans_time between ? and ?', house.id, params[:charge_type], params[:start_time], params[:end_time])
     end
   end
 end

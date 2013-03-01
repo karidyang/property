@@ -4,7 +4,7 @@ class Bill < ActiveRecord::Base
   has_many :bill_items
 
   before_create :default_value_of_create
-
+  self.per_page = 10
   def default_value_of_create
     self.bill_status = STATE[:unpay]
   end

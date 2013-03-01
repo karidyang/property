@@ -2,16 +2,16 @@
     var setting = {
         async: {
             enable: true,
-            url:"/houses/house_tree",
+            url: "/houses/house_tree",
             type: 'post'
         },
 
-        callback:{
+        callback: {
 
             onAsyncSuccess: zTreeOnAsyncSuccess,
             onAsyncError: zTreeOnAsyncError
         },
-        check : {
+        check: {
             enable: true
         }
     };
@@ -33,7 +33,7 @@
     function zTreeOnAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
         alert("error");
     }
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         refreshTree();
 
@@ -41,9 +41,9 @@
 
     function refreshTree() {
         zTree1 = $.fn.zTree.init($("#house_tree"), setting);
-        $("#checkAllTrue").bind("click", {type:"checkAllTrue"}, checkNode);
-        $("#checkAllFalse").bind("click", {type:"checkAllFalse"}, checkNode);
-        $("#save").bind('click', function() {
+        $("#checkAllTrue").bind("click", {type: "checkAllTrue"}, checkNode);
+        $("#checkAllFalse").bind("click", {type: "checkAllFalse"}, checkNode);
+        $("#save").bind('click', function () {
                     var nodes = zTree1.getCheckedNodes(true);
                     var idArray = new Array();
 
@@ -90,31 +90,28 @@
         }
     }
 </script>
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4><%= h @charge.item_name %></h4></div>
-    <div class="portlet-content">
-      <%= form_tag({:action=>"add_house"}, {:method=>"post", :id=>"add_house_form"}) do %>
-          <%= hidden_field_tag 'charge_id', @charge.id %>
-          <%= hidden_field_tag 'house_ids', @charge.house_ids %>
-          <div class="field">
-            房间列表
-          </div>
+<fieldset>
+  <legend><%= h @charge.item_name %></legend>
+  <%= form_tag({:action => 'add_house'}, {:method => 'post', :id => 'add_house_form'}) do %>
+      <%= hidden_field_tag 'charge_id', @charge.id %>
+      <%= hidden_field_tag 'house_ids', @charge.house_ids %>
+      <div class="control-group">
+        <label class="control-label">房间列表</label>
+
+        <div class="controls">
           <div id="house_tree" class="ztree"></div>
-      <% end %>
-      <div class="buttonrow">
-        <button id="save" class="btn btn-orange">保存</button>
-        <button id="checkAllTrue" class="btn">选择所有</button>
-        <button id="checkAllFalse" class="btn">取消所有</button>
+        </div>
+      </div>
+      <div class="control-group">
+
+        <div class="controls">
+          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+          <a href="<%= charges_path %>" class="btn">返回</a>
+        </div>
       </div>
 
-    </div>
-  </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>操作</h4></div>
-    <div class="portlet-content">
-      <%= link_to '返回', charges_path %>
-    </div>
-  </div>
-</div>
+  <% end %>
+
+</fieldset>
+
 

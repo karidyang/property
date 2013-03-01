@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def index
     flash[:notice] = params[:name]
     if params.has_key?('name')
-      @users = User.where("name like ?", "%#{params[:name]}%").paginate(:page=>params[:page])
+      @users = User.where('name like ?', "%#{params[:name]}%").paginate(:page=>params[:page])
     else
       @users = User.paginate(:page=>params[:page])
     end
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
-      flash[:notice] = "注册成功."
+      flash[:notice] = '注册成功.'
       redirect_back_or_default root_path
     else
       render :action => :new
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
       redirect_to(@user, :notice => '保存用户成功.')
 
     else
-      render :action => "edit"
+      render :action => 'edit'
 
     end
 
@@ -75,13 +75,13 @@ class UsersController < ApplicationController
         params[:user][:role_ids] ||= []
         if @user.update_attributes(params[:user])
           flash[:notice] = '用户角色保存成功.'
-          redirect_to :controller=>"users", :action=>"index"
+          redirect_to users_path
         end
       else
         @user.roles = []
         if @user.save!
           flash[:notice] = '用户角色保存成功.'
-          redirect_to :controller=>"users", :action=>"index"
+          redirect_to users_path
         end
       end
     else

@@ -1,64 +1,54 @@
-<script type="text/javascript">
-    
-    $(document).ready(function() {
-        $("#btnAddUser").click(function() {
-            document.location.href = '<%= new_user_path %>';
-        });
-    });
-</script>
-<div id="content" class="xfluid">
-  <div class="portlet x7">
-    <div class="portlet-header"><h4>用户列表</h4></div>
-    <div class="portlet-content">
-
-      <div class="field">
-        <%= notice %>
-      </div>
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-        <button class='btn-icon btn-grey btn-plus' id='btnAddUser'><span></span>添加用户</button>
-        <button class="btn-icon btn-grey btn-cross" id="btnDelUser"><span></span>删除选择行</button>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>账号</th>
-          <th>姓名</th>
-          <th>状态</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @users.each do |user| %>
-            <tr>
-              <td><%= user.email %></td>
-              <td><%= user.name %></td>
-              <td><%= user.state %></td>
-
-              <td>
-                <%= link_to '编辑', edit_user_path(user) %>
-                <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>
-                <%= link_to '添加角色', :controller=>'users', :action=>'add_role', :id=>user %>
-              </td>
-            </tr>
-
-        <% end %>
-        </tbody>
-      </table>
-      <%= paginate @users %>
-    </div>
-  </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>查询过滤</h4></div>
-    <div class="portlet-content">
-      <!-- 搜索区域 -->
-      <%= form_tag(users_path, :method=>:get) do %>
-          <div class="field">
-            <%= label_tag :name, '姓名' %><%= text_field_tag :name, '' %>
-            <%= submit_tag('查询', :name=>nil) %>
-          </div>
+<fieldset>
+  <legend>用户列表</legend>
+  <div class="container">
+    <div class="input-append">
+      <%= form_tag(users_path, :method => :get) do %>
+          <%= text_field_tag :name, nil, :class => 'span2', :placeholder => '姓名' %>
+          <button type="submit" class="btn">搜索</button>
       <% end %>
+
+      <%= link_to new_user_path, '新增', :class => 'btn' %>
+      <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
     </div>
   </div>
-</div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'user_id')">全选
+          </label>
+        </th>
+        <th>账号</th>
+        <th>姓名</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="user_id" value="<%= user.id %>">
+              </label>
+            </td>
+            <td><%= user.email %></td>
+            <td><%= user.name %></td>
+            <td><%= user.state %></td>
 
+            <td>
+              <%= link_to '编辑', edit_user_path(user) %>
+              <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>
+              <%= link_to '添加角色', :controller => 'users', :action => 'add_role', :id => user %>
+            </td>
+          </tr>
+
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @users %>
+
+  </div>
+</fieldset>

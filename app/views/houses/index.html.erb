@@ -1,115 +1,73 @@
-<script type="text/javascript">
-//    var oTable;
-    $(document).ready(function() {
-        
+<fieldset>
+  <legend>房间列表</legend>
+  <div class="container">
 
-        $("#dataList tbody").click(function(event) {
-            var tr = $(event.target.parentNode);
-            $(tr).toggleClass('row_selected');
-        });
+    <%= form_tag('/houses', :method => :get) do %>
+        <div class="input-append">
+          <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
+          <button type="submit" class="btn">搜索</button>
+          <% if @current_user.has_privilege?('houses', 'insert') %>
+              <%= link_to '新建', new_house_path, :class => 'btn' %>
+          <% end %>
+          <% if @current_user.has_privilege?('houses', 'delete') %>
+              <button class="btn" id="btnDelHouse"><i class="icon-remove"></i>批量删除</button>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'house_id')">全选
+          </label>
+        </th>
+        <th>编号</th>
+        <th>小区</th>
+        <th>楼栋</th>
+        <th>房号</th>
+        <th>业主</th>
+        <th>建筑面积</th>
+        <th>实际面积</th>
+        <th>公摊面积</th>
+        <th>单元状况</th>
+        <th>使用类型</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @houses.each do |house| %>
+          <tr>
+            <td>
+              <label class="checkbox">
+                <input type="checkbox" id="house_id" value="<%= house.id %>">
+              </label>
+            </td>
+            <td><%= house.id %></td>
+            <td><%= h house.plot.name %></td>
+            <td><%= h house.area.name %></td>
+            <td><%= h house.house_code %></td>
+            <td><%= h house.owner_names %></td>
+            <td><%= h house.builded_area %></td>
+            <td><%= h house.real_area %></td>
+            <td><%= h house.share_area %></td>
+            <td><%= h get_status(house.status) %></td>
+            <td><%= h get_use_type(house.use_type) %></td>
+            <td>
+              <%= link_to '编辑', edit_house_path(house) %>
+              <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
+              <%= link_to_add_owner(house) %>
+              <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
+            </td>
+          </tr>
 
-//        oTable = $('#dataList').dataTable({
-//            "bProcessing":     true,
-//            "bServerSide":     true,
-//            "iDisplayLength": 10,
-//            "sAjaxSource": "",
-//            "bFilter": true,
-//            "oLanguage": {
-//                "sEmptyTable": "表格中没有可用的数据",
-//                "sLengthMenu": "每页显示 _MENU_ 记录",
-//                "sZeroRecords": "抱歉 - 没有找到数据",
-//                "sInfo": "显示 _START_ 到 _END_  总共 _TOTAL_ 记录",
-//                "sInfoEmpty": "显示0到0 0记录",
-//                "sInfoFiltered": "(从总共 _MAX_ 条记录中过滤记录)",
-//                "sLoadingRecords": "请稍等 - 数据加载中...",
-//                "sProcessing": "正在处理...",
-//                "sSearch": "搜索:",
-//                "sZeroRecords": "没有结果显示",
-//                "oPaginate":{
-//                    "sNext": "下一页",
-//                    "sPrevious": "上一页"
-//                }
-//            }
-//
-//        });
-//        //去掉默认的全局搜索框
-//        $("#dataList_filter").hide();
-
-        <% if @current_user.has_privilege?('house', 'insert') %>
-        $("#btnAddHouse").click(function() {
-            document.location.href = '<%= new_house_path %>';
-        });
-        <% end %>
-
-    });
-</script>
-<div id="content" class="xfluid">
-  
-  <div class="portlet x12">
-    <div class="portlet-header"><h4>房间列表</h4></div>
-    <div class="portlet-content">
-      <!-- 搜索区域 -->
-      <%= form_tag('/houses', :method=>:get) do %>
-          <div id="searchArea" style="min-height: 50px;">
-            <fieldset>
-              <legend>查询过滤</legend>
-
-              <%= label_tag :plot_id, '选择小区' %><%= select_tag(:plot_id, options_for_select(all_plots)) %>
-              <%= label_tag :house_code, '房间号' %><%= text_field_tag :house_code, @house_code == 0 ? '' :@house_code %>
-              <%= submit_tag('查询', :name=>nil) %>
-
-            </fieldset>
-          </div>
       <% end %>
-      <!-- 批量操作区域 -->
-      <div id="batchOpArea" style="min-height: 50px;">
-        <% if @current_user.has_privilege?('house', 'insert') %>
-            <button class='btn-icon btn-grey btn-plus' id='btnAddHouse'><span></span>添加房间</button>
-        <% end %>
-        <% if @current_user.has_privilege?('house', 'delete') %>
-            <button class="btn-icon btn-grey btn-cross" id="btnDelHouse"><span></span>删除选择行</button>
-        <% end %>
-      </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="dataList">
-        <thead>
-        <tr>
-          <th>小区</th>
-          <th>楼栋</th>
-          <th>房号</th>
-          <th>业主</th>
-          <th>建筑面积</th>
-          <th>实际面积</th>
-          <th>公摊面积</th>
-          <th>单元状况</th>
-          <th>使用类型</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% for house in @houses %>
-            <tr>
-              <td><%= h house.plot.name %></td>
-              <td><%= h house.area.name %></td>
-              <td><%= h house.house_code %></td>
-              <td><%= h house.owner_names %></td>
-              <td><%= h house.builded_area %></td>
-              <td><%= h house.real_area %></td>
-              <td><%= h house.share_area %></td>
-              <td><%= h get_status(house.status) %></td>
-              <td><%= h get_use_type(house.use_type) %></td>
-              <td>
-                <%= link_to '编辑', edit_house_path(house) %>
-                <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
-                <%= link_to_add_owner(house) %>
-                <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
-              </td>
-            </tr>
-
-        <% end %>
-        </tbody>
-      </table>
+      </tbody>
+    </table>
+    <div class="pull-right">
       <%= paginate @houses %>
     </div>
   </div>
-</div>
-
+</fieldset>

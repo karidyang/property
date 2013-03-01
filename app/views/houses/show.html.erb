@@ -3,48 +3,48 @@
     <div class="portlet-header"></div>
     <div class="portlet-content">
 
-          <div class="field">
-            <%= label_tag "楼栋" %>
+      <div class="field">
+        <%= label_tag "楼栋" %>
 
-              <%= text_field_tag :area_name, @house.area.name %>
-            
-          </div>
-          <div class="field">
-            <%= label_tag "房号" %>
-            <%= text_field_tag :house_code, @house.house_code, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= label_tag "建筑面积" %>
-            <%= text_field_tag :builded_area, @house.builded_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= label_tag "实际面积" %>
-            <%= text_field_tag :real_area, @house.real_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= label_tag "公摊面积" %>
-            <%= text_field_tag :share_area, @house.share_area, :class=>"medium" %>
-          </div>
-          <div class="field">
-            <%= label_tag "单元状况" %>
+        <%= text_field_tag :area_name, @house.area.name %>
 
-              <%= text_field_tag :status, get_status(@house.status), :class=>"medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "房号" %>
+        <%= text_field_tag :house_code, @house.house_code, :class => "medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "建筑面积" %>
+        <%= text_field_tag :builded_area, @house.builded_area, :class => "medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "实际面积" %>
+        <%= text_field_tag :real_area, @house.real_area, :class => "medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "公摊面积" %>
+        <%= text_field_tag :share_area, @house.share_area, :class => "medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "单元状况" %>
 
-          </div>
-          <div class="field">
-            <%= label_tag "使用类型" %>
+        <%= text_field_tag :status, get_status(@house.status), :class => "medium" %>
 
-              <%= text_field_tag :use_type, get_use_type(@house.use_type), :class=>"medium" %>
+      </div>
+      <div class="field">
+        <%= label_tag "使用类型" %>
 
-          </div>
-          <div class="field">
-            <%= label_tag "业主" %>
-            <%= text_field_tag :owner_names, @house.owner_names, :class=>"medium" %>
-          </div>
-          <div class="buttonrow">
-            <%= link_to "返回", houses_path, :class=>'btn' %>
+        <%= text_field_tag :use_type, get_use_type(@house.use_type), :class => "medium" %>
 
-          </div>
+      </div>
+      <div class="field">
+        <%= label_tag "业主" %>
+        <%= text_field_tag :owner_names, @house.owner_names, :class => "medium" %>
+      </div>
+      <div class="buttonrow">
+        <%= link_to "返回", houses_path, :class => 'btn' %>
+
+      </div>
 
     </div>
   </div>

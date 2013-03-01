@@ -7,3 +7,25 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+
+function selectAllCheck(allCheckedObj, id) {
+    var isAll = $(allCheckedObj).attr("checked");
+    if (isAll) {
+        $(":checkbox").each(function () {
+            if (this.id == id) {
+                if (!this.checked && !this.disabled) {
+                    this.checked = true;
+                }
+            }
+        });
+    } else {
+        $(":checkbox").each(function () {
+            if (this.id == id) {
+                if (this.checked && !this.disabled) {
+                    this.checked = false;
+                }
+            }
+        });
+    }
+}

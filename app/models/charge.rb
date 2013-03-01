@@ -2,6 +2,7 @@
 class Charge < ActiveRecord::Base
   belongs_to :plot
   has_and_belongs_to_many :houses
+  self.per_page = 10
   PERIOD = {
       :hour => 0,
       :day => 1,

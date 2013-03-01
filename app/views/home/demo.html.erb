@@ -1,6 +1,6 @@
 <script type="text/javascript" src="/assets/jquery.js"></script>
 <script type="text/javascript" src="/assets/jquery.easyui.min.js"></script>
-<link type="text/css" media="screen" rel="stylesheet" href="/icon.css" />
+<link type="text/css" media="screen" rel="stylesheet" href="/icon.css"/>
 <link type="text/css" rel="stylesheet" media="screen" href="/default/accordion.css?body=1">
 <link type="text/css" rel="stylesheet" media="screen" href="/default/calendar.css?body=1">
 <link type="text/css" rel="stylesheet" media="screen" href="/default/combo.css?body=1">
@@ -28,57 +28,58 @@
 <script type="text/javascript">
 
 
-    $(function() {
+    $(function () {
 
         $('#tt').datagrid({
-				url: 'http://localhost:3000/home/list',
-				title: 'DataGrid - ContextMenu',
-				width: 400,
-				height: 'auto',
-				fitColumns: true,
-				columns:[[
-					{field:'id',title:'Item ID',width:80},
-					{field:'name',title:'Product ID',width:120}
-				]],
-				onHeaderContextMenu: function(e, field){
-					e.preventDefault();
-					if (!$('#tmenu').length){
-						createColumnMenu();
-					}
-					$('#tmenu').menu('show', {
-						left:e.pageX,
-						top:e.pageY
-					});
-				}
-			});
+            url: 'http://localhost:3000/home/list',
+            title: 'DataGrid - ContextMenu',
+            width: 400,
+            height: 'auto',
+            fitColumns: true,
+            columns: [
+                [
+                    {field: 'id', title: 'Item ID', width: 80},
+                    {field: 'name', title: 'Product ID', width: 120}
+                ]
+            ],
+            onHeaderContextMenu: function (e, field) {
+                e.preventDefault();
+                if (!$('#tmenu').length) {
+                    createColumnMenu();
+                }
+                $('#tmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+        });
 
-        function createColumnMenu(){
-			var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
-			var fields = $('#tt').datagrid('getColumnFields');
-			for(var i=0; i<fields.length; i++){
-				$('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);
-			}
-			tmenu.menu({
-				onClick: function(item){
-					if (item.iconCls=='icon-ok'){
-						$('#tt').datagrid('hideColumn', item.text);
-						tmenu.menu('setIcon', {
-							target: item.target,
-							iconCls: 'icon-empty'
-						});
-					} else {
-						$('#tt').datagrid('showColumn', item.text);
-						tmenu.menu('setIcon', {
-							target: item.target,
-							iconCls: 'icon-ok'
-						});
-					}
-				}
-			});
-		}
+        function createColumnMenu() {
+            var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
+            var fields = $('#tt').datagrid('getColumnFields');
+            for (var i = 0; i < fields.length; i++) {
+                $('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);
+            }
+            tmenu.menu({
+                onClick: function (item) {
+                    if (item.iconCls == 'icon-ok') {
+                        $('#tt').datagrid('hideColumn', item.text);
+                        tmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-empty'
+                        });
+                    } else {
+                        $('#tt').datagrid('showColumn', item.text);
+                        tmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-ok'
+                        });
+                    }
+                }
+            });
+        }
     });
 
-    
 
 </script>
 
@@ -92,10 +93,9 @@
   </div>
 
 
+  <div class="portlet x8">
 
-  <div  class="portlet x8">
+    <table id="tt"></table>
 
-      <table id="tt"></table>
-    
   </div>
 </div>
