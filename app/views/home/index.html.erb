@@ -16,52 +16,7 @@
 
     $(function () {
         zTree1 = $.fn.zTree.init($("#house_tree"), setting);
-        /*$('#tt').datagrid({
-         url: 'http://localhost:3000/home/list',
-         title: 'DataGrid - ContextMenu',
-         width: 400,
-         height: 'auto',
-         fitColumns: true,
-         columns:[[
-         {field:'id',title:'Item ID',width:80},
-         {field:'name',title:'Product ID',width:120}
-         ]],
-         onHeaderContextMenu: function(e, field){
-         e.preventDefault();
-         if (!$('#tmenu').length){
-         createColumnMenu();
-         }
-         $('#tmenu').menu('show', {
-         left:e.pageX,
-         top:e.pageY
-         });
-         }
-         });
 
-         function createColumnMenu(){
-         var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
-         var fields = $('#tt').datagrid('getColumnFields');
-         for(var i=0; i<fields.length; i++){
-         $('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);
-         }
-         tmenu.menu({
-         onClick: function(item){
-         if (item.iconCls=='icon-ok'){
-         $('#tt').datagrid('hideColumn', item.text);
-         tmenu.menu('setIcon', {
-         target: item.target,
-         iconCls: 'icon-empty'
-         });
-         } else {
-         $('#tt').datagrid('showColumn', item.text);
-         tmenu.menu('setIcon', {
-         target: item.target,
-         iconCls: 'icon-ok'
-         });
-         }
-         }
-         });
-         }*/
     });
 
     function click_house(event, treeid, treeNode) {
@@ -84,7 +39,7 @@
 
                 $("#house_base_info").html(html);
             }
-            $("#accounts_table tbody tr").each(function () {
+            $('#accounts_table tbody tr').each(function () {
                 $(this).remove();
             });
             if (data.accounts) {
@@ -98,6 +53,21 @@
 
 
             }
+
+            if (data.cars) {
+                for (i = 0; i < data.cars.length; i++) {
+                    var account = data.cars[i];
+                    var account_html = "<tr>" +
+                            "<td>" + cars.id + "</td>" +
+                            "<td>" + cars.card + "</td>" +
+                            "<td>" + cars.person + "</td>" +
+                            "<td>" + cars.validateDate + "</td>" ;
+                    $("#accounts_table tbody").append(account_html);
+                }
+
+
+            }
+
 
             $("#bill_items_table tbody tr").each(function () {
                 $(this).remove();
@@ -276,126 +246,122 @@
     }
 
 </script>
-<div id="content" class="xfluid">
-
-  <div class="portlet x2">
-    <div class="portlet-header"><h4>房间列表</h4></div>
-    <div class="portlet-content">
-      <div id="house_tree" class="ztree"></div>
+<input type="hidden" id="house_id" value=""/>
+<input type="hidden" id="house_code" value=""/>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2 well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">房间列表</li>
+        <li>
+          <div id="house_tree" class="ztree"></div>
+        </li>
+      </ul>
     </div>
-  </div>
+    <div class="span8 well">
 
-  <input type="hidden" id="house_id" value=""/>
 
-  <div class="portlet x7" style="height: 800px;">
-    <div class="portlet-header"></div>
-    <div class="portlet-content">
-      <div id="batchOpArea" style="min-height: 50px;">
-        <button class="btn-icon btn-grey btn-plus"><span></span>增加临时账单</button>
-        <button class="btn-icon btn-grey btn-plus" onclick="add_pre_money()"><span></span>预存款</button>
-        <button class="btn-icon btn-grey btn-plus"><span></span>退款</button>
-        <button class="btn-icon btn-grey btn-plus" onclick="search_bill_item()"><span></span>账单查询</button>
-        <button class="btn-icon btn-grey btn-plus" onclick="pay()"><span></span>缴费</button>
-        <button class="btn-icon btn-grey btn-plus" onclick="push()"><span></span>使用预存款冲销</button>
-        <button class="btn-icon btn-grey btn-plus" onclick="print()"><span></span>打印收据</button>
+      <div class="row-fluid">
+
+
+        <div class="input-append">
+          <div class="row-fluid">
+            <input id="start_time" name="start_time" type="text" class="span4" placeholder="开始日期" onfocus="HS_setDate(this)"/>
+            <input id="end_time" name="end_time" type="text" class="span4" placeholder="结束日期" onfocus="HS_setDate(this)"/>
+            <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
+            <input type="button" value="查询" class="btn" onclick="search_bill_item()"/>
+          </div>
+          <div class="row-fluid">
+            <div class="btn-toolbar">
+              <div class="btn-group">
+                <button class="btn"><span></span>增加临时账单</button>
+                <button class="btn" onclick="add_pre_money()"><span></span>预存款</button>
+                <button class="btn"><span></span>退款</button>
+                <button class="btn" onclick="pay()"><span></span>缴费</button>
+                <button class="btn" onclick="push()"><span></span>使用预存款冲销</button>
+                <button class="btn" onclick="print()"><span></span>打印收据</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-      <!-- 搜索区域 -->
-      <div id="searchArea" style="min-height: 50px;">
+      <div class="row-fluid">
+        <table id="bill_items_table" class="table table-bordered table-hover table-condensed">
+          <thead>
+          <tr>
+            <th style="width: 50px;">
+              <label class="checkbox">
+                <input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
+              </label>
+            </th>
+            <th>费用名称</th>
+            <th>费用时间</th>
+            <th>费用状态</th>
+            <th>单价</th>
+            <th>应收</th>
+            <th>冲销</th>
+            <th>滞纳金</th>
+            <th>实付</th>
+            <th>起数</th>
+            <th>止数</th>
+            <th>单据号</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="span2 well">
+      <div class="row-fluid ">
         <fieldset>
-
-
-          <input type="hidden" id="house_code" value=""/>
-          <label>缴费日期：</label><input id="start_time" name="start_time"/>
-          <label>到</label><input id="end_time" name="end_time"/>
-          <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
-          <input type="button" value="查询" onclick="search_bill_item()"/>
+          <legend>基本信息</legend>
+          <table id="house_base_info" class="table table-bordered table-hover table-condensed">
+            <tbody>
+            <tr>
+              <td>房号</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>业主</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>面积</td>
+              <td>0平方米</td>
+            </tr>
+            <tr>
+              <td>房屋类型</td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
         </fieldset>
       </div>
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="bill_items_table">
-        <thead>
-        <tr>
-          <th><input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选</th>
-          <th>费用名称</th>
-          <th>费用时间</th>
-          <th>费用状态</th>
-          <th>单价</th>
-          <th>应收</th>
-          <th>冲销</th>
-          <th>滞纳金</th>
-          <th>实付</th>
-          <th>起数</th>
-          <th>止数</th>
-          <th>单据号</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <div class="portlet x3">
-    <div class="portlet-header"><h4>基本信息</h4></div>
-    <div class="portlet-content">
-      <table id="house_base_info" cellpadding="0" cellspacing="0" border="0" class="display">
-        <tbody>
-        <tr>
-          <td>房号</td>
-          <td>1-1-1-1</td>
-        </tr>
-        <tr>
-          <td>业主</td>
-          <td>张三</td>
-        </tr>
-        <tr>
-          <td>面积</td>
-          <td>130平方米</td>
-        </tr>
-        <tr>
-          <td>房屋类型</td>
-          <td>商品房</td>
-        </tr>
-        </tbody>
-      </table>
-
-    </div>
-    <div class="portlet-header"><h4>车位信息</h4></div>
-    <div class="portlet-content">
-      <table cellpadding="0" cellspacing="0" border="0" class="display">
-        <tbody>
-        <tr>
-          <td>05</td>
-          <td>川A12345465</td>
-          <td>私人</td>
-          <td>未到期</td>
-        </tr>
-        <tr>
-          <td>05</td>
-          <td>川A12345465</td>
-          <td>私人</td>
-          <td>未到期</td>
-        </tr>
-        </tbody>
-      </table>
-
-    </div>
-    <div class="portlet-header"><h4>账户余额</h4></div>
-    <div class="portlet-content">
-      <table cellpadding="0" cellspacing="0" border="0" class="display" id="accounts_table">
-        <tbody>
-        <tr>
-          <td>物业管理费</td>
-          <td>1000.00</td>
-        </tr>
-        <tr>
-          <td>生活垃圾费</td>
-          <td>200.00</td>
-        </tr>
-        </tbody>
-      </table>
-
+      <div class="row-fluid ">
+        <fieldset>
+          <legend>车位信息</legend>
+          <table class="table table-bordered table-hover table-condensed">
+            <tbody>
+            </tbody>
+          </table>
+        </fieldset>
+      </div>
+      <div class="row-fluid ">
+        <fieldset>
+          <legend>账户余额</legend>
+          <table id="accounts_table" class="table table-bordered table-hover table-condensed">
+            <tbody>
+            </tbody>
+          </table>
+        </fieldset>
+      </div>
     </div>
   </div>
 
 </div>
+

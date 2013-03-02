@@ -1,13 +1,13 @@
 <fieldset>
   <legend>预存款列表</legend>
-  <div class="container">
+  <div class="container-fluid">
     <div class="input-append">
 
       <%= link_to '新增预存款', :controller => :accounts, :action => :add_pre_money, :house_id => @house_id, :class => 'btn' %>
       <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>

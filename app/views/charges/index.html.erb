@@ -1,6 +1,6 @@
 <fieldset>
   <legend>收费项目列表</legend>
-  <div class="container">
+  <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(charges_path, :method => :get) do %>
           <%= text_field_tag :item_name, nil, :class => 'span2', :placeholder => '项目名称' %>
@@ -12,7 +12,7 @@
 
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>

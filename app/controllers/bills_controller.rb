@@ -13,7 +13,7 @@ class BillsController < ApplicationController
   # GET /bills
   # GET /bills.json
   def index
-    if params[:house_code]
+    if params[:house_code] && !''.eql?(params[:house_code])
       house = House.where('plot_id=? and house_code=?',current_plot,params[:house_code]).first
       @bills = house.bills.paginate(:page=>params[:page])
     else

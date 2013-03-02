@@ -1,6 +1,6 @@
 <fieldset>
   <legend>用户列表</legend>
-  <div class="container">
+  <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(users_path, :method => :get) do %>
           <%= text_field_tag :name, nil, :class => 'span2', :placeholder => '姓名' %>
@@ -11,7 +11,7 @@
       <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>

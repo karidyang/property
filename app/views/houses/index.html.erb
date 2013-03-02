@@ -1,6 +1,6 @@
 <fieldset>
   <legend>房间列表</legend>
-  <div class="container">
+  <div class="container-fluid">
 
     <%= form_tag('/houses', :method => :get) do %>
         <div class="input-append">
@@ -9,13 +9,13 @@
           <% if @current_user.has_privilege?('houses', 'insert') %>
               <%= link_to '新建', new_house_path, :class => 'btn' %>
           <% end %>
-          <% if @current_user.has_privilege?('houses', 'delete') %>
+          <% if @current_user.has_privilege?('houses', 'destroy') %>
               <button class="btn" id="btnDelHouse"><i class="icon-remove"></i>批量删除</button>
           <% end %>
         </div>
     <% end %>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>

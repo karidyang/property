@@ -1,6 +1,6 @@
 <fieldset>
   <legend>业主列表</legend>
-  <div class="container">
+  <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(owners_path, :method => :get) do %>
           <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
@@ -9,7 +9,7 @@
       <% end %>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>

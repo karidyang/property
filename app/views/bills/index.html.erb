@@ -1,6 +1,6 @@
 <fieldset>
   <legend>账单列表</legend>
-  <div class="container">
+  <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(bills_path, :method => :get) do %>
           <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
@@ -15,7 +15,7 @@
     </div>
 
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>
@@ -46,8 +46,9 @@
             <td><%= bill.bill_status %></td>
             <td><%= bill.curr_money %></td>
             <td>
-              <%= link_to '编辑', edit_bill_path(bill) %>
-              <%= link_to '删除', bill, confirm: '确定删除?', method: :delete %>
+              <% if @current_user.has_privilege?('bills', 'destryo') %>
+                  <%= link_to '删除', bill, confirm: '确定删除?', method: :delete %>
+              <% end %>
             </td>
           </tr>
       <% end %>
