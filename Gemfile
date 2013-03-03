@@ -1,8 +1,8 @@
 source 'http://ruby.taobao.org/'
 
-gem 'rails'
+gem 'rails', '3.2.10'
 gem 'jquery-rails'
-gem 'sqlite3'
+gem 'sqlite3', '1.3.5'
 
 gem 'authlogic'
 gem 'json'
