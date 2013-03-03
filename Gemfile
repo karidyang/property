@@ -1,21 +1,20 @@
 source 'http://ruby.taobao.org/'
 
 gem 'rails'
-gem 'rake'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'jquery-rails'
-gem 'mysql2'
+#gem 'mysql2'
 gem 'sqlite3'
 # gem 'moneta'
 
-gem 'yajl-ruby', :require => 'yajl'
+#gem 'yajl-ruby', :require => 'yajl'
 #gem 'nokogiri'
 gem 'authlogic'
 gem 'json'
 
 # Paginator
-gem 'kaminari'
+#gem 'kaminari'
 gem 'will_paginate', '~> 3.0'
 group :assets do
   gem 'sass-rails','~> 3.1.1'
@@ -46,10 +45,10 @@ end
 group :test, :development do
   #gem "rspec", "~> 2.0"
   #gem "rspec-rails", "~> 2.0"
-  gem 'factory_girl_rails'
+  #gem 'factory_girl_rails'
   #gem "shoulda-matchers"
   #gem "rcov"
-  gem 'delorean'
+  #gem 'delorean'
   #gem "watchr"
   #gem "spork", "~>0.9.0.rc"
   # gem "capybara"
@@ -75,7 +74,7 @@ end
 
 # Debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
-gem 'ruby-debug19'
+#gem 'ruby-debug19'
 
 # Background Processing
 # gem 'delayed_job'
