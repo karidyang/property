@@ -36,7 +36,7 @@ class HomeController < ApplicationController
       session[:current_plot] = params[:current_plot].to_i
       redirect_to root_path
     else
-      render :choose_plot
+      render :layout=>false, :action=>:choose_plot
     end
   end
 

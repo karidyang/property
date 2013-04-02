@@ -5,7 +5,7 @@
             return;
         }
         var id = $("#item_id").val();
-        var url = "/charges/get_unit_price/" + id + "?house_id="+$("#house_id").val();
+        var url = "/charges/get_unit_price/" + id+"?house_id="+$("#house_id").val();
         $.getJSON(url, function (data) {
             $("#unitPrice").val(data.price);
         });
@@ -24,7 +24,7 @@
             var record = parseInt($("#record").val());
             if (!isNaN(unitPrice) && !isNaN(record)) {
                 money = unitPrice * record;
-                var result = confirm("你确定预存" + money + "元?");
+                var result = confirm("你确定缴费" + money + "元?");
                 if (result) {
                     $("form").submit();
                 }
@@ -115,13 +115,13 @@
 
 </script>
 
-<%= form_tag('/accounts/add_pre_money', :class => 'form-horizontal') do %>
+<%= form_tag('/bills/save_temporary', :class => 'form-horizontal') do %>
     <%= hidden_field_tag 'house_id', @house.id %>
     <%= hidden_field_tag 'house_code', @house.house_code %>
     <%= hidden_field_tag 'plot_id', @house.plot.id %>
     <%= hidden_field_tag 'item_type', 0 %>
     <fieldset>
-      <legend>新增预存款</legend>
+      <legend>新增临时收费</legend>
       <div class="control-group">
         <label class="control-label">类型选择</label>
 
@@ -134,6 +134,13 @@
             <%= radio_button_tag 'select_price', 1, false %>
             自定义金额
           </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">时间</label>
+
+        <div class="controls">
+          <%= text_field_tag 'charge_time', nil, :placeholder => '时间', :onfocus=>'HS_setDate(this)' %>
         </div>
       </div>
       <div class="control-group">
@@ -154,21 +161,21 @@
         <label class="control-label">数量</label>
 
         <div class="controls">
-          <%= text_field_tag 'record', nil, :placeholder => '数量' %>
+          <%= text_field_tag 'record', 1, :placeholder => '数量' %>
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">金额(数量×单价)</label>
 
         <div class="controls">
-          <%= text_field_tag 'money', nil %>
+          <%= text_field_tag 'money', 0.00 %>
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">锁定金额</label>
+        <label class="control-label">摘要</label>
 
         <div class="controls">
-          <%= text_field_tag 'can_push', 0.00, :placeholder => '0.00' %>
+          <%= text_field_tag 'note', '', :placeholder => '临时增加的费用说明' %>
         </div>
       </div>
       <div class="control-group">

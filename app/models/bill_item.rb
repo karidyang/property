@@ -44,11 +44,12 @@ class BillItem < ActiveRecord::Base
 
   def push_item(can_push=false, operator='系统')
 
-    @push_money = 0
+    pushmoney = 0
     if can_push
-      @push_money = push_money(operator)
+      pushmoney = push_money(operator)
+      raise '余额不足' if pushmoney.zero?
     end
-    if @push_money.zero?
+    if pushmoney.zero?
       self.push = 0
       if self.pay_money == self.money
         self.status = STATE[:pay]
@@ -57,7 +58,7 @@ class BillItem < ActiveRecord::Base
         self.pay_money = 0
       end
     else
-      if @push_money>= self.money
+      if pushmoney>= self.money
 
         self.status = STATE[:pay]
         self.pay_date = self.trans_time
@@ -66,9 +67,10 @@ class BillItem < ActiveRecord::Base
         self.status = STATE[:unpay]
       end
       self.pay_money = 0
-      self.push = @push_money
+      self.push = pushmoney
     end
     self.save!
+
   end
 
   def push_money(operator = '系统')

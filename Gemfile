@@ -1,10 +1,10 @@
 source 'http://ruby.taobao.org/'
 
-gem 'rails'
+gem 'rails','3.2.12'
 gem 'rake'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'jquery-rails'
+gem 'jquery-rails', '2.1.4'
 gem 'mysql2'
 gem 'sqlite3'
 # gem 'moneta'
@@ -18,8 +18,8 @@ gem 'json'
 gem 'kaminari'
 gem 'will_paginate', '~> 3.0'
 group :assets do
-  gem 'sass-rails','~> 3.1.1'
-  gem 'sass','~> 3.1.1'
+  gem 'sass-rails'
+  gem 'sass'
 end
 # File Uploads
 # gem 'paperclip'
@@ -43,19 +43,19 @@ end
 
 #gem 'SystemTimer' if RUBY_VERSION =~ /^1.8/
 
-group :test, :development do
+#group :test, :development do
   #gem "rspec", "~> 2.0"
   #gem "rspec-rails", "~> 2.0"
-  gem 'factory_girl_rails'
+  #gem 'factory_girl_rails'
   #gem "shoulda-matchers"
   #gem "rcov"
-  gem 'delorean'
+  #gem 'delorean'
   #gem "watchr"
   #gem "spork", "~>0.9.0.rc"
   # gem "capybara"
   # gem 'yard'
   # gem "bluecloth"
-end
+#end
 
 # State machine
 # gem 'aasm'

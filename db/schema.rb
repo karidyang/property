@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321135833) do
+ActiveRecord::Schema.define(:version => 20130402044307) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(:version => 20120321135833) do
     t.integer  "receipt_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "house_id"
+    t.integer  "plot_id"
+    t.string   "receipt_no"
   end
 
   add_index "account_details", ["account_id"], :name => "index_account_details_on_account_id"
@@ -52,17 +55,17 @@ ActiveRecord::Schema.define(:version => 20120321135833) do
     t.integer  "bill_id"
     t.integer  "item_id"
     t.string   "item_name"
-    t.decimal  "money"
+    t.decimal  "money",        :precision => 8, :scale => 2
     t.date     "trans_time"
     t.integer  "status"
-    t.decimal  "pay_money"
+    t.decimal  "pay_money",    :precision => 8, :scale => 2
     t.date     "pay_date"
     t.integer  "house_id"
-    t.decimal  "unit_price"
+    t.decimal  "unit_price",   :precision => 8, :scale => 2
     t.integer  "record"
     t.integer  "start_record"
     t.integer  "end_record"
-    t.decimal  "push"
+    t.decimal  "push",         :precision => 8, :scale => 2
     t.string   "operator"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -70,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20120321135833) do
     t.integer  "plot_id"
     t.integer  "receipt_id"
     t.string   "receipt_no"
+    t.string   "note"
   end
 
   create_table "bills", :force => true do |t|

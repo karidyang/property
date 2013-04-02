@@ -1,6 +1,7 @@
 #coding:utf-8
 class Receipt < ActiveRecord::Base
   has_many :details, :class_name => 'BillItem', :order => 'trans_time desc'
+  has_many :account_details, :class_name => 'AccountDetail', :order => 'trans_time'
   belongs_to :plot
   belongs_to :house
   before_create :create_no
@@ -29,6 +30,29 @@ class Receipt < ActiveRecord::Base
     bill_item.receipt_no = self.receipt_no
     bill_item.save!
 
+  end
+
+  def add_account_item(account_detail, operator='系统')
+
+    self.house = House.find(account_detail.house_id) if self.house.nil?
+    self.plot = Plot.find(account_detail.plot_id) if self.plot.nil?
+    self.print_user = operator if self.print_user.nil?
+    self.print_date = Date.today if self.print_date.nil?
+    self.save
+
+    if account_detail.receipt
+      return
+    end
+
+    account_details << account_detail
+
+    account_detail.receipt_no = self.receipt_no
+    account_detail.save!
+
+  end
+
+  def total_account_money
+    account_details.map{|detail| detail.money}.inject {|sum,money| sum + money}
   end
 
   def total_money

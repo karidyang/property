@@ -17,6 +17,8 @@ Property::Application.routes.draw do
   match 'users/add_role/:id', :to=>'users#add_role'
 
   match 'bills/details/:id', :to => 'bills#details'
+  match 'bills/add_temporary/:id', :to => 'bills#add_temporary'
+  match 'bills/save_temporary/:id', :to => 'bills#save_temporary'
 
   resources :bills
 

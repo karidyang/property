@@ -114,6 +114,8 @@ class ChargesController < ApplicationController
 
   def get_unit_price
     @charge = Charge.find(params[:id])
+    house = House.find(params[:house_id])
+    @charge.price *= house.builded_area
     render :json => @charge.to_json
   end
 

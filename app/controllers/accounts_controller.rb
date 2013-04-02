@@ -1,4 +1,4 @@
-# coding: utf-8  
+# coding: utf-8
 class AccountsController < ApplicationController
   before_filter :require_user
   #around_filter do |controller, action|
@@ -70,7 +70,7 @@ class AccountsController < ApplicationController
       if Account.add_pre_money(params,@current_user.name)
         redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
       else
-        @items = Charge.find_all_by_plot_id(session[:current_plot])
+        @item = Charge.find_all_by_plot_id(session[:current_plot])
         render 'add_pre_money'
       end
     else

@@ -46,8 +46,13 @@
                 for (i = 0; i < data.accounts.length; i++) {
                     var account = data.accounts[i];
                     var account_html = "<tr>" +
+                            "<td><input type='checkbox' name='account_ids' id='account_ids' value='" + account.id + "' /></td>" +
                             "<td>" + account.item_name + "</td>" +
-                            "<td>" + account.money + "</td>";
+                            "<td>" + account.money + "</td>" +
+                            "<td>" + account.can_push + "</td>" +
+                            "<td>" +
+                            "<a href='/accounts/history/"+account.id+"'>历史记录</a>" +
+                            "</td></tr>";
                     $("#accounts_table tbody").append(account_html);
                 }
 
@@ -56,13 +61,13 @@
 
             if (data.cars) {
                 for (i = 0; i < data.cars.length; i++) {
-                    var account = data.cars[i];
-                    var account_html = "<tr>" +
+                    var car = data.cars[i];
+                    var car_html = "<tr>" +
                             "<td>" + cars.id + "</td>" +
                             "<td>" + cars.card + "</td>" +
                             "<td>" + cars.person + "</td>" +
                             "<td>" + cars.validateDate + "</td>" ;
-                    $("#accounts_table tbody").append(account_html);
+                    $("#cars_table tbody").append(car_html);
                 }
 
 
@@ -167,11 +172,32 @@
     }
 
     function add_pre_money() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
         var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
         url += "/" + $("#house_id").val();
         document.location.href = url;
     }
+
+    function add_temporary() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills, :action => :add_temporary) %>";
+        url += "/" + $("#house_id").val();
+        document.location.href = url;
+    }
     function pay() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
         var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
         url += "?house_id=" + $("#house_id").val();
         $("input[name='bill_item_ids']").each(function () {
@@ -187,6 +213,11 @@
         });
     }
     function push() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
         var url = "<%=url_for(:controller => :bills,:action=>:push) %>";
         url += "?house_id=" + $("#house_id").val();
         $("input[name='bill_item_ids']").each(function () {
@@ -198,10 +229,17 @@
             if (data.result == 'success') {
                 alert(data.msg);
                 refresh_house();
+            } else {
+                alert(data.msg);
             }
         });
     }
     function print() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
         var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
         url += "?houseId=" + $('#house_id').val() + "&type=0";
         var flag = false;
@@ -250,7 +288,7 @@
 <input type="hidden" id="house_code" value=""/>
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span2 well sidebar-nav">
+    <div class="span3 well sidebar-nav">
       <ul class="nav nav-list">
         <li class="nav-header">房间列表</li>
         <li>
@@ -258,9 +296,61 @@
         </li>
       </ul>
     </div>
-    <div class="span8 well">
+    <div class="span9 well">
+      <div class="row-fluid ">
+        <fieldset>
+          <legend>基本信息</legend>
+          <table id="house_base_info" class="table table-bordered table-hover table-condensed">
+            <tbody>
+            <tr>
+              <td>房号</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>业主</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>面积</td>
+              <td>0平方米</td>
+            </tr>
+            <tr>
+              <td>房屋类型</td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+        </fieldset>
+      </div>
+
+      <fieldset>
+        <legend>预存信息</legend>
+      </fieldset>
+      <div class="row-fluid">
+        <table id="accounts_table" class="table table-bordered table-hover table-condensed">
+          <thead>
+          <tr>
+            <th style="width: 50px;">
+              <label class="checkbox">
+                <input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
+              </label>
+            </th>
+            <th>预存款项目</th>
+            <th>金额</th>
+            <th>锁定金额</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
 
 
+      <fieldset>
+        <legend>缴费信息</legend>
+      </fieldset>
       <div class="row-fluid">
 
 
@@ -274,7 +364,7 @@
           <div class="row-fluid">
             <div class="btn-toolbar">
               <div class="btn-group">
-                <button class="btn"><span></span>增加临时账单</button>
+                <button class="btn" onclick="add_temporary()"><span></span>增加临时账单</button>
                 <button class="btn" onclick="add_pre_money()"><span></span>预存款</button>
                 <button class="btn"><span></span>退款</button>
                 <button class="btn" onclick="pay()"><span></span>缴费</button>
@@ -314,34 +404,6 @@
           </tbody>
         </table>
       </div>
-
-    </div>
-    <div class="span2 well">
-      <div class="row-fluid ">
-        <fieldset>
-          <legend>基本信息</legend>
-          <table id="house_base_info" class="table table-bordered table-hover table-condensed">
-            <tbody>
-            <tr>
-              <td>房号</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>业主</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>面积</td>
-              <td>0平方米</td>
-            </tr>
-            <tr>
-              <td>房屋类型</td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>
       <div class="row-fluid ">
         <fieldset>
           <legend>车位信息</legend>
@@ -351,16 +413,8 @@
           </table>
         </fieldset>
       </div>
-      <div class="row-fluid ">
-        <fieldset>
-          <legend>账户余额</legend>
-          <table id="accounts_table" class="table table-bordered table-hover table-condensed">
-            <tbody>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>
     </div>
+
   </div>
 
 </div>

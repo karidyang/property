@@ -113,6 +113,31 @@ class Bill < ActiveRecord::Base
     self.save!
   end
 
+  def add_temp_pay(params)
+    bill_item = BillItem.create(
+        :house_id => params[:house_id],
+        :item_id => params[:item_id],
+        :unit_price => params[:unitPrice],
+        :note => params[:note],
+        :record => params[:record],
+        :money => params[:money],
+        :pay_money => params[:money],
+        :pay_date => Date.today,
+        :trans_time => params[:charge_time],
+        :start_record => 0,
+        :end_record => 0,
+        :operator => params[:user_name]
+    )
+
+    item = Charge.find(params[:item_id])
+    bill_item.item_name = item.item_name
+    bill_item.item_type = 0
+    bill_item.plot_id = params[:plot_id]
+
+    add_item bill_item
+    puts "#{params[:house_code]} 增加临时收费项[#{item.item_name}]，金额：#{bill_item.money}"
+  end
+
   #def push_money(bill_item)
   #  #Account account = accountDao.findUniqueAccountByHouseAndItem(houseId, itemType.getType(), itemId)
   #  account = Account.find_account_by_house(bill_item.house_id, bill_item.item_type, bill_item.item_id)

@@ -5,6 +5,7 @@
 
       <%= link_to '新增预存款', :controller => :accounts, :action => :add_pre_money, :house_id => @house_id, :class => 'btn' %>
       <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+      <%= link_to '返回', houses_path, :class => 'btn' %>
     </div>
   </div>
   <div class="container-fluid">

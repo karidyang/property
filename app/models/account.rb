@@ -73,6 +73,7 @@ class Account < ActiveRecord::Base
   end
 
   def can_push()
+    return 0 if account_details.nil?
     account_details.map { |detail| detail.can_push }.inject { |sum, can_push| sum + can_push }
   end
 
@@ -91,7 +92,7 @@ class Account < ActiveRecord::Base
     detail            = AccountDetail.new
     detail.unit_price =params[:unitPrice]
     detail.record     = params[:record]
-    detail.can_push   =params[:can_push]
+    detail.can_push   =params[:can_push] || 0.00
     detail.money      = params[:money]
     detail.updateby   = operator
 
@@ -139,6 +140,6 @@ class Account < ActiveRecord::Base
   end
 
   def json
-    {item_name:self.item_name,money:self.money}
+    {id:self.id,item_name:self.item_name,money:self.money,can_push:self.can_push}
   end
 end
