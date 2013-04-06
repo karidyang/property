@@ -1,0 +1,24 @@
+<SCRIPT type="text/javascript">
+    <!--
+    var setting = {
+        async: {
+            enable: true,
+            url: "http://localhost:3000/houses/house_tree"
+        }
+    };
+
+    var zNodes =[];
+
+    $(document).ready(function(){
+        var ztree = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        var nodes = ztree.getNodesByParam("name","1-1-1-1",null);
+        ztree.expandNode(nodes[0],true,true,true);
+    });
+    //-->
+</SCRIPT>
+
+<div class="content_wrap">
+  <div class="zTreeDemoBackground left">
+    <ul id="treeDemo" class="ztree"></ul>
+  </div>
+</div>

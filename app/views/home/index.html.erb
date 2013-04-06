@@ -25,10 +25,11 @@
 
     }
 
-    function refresh_house() {
-        $("#selectAll").removeAttr("checked");
+    function refresh_house(house_code) {
+        $("#select_account_all").removeAttr("checked");
+        $("#select_bill_all").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
-        house_code = $("#house_code").val();
+//        house_code = $("#house_code").val();
         $.post(url, {"house_code": house_code}, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
@@ -283,12 +284,34 @@
         window.open(url, '收据打印', sFeatures);
     }
 
+    function search_house() {
+        var house_code = $("#search_house_code").val();
+        refresh_house(house_code);
+        $("#house_code").val(house_code);
+//        var treeObj = $.fn.zTree.getZTreeObj("house_tree");
+//        var node = zTree1.getNodesByParam("name", house_code, null); // 仅查找一个节点
+//        alert(node);
+//        if (node.length>0) {
+//            zTree1.expandNode(node[0], true, true, true);
+//        } else {
+//            zTree1.expandAll(true);
+//        }
+    }
+
+    function filter(node) {
+        return (node.name.indexOf("1-1-1-1") > -1)
+    }
+
 </script>
 <input type="hidden" id="house_id" value=""/>
 <input type="hidden" id="house_code" value=""/>
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3 well sidebar-nav">
+      <div class="input-append">
+      <input type="text" placeholder="房间号" class="span6" id="search_house_code" />
+      <input type="button" value="搜索" class="btn" onclick="search_house()" />
+        </div>
       <ul class="nav nav-list">
         <li class="nav-header">房间列表</li>
         <li>
@@ -332,7 +355,7 @@
           <tr>
             <th style="width: 50px;">
               <label class="checkbox">
-                <input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
+                <input type="checkbox" id="select_account_all" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
               </label>
             </th>
             <th>预存款项目</th>
@@ -358,7 +381,7 @@
           <div class="row-fluid">
             <input id="start_time" name="start_time" type="text" class="span4" placeholder="开始日期" onfocus="HS_setDate(this)"/>
             <input id="end_time" name="end_time" type="text" class="span4" placeholder="结束日期" onfocus="HS_setDate(this)"/>
-            <%= select_tag(:charge_type, options_for_select(charge_type_list)) %>
+            <%= select_tag(:charge_type, options_for_select(charge_type_list), :class=>'span3') %>
             <input type="button" value="查询" class="btn" onclick="search_bill_item()"/>
           </div>
           <div class="row-fluid">
@@ -383,7 +406,7 @@
           <tr>
             <th style="width: 50px;">
               <label class="checkbox">
-                <input type="checkbox" id="selectAll" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
+                <input type="checkbox" id="select_bill_all" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
               </label>
             </th>
             <th>费用名称</th>

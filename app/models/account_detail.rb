@@ -2,6 +2,7 @@
 class AccountDetail < ActiveRecord::Base
   belongs_to :account
   belongs_to :receipt
+  belongs_to :house
   before_create :default_trans_time
 
   def default_trans_time

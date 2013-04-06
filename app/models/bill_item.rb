@@ -2,6 +2,7 @@
 class BillItem < ActiveRecord::Base
   belongs_to :bill
   belongs_to :receipt
+  belongs_to :house
 
   before_create :default_value_for_create
 

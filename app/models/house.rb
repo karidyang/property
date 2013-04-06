@@ -28,7 +28,7 @@ class House < ActiveRecord::Base
   end
 
   def to_json
-    "{'id':'h-#{self.id}','name':'#{self.house_code}'}"
+    "{\"id\":\"h-#{self.id}\",\"name\":\"#{self.house_code}|#{owner_names}\"}"
   end
 
   def json

@@ -8,7 +8,6 @@ class HomeController < ApplicationController
   end
 
   def demo
-    render :layout => nil
   end
 
   def login

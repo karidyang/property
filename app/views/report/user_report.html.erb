@@ -1,0 +1,34 @@
+<fieldset>
+  <legend>收费员统计</legend>
+  <div class="container-fluid">
+    <div class="input-append">
+      <%= form_tag controller: 'report',action: 'user_report' do %>
+        <%= text_field_tag :user, nil, placehold:'收费员' %>
+        <%= submit_tag '搜索', class: 'btn' %>
+      <% end %>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th>时间段</th>
+        <th>已收金额</th>
+        <th>收费员</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @user_reports.each do |user_report| %>
+          <tr>
+            <td><%= h user_report[:trans_time] %> </td>
+            <td><%= h user_report[:total_pay_money] %> </td>
+            <td><%= h user_report[:operator] %> </td>
+            <td><%= link_to '详细',controller: 'report',action: 'user_report_detail',user:user_report[:operator] %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</fieldset>

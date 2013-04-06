@@ -1,4 +1,6 @@
 Property::Application.routes.draw do
+  get 'report/user_report'
+
   get 'receipt/print'
 
   get 'receipt/show'

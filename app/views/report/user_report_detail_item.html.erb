@@ -1,0 +1,37 @@
+<fieldset>
+  <legend>收费员统计</legend>
+  <div class="container-fluid">
+    <div class="input-append">
+      <input type="button" value="返回" class="btn" onclick="history.back()" />
+    </div>
+  </div>
+  <div class="container-fluid">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th>时间</th>
+        <th>收费项目</th>
+        <th>房号</th>
+        <th>业主</th>
+        <th>已收金额</th>
+        <th>预收金额</th>
+        <th>收费员</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @user_reports.each do |user_report| %>
+          <tr>
+            <td><%= h user_report.trans_time %> </td>
+            <td><%= h user_report.item_name %> </td>
+            <td><%= h user_report.house_code %> </td>
+            <td><%= h user_report.owner %> </td>
+            <td><%= h user_report.pay_money %> </td>
+            <td><%= h user_report.pre_money %> </td>
+            <td><%= h user_report.operator %> </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</fieldset>
