@@ -6,7 +6,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require jquery.ztree.core-3.0.min
+//= require jquery.ztree.excheck-3.0.min
+//= require jquery.ztree.exedit-3.0.min
+//= require bootstrap.min
+//= require bootstrap-datetimepicker.min
+//= require bootstrap-datetimepicker.zh-CN
 
 
 function selectAllCheck(allCheckedObj, id) {
@@ -29,3 +34,14 @@ function selectAllCheck(allCheckedObj, id) {
         });
     }
 }
+
+$.fn.datetimepicker.dates['zh-CN'] = {
+                days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            today: "今日",
+        suffix: [],
+        meridiem: []
+    };

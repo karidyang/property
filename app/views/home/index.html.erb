@@ -20,8 +20,10 @@
     });
 
     function click_house(event, treeid, treeNode) {
-        $("#house_code").val(treeNode.name);
-        refresh_house(treeNode.name);
+        var nodeName = treeNode.name;
+        var names = nodeName.split("|");
+        $("#house_code").val(names[0]);
+        refresh_house(names[0]);
 
     }
 
@@ -29,7 +31,8 @@
         $("#select_account_all").removeAttr("checked");
         $("#select_bill_all").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
-//        house_code = $("#house_code").val();
+        if (house_code == null)
+            house_code = $("#house_code").val();
         $.post(url, {"house_code": house_code}, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
@@ -298,13 +301,16 @@
 //        }
     }
 
-    function filter(node) {
-        return (node.name.indexOf("1-1-1-1") > -1)
-    }
+    $(document).ready(function() {
+        
+        $("#start_time").datetimepicker();
+        $("#end_time").datetimepicker();
+    });
 
 </script>
 <input type="hidden" id="house_id" value=""/>
 <input type="hidden" id="house_code" value=""/>
+<%= render 'layouts/house_info' %>
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3 well sidebar-nav">
@@ -379,8 +385,9 @@
 
         <div class="input-append">
           <div class="row-fluid">
-            <input id="start_time" name="start_time" type="text" class="span4" placeholder="开始日期" onfocus="HS_setDate(this)"/>
-            <input id="end_time" name="end_time" type="text" class="span4" placeholder="结束日期" onfocus="HS_setDate(this)"/>
+
+            <input id="start_time" name="start_time" type="text" class="span4" placeholder="开始日期" data-date-format="yyyy-mm-dd"/>
+            <input id="end_time" name="end_time" type="text" class="span4" placeholder="结束日期" data-date-format="yyyy-mm-dd"/>
             <%= select_tag(:charge_type, options_for_select(charge_type_list), :class=>'span3') %>
             <input type="button" value="查询" class="btn" onclick="search_bill_item()"/>
           </div>
