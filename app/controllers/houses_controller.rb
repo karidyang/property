@@ -134,13 +134,19 @@ class HousesController < ApplicationController
         bill_items_json << bill_item.json
       end
     end
+    pay_bill_items_json = Array.new
+    house.pay_bills.each do |bill|
+      bill.bill_items.each do |bill_item|
+        pay_bill_items_json << bill_item.json
+      end
+    end
     accounts_json = Array.new
 
     house.accounts.each do |account|
       accounts_json << account.json
     end
 
-    render :json => {house:house.json,bill_items:bill_items_json,accounts:accounts_json}
+    render :json => {house:house.json,bill_items:bill_items_json,pay_bill_items:pay_bill_items_json,accounts:accounts_json}
   end
 
 end

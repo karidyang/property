@@ -15,6 +15,7 @@ class House < ActiveRecord::Base
   has_and_belongs_to_many :charges
   has_many :bills, :class_name => 'Bill', :order => 'bill_date desc'
   has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0',:order=>'bill_date desc'
+  has_many :pay_bills, :class_name => 'Bill', :conditions => 'bill_status = 1',:order=>'bill_date desc'
   self.per_page = 10
 
   def self.find_house(plot_id, house_code=nil)

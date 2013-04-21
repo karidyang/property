@@ -56,6 +56,7 @@ class Bill < ActiveRecord::Base
     if bill_status_sum == bill_items.size
       self.bill_status = STATE[:pay]
     end
+    self.save
   end
 
 
