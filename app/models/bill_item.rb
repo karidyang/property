@@ -37,8 +37,10 @@ class BillItem < ActiveRecord::Base
       self.pay_money = 0.0
       self.pay_date = nil
       self.status = STATE[:unpay]
-      self.push_money = 0.0
+      self.push = 0.0
       self.operator=operator
+      self.receipt = nil
+      self.receipt_no = nil
       self.save!
     end
   end
@@ -120,6 +122,24 @@ class BillItem < ActiveRecord::Base
     def search_by_house(plot, params)
       house = House.search(plot, params)
       BillItem.where('house_id=? and status = ? and trans_time between ? and ?', house.id, params[:charge_type], params[:start_time], params[:end_time])
+    end
+  end
+
+  def self.unpay_item(house_id)
+    sql = "SELECT t.house_id,t.ITEM_NAME,SUM(t.MONEY) money,SUM(t.pay_money) pay_money,SUM(t.push) push, 
+       DATE_FORMAT(MIN(t.TRANS_TIME),'%Y.%m') start_time,DATE_FORMAT(MAX(t.TRANS_TIME),'%Y.%m') end_time 
+       FROM bill_items t WHERE t.house_id=#{house_id} AND t.status=0 
+     GROUP BY t.house_id,t.ITEM_NAME "
+
+    result = ActiveRecord::Base.connection.execute(sql)
+    result.map do |r| {
+      trans_time: "#{r[5]}~~~#{r[6]}",
+      item_name: r[1],
+      money: r[2],
+      pay_money: r[3],
+      push: r[4],
+      sub_money: r[2]-r[3]-r[4]
+      } 
     end
   end
 end

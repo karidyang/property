@@ -1,9 +1,8 @@
 Property::Application.routes.draw do
   get 'report/user_report'
-
   get 'receipt/print'
-
   get 'receipt/show'
+  get 'receipt/unpay_list'
 
   root :to => 'home#index'
   match 'houses/house_tree'=>'houses#house_tree'
@@ -21,6 +20,7 @@ Property::Application.routes.draw do
   match 'bills/details/:id', :to => 'bills#details'
   match 'bills/add_temporary/:id', :to => 'bills#add_temporary'
   match 'bills/save_temporary/:id', :to => 'bills#save_temporary'
+  match 'bills/reset', :to => 'bills#reset'
 
   resources :bills
 

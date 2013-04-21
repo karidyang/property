@@ -60,7 +60,7 @@ class Bill < ActiveRecord::Base
 
 
   def self.current_month_bill(house_id, day=Date.today)
-    puts house_id, day
+    #puts house_id, day
     first_day = day.at_beginning_of_month
     last_day = day.at_end_of_month
     bill = self.where("house_id=? and bill_date between ? and ?", house_id, first_day, last_day).first
@@ -108,7 +108,7 @@ class Bill < ActiveRecord::Base
     self.bill_items << bill_item
     self.curr_money = bill_items.map { |detail| detail.money }.inject { |sum, money| sum + money }
     sum_status = bill_items.map { |detail| detail.status }.inject { |sum, status| sum + status }
-    puts "bill_item sum_status = #{sum_status}, bill_items.size = #{bill_items.size}"
+    #puts "bill_item sum_status = #{sum_status}, bill_items.size = #{bill_items.size}"
     self.bill_status = STATE[:pay] if sum_status == bill_items.size
     self.save!
   end

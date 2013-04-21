@@ -90,11 +90,13 @@ class Account < ActiveRecord::Base
   def self.add_pre_money(params, operator='系统')
     #@house = House.find(params[:house_id])
     detail            = AccountDetail.new
-    detail.unit_price =params[:unitPrice]
+    detail.unit_price = params[:unitPrice]
     detail.record     = params[:record]
-    detail.can_push   =params[:can_push] || 0.00
+    detail.can_push   = params[:can_push] || 0.00
     detail.money      = params[:money]
     detail.updateby   = operator
+    detail.house_id   = params[:house_id]
+    detail.plot_id    = params[:plot_id]
 
     account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
     charge = Charge.find(params[:item_id])

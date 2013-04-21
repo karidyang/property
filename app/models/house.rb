@@ -17,7 +17,7 @@ class House < ActiveRecord::Base
   has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0',:order=>'bill_date desc'
   self.per_page = 10
 
-  def self.find_house(plot_id, house_code)
+  def self.find_house(plot_id, house_code=nil)
     if plot_id.nil? && house_code.nil?
       self.order('house_code')
     elsif house_code.nil?
@@ -73,13 +73,13 @@ class House < ActiveRecord::Base
           if charge.period == Charge::PERIOD[:month]
             unit_price = charge.price
             record = 0
-            puts "charge.unit_type == #{charge.unit_type}"
+            #puts "charge.unit_type == #{charge.unit_type}"
             if charge.unit_type == 1
               record = self.builded_area
             else
               record = charge.item_num
             end
-            puts "record == #{record}"
+            #puts "record == #{record}"
             bill_item = BillItem.find_by_date(self.id, charge.id, Charge::TYPE[:custom], day)
             if bill_item.nil?
               bill_item = BillItem.create(
@@ -124,9 +124,48 @@ class House < ActiveRecord::Base
     result
   end
 
+  # 获取房间对应的未付款账单集合，集合返回一个hash对象
+  def unpay
+    unpay = BillItem.unpay_item(id)
+    money = pay_money = push = sub_money = 0
+    details = []
+    unpay.each do |e|
+      money     += e[:money]
+      pay_money += e[:pay_money]
+      push      += e[:push]
+      sub_money += e[:sub_money]
+      details << e
+    end
+    unpays = {}
+    unpays[:details] = details
+    unpays[:total_money]     = money
+    unpays[:total_pay_money] = pay_money
+    unpays[:total_push]      = push
+    unpays[:total_sub_money] = sub_money
+    unpays[:house_info] = "#{house_code} #{owner_name}"
+    unpays[:title] = "#{plot.name}欠费催款单"
+    return unpays
+  end
+
   class << self
     def search(plot, params)
       self.where('plot_id=? and house_code=?', plot, params[:house_code]).first
+    end
+  end
+
+  
+
+  private
+  def build_time(unpay, item)
+    if unpay[:start_time] && unpay[:end_time]
+      if item.trans_time > unpay[:end_time]
+        unpay[:end_time] = item.trans_time
+      elsif item.trans_time < unpay[:start_time]
+        unpay[:start_time] = item.trans_time
+      end
+    else
+      unpay[:start_time] = item.trans_time
+      unpay[:end_time]   = item.trans_time
     end
   end
 end
