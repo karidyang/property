@@ -3,51 +3,63 @@
     <fieldset>
       <legend><%= header_name %></legend>
       <div class="control-group">
-        <%= f.label '楼栋', :class => 'control-label' %>
+        <%= f.label :area_id, '楼栋', :class => 'control-label' %>
         <div class="controls">
           <%= f.select(:area_id, all_areas) %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '房号', :class => 'control-label' %>
+        <%= f.label :house_code, '房号', :class => 'control-label' %>
         <div class="controls">
           <%= f.text_field :house_code %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '建筑面积', :class => 'control-label' %>
+        <%= f.label :builded_area, '建筑面积', :class => 'control-label' %>
         <div class="controls">
           <%= f.text_field :builded_area %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '实际面积', :class => 'control-label' %>
+        <%= f.label :real_area, '实际面积', :class => 'control-label' %>
         <div class="controls">
           <%= f.text_field :real_area %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '公摊面积', :class => 'control-label' %>
+        <%= f.label :share_area, '公摊面积', :class => 'control-label' %>
         <div class="controls">
           <%= f.text_field :share_area %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '单元状况', :class => 'control-label' %>
+        <%= f.label :status, '单元状况', :class => 'control-label' %>
         <div class="controls">
           <%= f.select :status, all_status %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '使用类型', :class => 'control-label' %>
+        <%= f.label :user_type, '使用类型', :class => 'control-label' %>
         <div class="controls">
           <%= f.select :use_type, all_use_type %>
         </div>
       </div>
       <div class="control-group">
-        <%= f.label '业主', :class => 'control-label' %>
+        <%= f.label :owner_name, '业主', :class => 'control-label' %>
         <div class="controls">
           <%= f.text_field :owner_name %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :checkin_time, '入住时间', class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :checkin_time, 'data-date-format' =>"yyyy-mm-dd" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :receive_time, '收房时间', class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :receive_time, 'data-date-format'=>"yyyy-mm-dd"%>
         </div>
       </div>
       <div class="control-group">
@@ -59,3 +71,21 @@
       </div>
     </fieldset>
 <% end %>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#house_receive_time").datetimepicker({
+      format : 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+    $("#house_checkin_time").datetimepicker({
+      format : 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+  });
+</script>

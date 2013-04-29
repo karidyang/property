@@ -1,0 +1,151 @@
+<div class="span9 well">
+  <%= render 'layouts/house_info' %>
+</div>
+<div class="span9 well">
+  <div class="tabbable">
+    <ul class="nav nav-tabs">
+      <li>
+        <a href="#tab1" data-toggle="tab">预存信息</a>
+      </li>
+      <li class="active">
+        <a href="#tab2" data-toggle="tab">未缴费信息</a>
+      </li>
+      <li>
+        <a href="#tab4" data-toggle="tab">已缴费信息</a>
+      </li>
+      <li>
+        <a href="#tab3" data-toggle="tab">车位信息</a>
+      </li>
+
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="tab1">
+
+        <table id="accounts_table" class="table table-bordered table-hover table-condensed">
+          <thead>
+          <tr>
+            <th style="width: 50px;">
+              <label class="checkbox">
+                <input type="checkbox" id="select_account_all" onchange="selectAllCheck(this,'account_ids')"/>全选
+              </label>
+            </th>
+            <th>预存款项目</th>
+            <th>金额</th>
+            <th>锁定金额</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane active" id="tab2">
+        <div class="input-append">
+          <div class="row-fluid">
+
+            <input id="start_time" name="start_time" type="text" class="span4" placeholder="开始日期" />
+            <input id="end_time" name="end_time" type="text" class="span4" placeholder="结束日期" />
+            <!--<%= select_tag(:charge_type, options_for_select(charge_type_list), :class => 'span3') %>-->
+            <input type="button" value="查询" class="btn" onclick="search_bill_item()"/>
+          </div>
+          <div class="row-fluid">
+            <div class="btn-toolbar">
+              <div class="btn-group">
+                <button class="btn" onclick="add_temporary()"><span></span>增加临时账单</button>
+                <button class="btn" onclick="add_pre_money()"><span></span>预存款</button>
+                <button class="btn"><span></span>退款</button>
+                <button class="btn" onclick="pay()"><span></span>缴费</button>
+                <button class="btn" onclick="push()"><span></span>使用预存款冲销</button>
+                <button class="btn" onclick="print()"><span></span>打印收据</button>
+                <button class="btn" onclick="resetBill()"><span></span>重置费用账单</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <table id="bill_items_table" class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+              <th style="width: 50px;">
+                <label class="checkbox">
+                  <input type="checkbox" id="select_bill_all" onchange="selectAllCheck(this,'bill_item_ids')"/>全选
+                </label>
+              </th>
+              <th>费用名称</th>
+              <th>费用时间</th>
+              <th>费用状态</th>
+              <th>单价</th>
+              <th>金额</th>
+              <th>冲销</th>
+              <th>滞纳金</th>
+              <th>应收</th>
+              <th>实付</th>
+              <!-- <th>起数</th>
+              <th>止数</th> -->
+              <th>单据号</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane" id="tab3">
+        <table class="table table-bordered table-hover table-condensed">
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane" id="tab4">
+        <div class="row-fluid">
+          <table id="pay_bill_items_table" class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+              <th style="width: 50px;">
+                <label class="checkbox">
+                  <input type="checkbox" id="select_bill_all" onchange="selectAllCheck(this,'pay_bill_item_ids')"/>全选
+                </label>
+              </th>
+              <th>费用名称</th>
+              <th>费用时间</th>
+              <th>费用状态</th>
+              <th>单价</th>
+              <th>金额</th>
+              <th>冲销</th>
+              <th>滞纳金</th>
+              <th>应收</th>
+              <th>实付</th>
+              <!-- <th>起数</th>
+              <th>止数</th> -->
+              <th>单据号</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#start_time").datetimepicker({
+      format : 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+    $("#end_time").datetimepicker({
+      format : 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+  });
+</script>

@@ -24,8 +24,8 @@
         <th>收费项目名称</th>
         <th>周期类型</th>
         <th>单价</th>
-        <th>单价类型</th>
-        <th>数量</th>
+        <th>是否绑定面积</th>
+        <th>基数</th>
         <th>收费周期</th>
         <th>滞纳金比率</th>
         <th>是否退还</th>
@@ -40,16 +40,15 @@
                 <input type="checkbox" id="charge_id" value="<%= charge.id %>">
               </label>
             </td>
-            <td><%= charge.item_name %></td>
+            <td><%= link_to charge.item_name, edit_charge_path(charge) %></td>
             <td><%= get_period_type(charge.period_type) %></td>
             <td><%= charge.price %></td>
-            <td><%= get_unit_type(charge.unit_type) %></td>
+            <td><%= get_bind_area(charge.bind_area) %></td>
             <td><%= charge.item_num %></td>
             <td><%= get_period(charge.period) %></td>
             <td><%= charge.fee_rate %></td>
             <td><%= get_return_back(charge.return_back) %></td>
             <td>
-              <%= link_to '编辑', edit_charge_path(charge) %>
               <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
               <%= link_to '设置房间', :controller => 'charges', :action => 'add_house', :id => charge %>
             </td>

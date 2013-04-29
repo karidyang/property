@@ -48,7 +48,7 @@
             <td><%= house.id %></td>
             <td><%= h house.plot.name %></td>
             <td><%= h house.area.name %></td>
-            <td><%= h house.house_code %></td>
+            <td><%= link_to h(house.house_code), edit_house_path(house) %></td>
             <td><%= h house.owner_names %></td>
             <td><%= h house.builded_area %></td>
             <td><%= h house.real_area %></td>
@@ -56,10 +56,9 @@
             <td><%= h get_status(house.status) %></td>
             <td><%= h get_use_type(house.use_type) %></td>
             <td>
-              <%= link_to '编辑', edit_house_path(house) %>
               <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
               <%= link_to_add_owner(house) %>
-              <%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>
+              <!--<%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>-->
             </td>
           </tr>
 

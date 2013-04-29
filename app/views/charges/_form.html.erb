@@ -34,10 +34,17 @@
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">单价类型</label>
+        <label class="control-label">是否绑定面积</label>
 
         <div class="controls">
-          <%= f.select(:unit_type, all_unit_type) %>
+          <label class="radio inline">
+            <%= f.radio_button(:bind_area, true) %>
+            是
+          </label>
+          <label class="radio inline">
+            <%= f.radio_button(:bind_area, false, checked:true) %>
+            否
+          </label>
         </div>
       </div>
       <div class="control-group">
@@ -48,7 +55,7 @@
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">数量</label>
+        <label class="control-label">基数</label>
 
         <div class="controls">
           <%= f.text_field :item_num %>
@@ -65,7 +72,14 @@
         <label class="control-label">是否退还</label>
 
         <div class="controls">
-          <%= f.select(:return_back, all_return_back) %>
+          <label class="radio inline">
+            <%= f.radio_button(:return_back, 1) %>
+            是
+          </label>
+          <label class="radio inline">
+            <%= f.radio_button(:return_back, 0, checked:true) %>
+            否
+          </label>
         </div>
       </div>
       <div class="control-group">

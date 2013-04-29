@@ -74,8 +74,7 @@ class House < ActiveRecord::Base
           if charge.period == Charge::PERIOD[:month]
             unit_price = charge.price
             record = 0
-            #puts "charge.unit_type == #{charge.unit_type}"
-            if charge.unit_type == 1
+            if charge.bind_area?
               record = self.builded_area
             else
               record = charge.item_num

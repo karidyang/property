@@ -13,10 +13,10 @@ class HousesController < ApplicationController
   # GET /houses.xml
   def index
 
-      house_code = params[:house_code]
-      plot_id = params[:plot_id] || session[:current_plot]
-      #logger.info "plot_id=#{plot_id}, house_code=#{house_code}"
-      @houses = House.find_house(plot_id, house_code).paginate(:page=>params[:page])
+    house_code = params[:house_code]
+    plot_id = params[:plot_id] || session[:current_plot]
+    #logger.info "plot_id=#{plot_id}, house_code=#{house_code}"
+    @houses = House.find_house(plot_id, house_code).paginate(:page => params[:page])
 
   end
 
@@ -125,7 +125,7 @@ class HousesController < ApplicationController
     house_code = params[:house_code]
     logger.debug("house_code=#{house_code}")
 
-    house = House.where('house_code=? and plot_id=?',house_code,session[:current_plot]).first
+    house = House.where('house_code=? and plot_id=?', house_code, session[:current_plot]).first
 
 
     bill_items_json = Array.new
@@ -146,7 +146,12 @@ class HousesController < ApplicationController
       accounts_json << account.json
     end
 
-    render :json => {house:house.json,bill_items:bill_items_json,pay_bill_items:pay_bill_items_json,accounts:accounts_json}
+    render :json => {house: house.json, bill_items: bill_items_json, pay_bill_items: pay_bill_items_json, accounts: accounts_json}
+  end
+
+  def info
+
+    render 'home/_house_info', layout: 'iframe'
   end
 
 end

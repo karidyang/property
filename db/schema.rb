@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130406080532) do
+ActiveRecord::Schema.define(:version => 20130429031714) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -97,9 +97,10 @@ ActiveRecord::Schema.define(:version => 20130406080532) do
     t.integer  "fee_rate",                                  :default => 0
     t.integer  "return_back"
     t.string   "note"
-    t.integer  "plot_id",                                                  :null => false
+    t.integer  "plot_id",                                                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "bind_area",                                 :default => false
   end
 
   add_index "charges", ["plot_id"], :name => "index_charges_on_plot_id"
@@ -130,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20130406080532) do
     t.datetime "updated_at"
     t.string   "owner_name"
     t.date     "receive_time"
+    t.date     "checkin_time"
   end
 
   add_index "houses", ["area_id"], :name => "index_houses_on_area_id"

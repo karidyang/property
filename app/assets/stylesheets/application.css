@@ -6,4 +6,5 @@
  *= require ./bootstrap.min
  *= require ./bootstrap-responsive.min
  *= require ./zTreeStyle
+ *= require ./datetimepicker
 */

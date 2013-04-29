@@ -15,7 +15,7 @@ class ChargesController < ApplicationController
     if params[:item_name].nil?
       @charges = Charge.paginate(:page => params[:page])
     else
-      @charges = Charge.where('item_name=?', params[:item_name]).paginate(:page => params[:page])
+      @charges = Charge.where('item_name like ?', "%#{params[:item_name]}%").paginate(:page => params[:page])
     end
 
   end
