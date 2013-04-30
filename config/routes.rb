@@ -16,12 +16,14 @@ Property::Application.routes.draw do
   match 'accounts/transcation', :to => 'accounts#transcation'
 
   match 'charges/get_unit_price/:id', :to =>'charges#get_unit_price'
-  match 'users/add_role/:id', :to=>'users#add_role'
+  match 'users/add_role/:id', :to=>'users#add_role', :as => 'add_user_role'
 
   match 'bills/details/:id', :to => 'bills#details'
   match 'bills/add_temporary/:id', :to => 'bills#add_temporary'
   match 'bills/save_temporary/:id', :to => 'bills#save_temporary'
   match 'bills/reset', :to => 'bills#reset'
+
+  match 'admin', :to => 'users#index'
 
   resources :bills
 

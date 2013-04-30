@@ -1,6 +1,7 @@
 # coding: utf-8  
 class RolesController < ApplicationController
   before_filter :require_user
+  layout 'admin'
   #around_filter do |controller, action|
   #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
   #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
@@ -12,24 +13,23 @@ class RolesController < ApplicationController
   # GET /roles
   # GET /roles.xml
   def index
-    @roles = Role.order('name').paginate(:page=>params[:page])
+    @roles = Role.order('name').paginate(:page => params[:page])
+    render 'admin/roles/index'
   end
 
-  # GET /roles/1
-  # GET /roles/1.xml
-  def show
-    @role = Role.find(params[:id])
-  end
 
   # GET /roles/new
   # GET /roles/new.xml
   def new
     @role = Role.new
+    @privileges = Privilege.all
+    render 'admin/roles/new'
   end
 
   # GET /roles/1/edit
   def edit
     @role = Role.find(params[:id])
+    render 'admin/roles/edit'
   end
 
   # POST /roles
@@ -37,15 +37,16 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(params[:role])
 
-
     if @role.save
-      redirect_to(roles_url, :notice => '新建角色成功.')
-
+      params[:role][:privilege_ids] ||= []
+      if @role.update_attributes(params[:role])
+        redirect_to(roles_url, :notice => '新建角色成功.')
+      else
+        render 'admin/roles/new'
+      end
     else
-      render :action => 'new'
-
+      render 'admin/roles/new'
     end
-
   end
 
   # PUT /roles/1
@@ -58,8 +59,7 @@ class RolesController < ApplicationController
       redirect_to(roles_url, :notice => '角色保存成功.')
 
     else
-      render :action => 'edit'
-
+      render 'admin/roles/edit'
     end
 
   end
@@ -68,7 +68,11 @@ class RolesController < ApplicationController
   # DELETE /roles/1.xml
   def destroy
     @role = Role.find(params[:id])
-    @role.destroy
-    respond_with(@role, :location=>:back)
+    if @role.destroy
+      flash[:notice] = '删除成功'
+    else
+      flash[:notice] = '删除失败'
+    end
+    redirect_to roles_path
   end
 end

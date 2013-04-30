@@ -1,6 +1,7 @@
 # coding: utf-8  
 class UsersController < ApplicationController
   before_filter :require_user, :except => [:new, :create]
+  layout('admin')
   # GET /users
   # GET /users.xml
   def index
@@ -10,24 +11,21 @@ class UsersController < ApplicationController
     else
       @users = User.paginate(:page=>params[:page])
     end
-
+    render 'admin/users/index'
   end
 
-  # GET /users/1
-  # GET /users/1.xml
-  def show
-    @user = User.find(params[:id])
-  end
 
   # GET /users/new
   # GET /users/new.xml
   def new
     @user = User.new
+    render 'admin/users/new'
   end
 
   # GET /users/1/edit
   def edit
     @user = @current_user
+    render 'admin/users/edit'
   end
 
   # POST /users
@@ -38,9 +36,9 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:notice] = '注册成功.'
-      redirect_back_or_default root_path
+      redirect_back_or_default user_path
     else
-      render :action => :new
+      render 'admin/users/new'
     end
   end
 
@@ -86,11 +84,13 @@ class UsersController < ApplicationController
       end
     else
       @roles = get_roles
+      render 'admin/users/add_role'
     end
+
   end
 
   private
-  def get_roles
-    @roles = Role.all
-  end
+    def get_roles
+      @roles = Role.all
+    end
 end

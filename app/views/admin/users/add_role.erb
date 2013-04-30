@@ -1,0 +1,23 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @user} %>
+  <div class="portlet x12">
+    <div class="portlet-header"><h4>设置用户角色</h4></div>
+    <div class="portlet-content">
+      <%= form_tag add_user_role_path do %>
+          <div class="field">
+            <%= h @user.email %>
+          </div>
+          <div class="field">
+            <%= label_tag '角色' %>
+            <% for role in @roles %>
+                <%= check_box_tag 'user[role_ids][]', role.id, @user.roles.include?(role) %>
+                <%= role.name %>
+            <% end %>
+          </div>
+          <div class="field">
+            <button id="btnSubmit" class="btn">保存</button>
+            <button id="btnCancel" class="btn">返回</button>
+          </div>
+
+      <% end %>
+    </div>
+  </div>

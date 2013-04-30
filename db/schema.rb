@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130429031714) do
+ActiveRecord::Schema.define(:version => 20130430032641) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20130429031714) do
   create_table "privileges", :force => true do |t|
     t.string "model_name"
     t.string "privilege"
+    t.string "name"
   end
 
   create_table "privileges_roles", :id => false, :force => true do |t|

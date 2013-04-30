@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh_CN" lang="zh_CN">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+  <title>铭智物业管理</title>
+  <%= stylesheet_link_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
+
+  <%= csrf_meta_tag %>
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+  </style>
+  <style type="text/css">
+
+      /* Sticky footer styles
+      -------------------------------------------------- */
+
+    html,
+    body {
+      height: 90%;
+      /* The html and body elements cannot have any padding or margin. */
+    }
+
+      /* Wrapper for page content to push down footer */
+    #wrap {
+      height: auto !important;
+      margin: 0 auto -60px;
+      min-height: 100%;
+    }
+
+      /* Set the fixed height of the footer here */
+    #footer {
+      height: 60px;
+      margin-top: 60px;
+    }
+
+    #footer {
+      background-color: #f5f5f5;
+    }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+    @media (max-width: 767px) {
+      #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+
+    #wrap > .container {
+      padding-top: 10px;
+    }
+
+    .container .credit {
+      margin: 20px 0;
+    }
+
+  </style>
+</head>
+<body>
+
+<%= render 'layouts/admin_header' %>
+<div class="container-fluid">
+  <%= yield %>
+</div>
+<%= render 'layouts/footer' %>
+
+</body>
+</html>
