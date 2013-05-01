@@ -1,66 +1,68 @@
 <script type="text/javascript">
   function print() {
     var url = "<%=url_for(:controller => :receipt,:action=>:print_account) %>";
-        url += "?houseId=" + $('#house_id').val();
-        var flag = false;
-        var sum_checked = 0;
-        var hasNoPay = false;
-        $("input[name='detail_ids']").each(function () {
-            if (this.checked) {
+    url += "?houseId=" + $('#house_id').val();
+    var flag = false;
+    var sum_checked = 0;
+    var hasNoPay = false;
+    $("input[name='detail_ids']").each(function () {
+      if (this.checked) {
 //                if ($("#bill_item_" + this.value).text() == "已收") {
-                    url += "&item_ids[]=" + this.value;
-                    flag = true;
-                    sum_checked += 1;
+        url += "&item_ids[]=" + this.value;
+        flag = true;
+        sum_checked += 1;
 
 //                } else {
 //                    hasNoPay = true;
 //                }
-            }
-        });
+      }
+    });
 
 //        if (hasNoPay) {
 //            alert("包含有未缴费项目,请先缴费再打印收据!");
 //            return;
 //        }
-        if (!flag) {
-            alert("至少选择一个收费项!");
-            return;
-        }
+    if (!flag) {
+      alert("至少选择一个收费项!");
+      return;
+    }
 
-        if (sum_checked > 4) {
-            alert("最多只能选择4项!");
-            return;
-        }
-        var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
-        window.open(url, '收据打印', sFeatures);
-       // setInterval(refresh_house, 5000);
-   
+    if (sum_checked > 4) {
+      alert("最多只能选择4项!");
+      return;
+    }
+    var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+    window.open(url, '收据打印', sFeatures);
+    // setInterval(refresh_house, 5000);
+
   }
 
   function selectAllCheck(allCheckedObj, id) {
-      var isAll = $(allCheckedObj).attr("checked");
-      if (isAll) {
-          $(":checkbox").each(function () {
-              if (this.id == id) {
-                  if (!this.checked && !this.disabled) {
-                      this.checked = true;
-                  }
-              }
-          });
-      } else {
-          $(":checkbox").each(function () {
-              if (this.id == id) {
-                  if (this.checked && !this.disabled) {
-                      this.checked = false;
-                  }
-              }
-          });
-      }
+    var isAll = $(allCheckedObj).attr("checked");
+    if (isAll) {
+      $(":checkbox").each(function () {
+        if (this.id == id) {
+          if (!this.checked && !this.disabled) {
+            this.checked = true;
+          }
+        }
+      });
+    } else {
+      $(":checkbox").each(function () {
+        if (this.id == id) {
+          if (this.checked && !this.disabled) {
+            this.checked = false;
+          }
+        }
+      });
+    }
   }
 </script>
-<input type="hidden" id="house_id" value="<%=@account.house.id %>" >
+<input type="hidden" id="house_id" value="<%= @account.house.id %>">
 <fieldset>
-  <legend>历史记录</legend>
+  <div id="legend">
+    <legend>历史记录</legend>
+  </div>
   <div class="container-fluid">
     <div class="pull-left input-append">
 
@@ -95,25 +97,25 @@
       </thead>
       <tbody>
       <% @details.each do |detail| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" name="detail_ids" id="detail_ids" value="<%= detail.id %>">
-              </label>
-            </td>
-            <td><%= detail.account.house_code %></td>
-            <td><%= detail.account.house.owner_name %></td>
-            <td><%= get_account_type detail.account_type %></td>
-            <td><%= detail.account.item_name %></td>
-            <td><%= detail.trans_time %></td>
-            <td><%= detail.money %></td>
-            <td><%= detail.updateby %></td>
-            <td><%= detail.note %></td>
-            <td><%= detail.receipt_no %></td>
-            <td>
-              <%= del_detail detail.id %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" name="detail_ids" id="detail_ids" value="<%= detail.id %>">
+            </label>
+          </td>
+          <td><%= detail.account.house_code %></td>
+          <td><%= detail.account.house.owner_name %></td>
+          <td><%= get_account_type detail.account_type %></td>
+          <td><%= detail.account.item_name %></td>
+          <td><%= detail.trans_time %></td>
+          <td><%= detail.money %></td>
+          <td><%= detail.updateby %></td>
+          <td><%= detail.note %></td>
+          <td><%= detail.receipt_no %></td>
+          <td>
+            <%= del_detail detail.id %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

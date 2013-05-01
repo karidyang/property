@@ -1,5 +1,7 @@
 <fieldset>
-  <legend>收费统计</legend>
+  <div id="legend">
+    <legend>收费统计</legend>
+  </div>
   <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
@@ -11,13 +13,13 @@
       </tr>
       </thead>
       <tbody>
-      <% @pay_reports.each do |pr| %>  
-      <tr>
-        <td><%= h pr.plot.name %></td>
-        <td><%= h pr.trans_time %></td>
-        <td><%= h pr.item_name %></td>
-        <td><%= h pr.money %></td>
-      </tr>
+      <% @pay_reports.each do |pr| %>
+        <tr>
+          <td><%= h pr.plot.name %></td>
+          <td><%= h pr.trans_time %></td>
+          <td><%= h pr.item_name %></td>
+          <td><%= h pr.money %></td>
+        </tr>
       <% end %>
 
       </tbody>

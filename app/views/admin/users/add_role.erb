@@ -1,8 +1,9 @@
 <%= render :partial => 'shared/error_messages', :locals => {:target => @user} %>
 <%= form_tag add_user_role_path, class: 'form-horizontal' do %>
   <fieldset>
-    <legend>设置用户角色</legend>
-
+    <div id="legend">
+      <legend>设置用户角色</legend>
+    </div>
     <div class="control-group">
       <%= label_tag '用户', nil, class: 'control-label' %>
       <div class="controls">

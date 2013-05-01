@@ -1,16 +1,18 @@
 <fieldset>
-  <legend>账单列表</legend>
+  <div id="legend">
+    <legend>账单列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(bills_path, :method => :get) do %>
-          <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
-          <button type="submit" class="btn">搜索</button>
+        <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
+        <button type="submit" class="btn">搜索</button>
       <% end %>
     </div>
     <div class="input-append">
       <%= form_tag(:controller => :bills, :action => :calculate) do %>
-          <button type="submit" class="btn">计算小区当月账单</button>
-          <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+        <button type="submit" class="btn">计算小区当月账单</button>
+        <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       <% end %>
     </div>
 
@@ -34,23 +36,23 @@
       </thead>
       <tbody>
       <% @bills.each do |bill| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="bill_id" value="<%= bill.id %>">
-              </label>
-            </td>
-            <td><%= bill.house.house_code %></td>
-            <td><%= bill.bill_name %></td>
-            <td><%= bill.bill_date %></td>
-            <td><%= bill.bill_status %></td>
-            <td><%= bill.curr_money %></td>
-            <td>
-              <% if @current_user.has_privilege?('bills', 'destryo') %>
-                  <%= link_to '删除', bill, confirm: '确定删除?', method: :delete %>
-              <% end %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="bill_id" value="<%= bill.id %>">
+            </label>
+          </td>
+          <td><%= bill.house.house_code %></td>
+          <td><%= bill.bill_name %></td>
+          <td><%= bill.bill_date %></td>
+          <td><%= bill.bill_status %></td>
+          <td><%= bill.curr_money %></td>
+          <td>
+            <% if @current_user.has_privilege?('bills', 'destryo') %>
+              <%= link_to '删除', bill, confirm: '确定删除?', method: :delete %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

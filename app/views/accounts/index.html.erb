@@ -1,5 +1,7 @@
 <fieldset>
-  <legend>预存款列表</legend>
+  <div id="legend">
+    <legend>预存款列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
 
@@ -26,23 +28,23 @@
       </thead>
       <tbody>
       <% @accounts.each do |account| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="account_id" value="<%= account.id %>">
-              </label>
-            </td>
-            <td><%= account.house_code %></td>
-            <td><%= account.item_name %></td>
-            <td><%= account.money %></td>
-            <td><%= account.can_push %></td>
-            <td>
-              <%= account_history account %>
-              <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
-              <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>
-              <%= link_to '转存其他项目', :controller => :accounts, :action => :transcation, :account_id => account.id, :src_item_id => account.item_id %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="account_id" value="<%= account.id %>">
+            </label>
+          </td>
+          <td><%= account.house_code %></td>
+          <td><%= account.item_name %></td>
+          <td><%= account.money %></td>
+          <td><%= account.can_push %></td>
+          <td>
+            <%= account_history account %>
+            <%= link_to '删除', account, :confirm => '确定删除？', :method => :delete %>
+            <%= link_to '解除锁定', account, :confirm => '确定解除锁定?' %>
+            <%= link_to '转存其他项目', :controller => :accounts, :action => :transcation, :account_id => account.id, :src_item_id => account.item_id %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

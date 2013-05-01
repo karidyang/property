@@ -1,5 +1,7 @@
 <fieldset>
-  <legend>公司列表</legend>
+  <div id="legend">
+    <legend>公司列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= link_to '新增', new_company_path, :class => 'btn' %>
@@ -24,21 +26,21 @@
       </thead>
       <tbody>
       <% @companies.each do |company| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="company_id" value="<%= company.id %>">
-              </label>
-            </td>
-            <td><%= company.name %></td>
-            <td><%= company.address %></td>
-            <td><%= company.telphone %></td>
-            <td><%= company.email %></td>
-            <td>
-              <%= link_to 'Edit', edit_company_path(company) %>
-              <%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="company_id" value="<%= company.id %>">
+            </label>
+          </td>
+          <td><%= company.name %></td>
+          <td><%= company.address %></td>
+          <td><%= company.telphone %></td>
+          <td><%= company.email %></td>
+          <td>
+            <%= link_to 'Edit', edit_company_path(company) %>
+            <%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

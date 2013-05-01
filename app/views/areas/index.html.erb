@@ -1,14 +1,16 @@
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnAdd").click(function () {
-            document.location.href = '<%= new_area_path %>';
-        });
+  $(document).ready(function () {
+    $("#btnAdd").click(function () {
+      document.location.href = '<%= new_area_path %>';
     });
+  });
 
 
 </script>
 <fieldset>
-  <legend>楼栋列表</legend>
+  <div id="legend">
+    <legend>楼栋列表</legend>
+  </div>
   <div class="container-fluid">
 
     <form>
@@ -38,19 +40,19 @@
       </thead>
       <tbody>
       <% @areas.each do |area| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="area_id" value="<%= area.id %>">
-              </label>
-            </td>
-            <td><%= area.plot.name %></td>
-            <td><%= area.name %></td>
-            <td><%= area.house_num %></td>
-            <td>
-              <%= link_to '编辑', edit_area_path(area), :class => 'btn' %>
-              <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete, :class => 'btn' %></td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="area_id" value="<%= area.id %>">
+            </label>
+          </td>
+          <td><%= area.plot.name %></td>
+          <td><%= area.name %></td>
+          <td><%= area.house_num %></td>
+          <td>
+            <%= link_to '编辑', edit_area_path(area), :class => 'btn' %>
+            <%= link_to '删除', area, :confirm => '确认删除?', :method => :delete, :class => 'btn' %></td>
+        </tr>
       <% end %>
       </tbody>
     </table>

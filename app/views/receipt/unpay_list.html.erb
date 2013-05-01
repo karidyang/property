@@ -12,7 +12,9 @@
   }
 </script>
 <fieldset>
-  <legend>房间列表</legend>
+  <div id="legend">
+    <legend>房间列表</legend>
+  </div>
   <div class="container-fluid">
     <button class="btn btn-primary" onclick="print_unpay()">打印欠费催款单</button>
   </div>
@@ -39,23 +41,23 @@
       </thead>
       <tbody>
       <% @houses.each do |house| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" name="house_ids" id="house_ids" value="<%= house.id %>">
-              </label>
-            </td>
-            <td><%= house.id %></td>
-            <td><%= h house.plot.name %></td>
-            <td><%= h house.area.name %></td>
-            <td><%= h house.house_code %></td>
-            <td><%= h house.owner_names %></td>
-            <td><%= h house.builded_area %></td>
-            <td><%= h house.real_area %></td>
-            <td><%= h house.share_area %></td>
-            <td><%= h get_status(house.status) %></td>
-            <td><%= h get_use_type(house.use_type) %></td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" name="house_ids" id="house_ids" value="<%= house.id %>">
+            </label>
+          </td>
+          <td><%= house.id %></td>
+          <td><%= h house.plot.name %></td>
+          <td><%= h house.area.name %></td>
+          <td><%= h house.house_code %></td>
+          <td><%= h house.owner_names %></td>
+          <td><%= h house.builded_area %></td>
+          <td><%= h house.real_area %></td>
+          <td><%= h house.share_area %></td>
+          <td><%= h get_status(house.status) %></td>
+          <td><%= h get_use_type(house.use_type) %></td>
+        </tr>
 
       <% end %>
       </tbody>

@@ -1,11 +1,13 @@
 <fieldset>
-  <legend>业主列表</legend>
+  <div id="legend">
+    <legend>业主列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(owners_path, :method => :get) do %>
-          <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
-          <button type="submit" class="btn">搜索</button>
-          <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+        <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
+        <button type="submit" class="btn">搜索</button>
+        <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       <% end %>
     </div>
   </div>
@@ -30,24 +32,24 @@
       </thead>
       <tbody>
       <% @owners.each do |owner| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="owner_id" value="<%= owner.id %>">
-              </label>
-            </td>
-            <td><%= h owner.house.house_code %></td>
-            <td><%= h owner.name %></td>
-            <td><%= h owner.age %></td>
-            <td><%= h get_sex(owner.sex) %></td>
-            <td><%= h owner.phone %></td>
-            <td><%= h owner.id_card %></td>
-            <td><%= h owner.contract_no %></td>
-            <td>
-              <%= link_to '编辑', edit_owner_path(owner) %>
-              <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="owner_id" value="<%= owner.id %>">
+            </label>
+          </td>
+          <td><%= h owner.house.house_code %></td>
+          <td><%= h owner.name %></td>
+          <td><%= h owner.age %></td>
+          <td><%= h get_sex(owner.sex) %></td>
+          <td><%= h owner.phone %></td>
+          <td><%= h owner.id_card %></td>
+          <td><%= h owner.contract_no %></td>
+          <td>
+            <%= link_to '编辑', edit_owner_path(owner) %>
+            <%= link_to '删除', owner, :confirm => '确认删除?', :method => :delete %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

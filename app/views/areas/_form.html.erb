@@ -1,39 +1,40 @@
 <%= render :partial => 'shared/error_messages', :locals => {:target => @area} %>
 <%= form_for(@area, :html => {:class => 'form-horizontal'}) do |f| %>
 
-    <fieldset>
+  <fieldset>
+    <div id="legend">
       <legend><%= header_name %></legend>
+    </div>
+    <div class="control-group">
+      <label class="control-label">选择小区</label>
 
-      <div class="control-group">
-        <label class="control-label">选择小区</label>
-
-        <div class="controls">
-          <%= f.select(:plot_id, all_plots) %>
-        </div>
+      <div class="controls">
+        <%= f.select(:plot_id, all_plots) %>
       </div>
-      <div class="control-group">
-        <label class="control-label">楼栋名称</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">楼栋名称</label>
 
-        <div class="controls">
-          <%= f.text_field :name %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :name %>
       </div>
-      <div class="control-group">
-        <label class="control-label">房间数量</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">房间数量</label>
 
-        <div class="controls">
-          <%= f.text_field :house_num %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :house_num %>
       </div>
+    </div>
 
-      <div class="control-group">
+    <div class="control-group">
 
-        <div class="controls">
-          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
-          <a href="<%= areas_path %>" class="btn">返回</a>
-        </div>
+      <div class="controls">
+        <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+        <a href="<%= areas_path %>" class="btn">返回</a>
       </div>
-    </fieldset>
+    </div>
+  </fieldset>
 <% end %>
 
 

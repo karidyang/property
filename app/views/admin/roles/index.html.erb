@@ -1,5 +1,7 @@
 <fieldset>
-  <legend>角色列表</legend>
+  <div id="legend">
+    <legend>角色列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= link_to '新增', new_role_path, :class => 'btn' %>
@@ -16,12 +18,12 @@
       </thead>
       <tbody>
       <% @roles.each do |role| %>
-          <tr>
-            <td><%= link_to role.name, edit_role_path(role) %></td>
-            <td>
-              <%= link_to '删除', role, :confirm => '你确定吗?', :method => :delete, class: 'btn' %>
-            </td>
-          </tr>
+        <tr>
+          <td><%= link_to role.name, edit_role_path(role) %></td>
+          <td>
+            <%= link_to '删除', role, :confirm => '你确定吗?', :method => :delete, class: 'btn' %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

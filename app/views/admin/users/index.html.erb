@@ -1,13 +1,15 @@
 <fieldset>
-  <legend>用户列表</legend>
+  <div id="legend">
+    <legend>用户列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(users_path, :method => :get) do %>
-          <%= text_field_tag :name, nil, :class => 'span2', :placeholder => '姓名' %>
-          <button type="submit" class="btn">搜索</button>
+        <%= text_field_tag :name, nil, :class => 'span2', :placeholder => '姓名' %>
+        <button type="submit" class="btn">搜索</button>
       <% end %>
 
-      <%= link_to  '新增', new_user_path, :class => 'btn' %>
+      <%= link_to '新增', new_user_path, :class => 'btn' %>
       <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
     </div>
   </div>
@@ -28,21 +30,21 @@
       </thead>
       <tbody>
       <% @users.each do |user| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="user_id" value="<%= user.id %>">
-              </label>
-            </td>
-            <td><%= link_to user.email, edit_user_path(user) %></td>
-            <td><%= user.name %></td>
-            <td><%= user.state %></td>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="user_id" value="<%= user.id %>">
+            </label>
+          </td>
+          <td><%= link_to user.email, edit_user_path(user) %></td>
+          <td><%= user.name %></td>
+          <td><%= user.state %></td>
 
-            <td>
-              <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>
-              <%= link_to '设置角色', add_user_role_path(user) %>
-            </td>
-          </tr>
+          <td>
+            <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>
+            <%= link_to '设置角色', add_user_role_path(user) %>
+          </td>
+        </tr>
 
       <% end %>
       </tbody>

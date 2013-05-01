@@ -2,102 +2,103 @@
 
 <%= form_for(@charge, :html => {:class => 'form-horizontal'}) do |f| %>
 
-    <fieldset>
+  <fieldset>
+    <div id="legend">
       <legend><%= header_name %></legend>
+    </div>
+    <div class="control-group">
+      <label class="control-label">选择小区</label>
 
-      <div class="control-group">
-        <label class="control-label">选择小区</label>
-
-        <div class="controls">
-          <%= f.select(:plot_id, all_plots) %>
-        </div>
+      <div class="controls">
+        <%= f.select(:plot_id, all_plots) %>
       </div>
-      <div class="control-group">
-        <label class="control-label">费用名称</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">费用名称</label>
 
-        <div class="controls">
-          <%= f.text_field :item_name %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :item_name %>
       </div>
-      <div class="control-group">
-        <label class="control-label">项目类型</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">项目类型</label>
 
-        <div class="controls">
-          <%= f.select(:period_type, all_period_type) %>
-        </div>
+      <div class="controls">
+        <%= f.select(:period_type, all_period_type) %>
       </div>
-      <div class="control-group">
-        <label class="control-label">计费周期</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">计费周期</label>
 
-        <div class="controls">
-          <%= f.select(:period, all_period) %>
-        </div>
+      <div class="controls">
+        <%= f.select(:period, all_period) %>
       </div>
-      <div class="control-group">
-        <label class="control-label">是否绑定面积</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">是否绑定面积</label>
 
-        <div class="controls">
-          <label class="radio inline">
-            <%= f.radio_button(:bind_area, true) %>
-            是
-          </label>
-          <label class="radio inline">
-            <%= f.radio_button(:bind_area, false, checked:true) %>
-            否
-          </label>
-        </div>
+      <div class="controls">
+        <label class="radio inline">
+          <%= f.radio_button(:bind_area, true) %>
+          是
+        </label>
+        <label class="radio inline">
+          <%= f.radio_button(:bind_area, false, checked: true) %>
+          否
+        </label>
       </div>
-      <div class="control-group">
-        <label class="control-label">单价</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">单价</label>
 
-        <div class="controls">
-          <%= f.text_field :price %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :price %>
       </div>
-      <div class="control-group">
-        <label class="control-label">基数</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">基数</label>
 
-        <div class="controls">
-          <%= f.text_field :item_num %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :item_num %>
       </div>
-      <div class="control-group">
-        <label class="control-label">滞纳金比率</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">滞纳金比率</label>
 
-        <div class="controls">
-          <%= f.text_field :fee_rate %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :fee_rate %>
       </div>
-      <div class="control-group">
-        <label class="control-label">是否退还</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">是否退还</label>
 
-        <div class="controls">
-          <label class="radio inline">
-            <%= f.radio_button(:return_back, 1) %>
-            是
-          </label>
-          <label class="radio inline">
-            <%= f.radio_button(:return_back, 0, checked:true) %>
-            否
-          </label>
-        </div>
+      <div class="controls">
+        <label class="radio inline">
+          <%= f.radio_button(:return_back, 1) %>
+          是
+        </label>
+        <label class="radio inline">
+          <%= f.radio_button(:return_back, 0, checked: true) %>
+          否
+        </label>
       </div>
-      <div class="control-group">
-        <label class="control-label">备注</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">备注</label>
 
-        <div class="controls">
-          <%= f.text_field :note %>
-        </div>
+      <div class="controls">
+        <%= f.text_field :note %>
       </div>
+    </div>
 
-      <div class="control-group">
+    <div class="control-group">
 
-        <div class="controls">
-          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
-          <a href="<%= charges_path %>" class="btn">返回</a>
-        </div>
+      <div class="controls">
+        <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+        <a href="<%= charges_path %>" class="btn">返回</a>
       </div>
-    </fieldset>
+    </div>
+  </fieldset>
 <% end %>
 
 

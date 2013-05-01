@@ -1,31 +1,33 @@
 <%= render :partial => 'shared/error_messages', :locals => {:target => @role} %>
-<%= form_tag @role, method:'post', class: 'form-horizontal' do %>
-    <fieldset>
+<%= form_tag @role, method: 'post', class: 'form-horizontal' do %>
+  <fieldset>
+    <div id="legend">
       <legend><%= header_name %></legend>
-      <div class="control-group">
-        <%= label_tag '角色名', nil, :class => 'control-label' %>
-        <div class="controls">
-          <%= text_field_tag 'role[name]' %>
-        </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag '角色名', nil, :class => 'control-label' %>
+      <div class="controls">
+        <%= text_field_tag 'role[name]' %>
       </div>
-      <div class="control-group">
-        <%= label_tag '权限',nil, class: 'control-label' %>
-        <div class="controls">
-          <% get_privileges_list.each do |p| %>
-            <label class="checkbox">
-              <%= check_box_tag 'role[privilege_ids][]', p.id, @role.privileges.include?(p) %>
-              <%= p.name %>
-            </label>
-          <% end %>
-        </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag '权限', nil, class: 'control-label' %>
+      <div class="controls">
+        <% get_privileges_list.each do |p| %>
+          <label class="checkbox">
+            <%= check_box_tag 'role[privilege_ids][]', p.id, @role.privileges.include?(p) %>
+            <%= p.name %>
+          </label>
+        <% end %>
       </div>
-      <div class="control-group">
+    </div>
+    <div class="control-group">
 
-        <div class="controls">
-          <button id="btnSubmit" class="btn btn-primary">提交</button>
-          <a href="<%= roles_path %>" class="btn">返回</a>
-        </div>
+      <div class="controls">
+        <button id="btnSubmit" class="btn btn-primary">提交</button>
+        <a href="<%= roles_path %>" class="btn">返回</a>
       </div>
+    </div>
 
-    </fieldset>
+  </fieldset>
 <% end %>

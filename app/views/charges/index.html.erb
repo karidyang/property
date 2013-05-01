@@ -1,12 +1,14 @@
 <fieldset>
-  <legend>收费项目列表</legend>
+  <div id="legend">
+    <legend>收费项目列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= form_tag(charges_path, :method => :get) do %>
-          <%= text_field_tag :item_name, nil, :class => 'span2', :placeholder => '项目名称' %>
-          <button type="submit" class="btn">搜索</button>
-          <%= link_to '新增', new_charge_path, :class => 'btn' %>
-          <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+        <%= text_field_tag :item_name, nil, :class => 'span2', :placeholder => '项目名称' %>
+        <button type="submit" class="btn">搜索</button>
+        <%= link_to '新增', new_charge_path, :class => 'btn' %>
+        <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       <% end %>
 
 
@@ -34,25 +36,25 @@
       </thead>
       <tbody>
       <% @charges.each do |charge| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="charge_id" value="<%= charge.id %>">
-              </label>
-            </td>
-            <td><%= link_to charge.item_name, edit_charge_path(charge) %></td>
-            <td><%= get_period_type(charge.period_type) %></td>
-            <td><%= charge.price %></td>
-            <td><%= get_bind_area(charge.bind_area) %></td>
-            <td><%= charge.item_num %></td>
-            <td><%= get_period(charge.period) %></td>
-            <td><%= charge.fee_rate %></td>
-            <td><%= get_return_back(charge.return_back) %></td>
-            <td>
-              <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
-              <%= link_to '设置房间', :controller => 'charges', :action => 'add_house', :id => charge %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="charge_id" value="<%= charge.id %>">
+            </label>
+          </td>
+          <td><%= link_to charge.item_name, edit_charge_path(charge) %></td>
+          <td><%= get_period_type(charge.period_type) %></td>
+          <td><%= charge.price %></td>
+          <td><%= get_bind_area(charge.bind_area) %></td>
+          <td><%= charge.item_num %></td>
+          <td><%= get_period(charge.period) %></td>
+          <td><%= charge.fee_rate %></td>
+          <td><%= get_return_back(charge.return_back) %></td>
+          <td>
+            <%= link_to '删除', charge, :confirm => '确定删除?', :method => :delete %>
+            <%= link_to '设置房间', :controller => 'charges', :action => 'add_house', :id => charge %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

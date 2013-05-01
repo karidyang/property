@@ -1,64 +1,65 @@
 <script type="text/javascript">
 
 
-    $(document).ready(function () {
-        $("#btnSubmit").click(function () {
+  $(document).ready(function () {
+    $("#btnSubmit").click(function () {
 
-            var money = parseFloat($("#money").val());
+      var money = parseFloat($("#money").val());
 
-            if (!isNaN(money)) {
+      if (!isNaN(money)) {
 
-                var result = confirm("你确定转入" + money + "元?");
-                if (result) {
-                    $("form").submit();
-                }
-            }
+        var result = confirm("你确定转入" + money + "元?");
+        if (result) {
+          $("form").submit();
+        }
+      }
 
-            return false;
-        });
-
+      return false;
     });
+
+  });
 
 
 </script>
 <%= form_tag('/accounts/transcation', :class => 'form-horizontal') do %>
-    <%= hidden_field_tag 'house_id', @account.house.id %>
+  <%= hidden_field_tag 'house_id', @account.house.id %>
 
-    <%= hidden_field_tag 'account_id', @account.id %>
-    <%= hidden_field_tag 'item_type', 0 %>
-    <fieldset>
+  <%= hidden_field_tag 'account_id', @account.id %>
+  <%= hidden_field_tag 'item_type', 0 %>
+  <fieldset>
+    <div id="legend">
       <legend>转账</legend>
+    </div>
+    <div class="control-group">
+      <label class="control-label">转入项目</label>
 
-      <div class="control-group">
-        <label class="control-label">转入项目</label>
-
-        <div class="controls">
-          <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'item_name') %>
-        </div>
+      <div class="controls">
+        <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'item_name') %>
       </div>
-      <div class="control-group">
-        <label class="control-label">转入金额</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">转入金额</label>
 
-        <div class="controls">
-          <%= text_field_tag 'money', nil, :placeholder => '0.00' %>
-        </div>
+      <div class="controls">
+        <%= text_field_tag 'money', nil, :placeholder => '0.00' %>
       </div>
-      <div class="control-group">
-        <label class="control-label">锁定金额</label>
+    </div>
+    <div class="control-group">
+      <label class="control-label">锁定金额</label>
 
-        <div class="controls">
-          <%= text_field_tag 'can_push', nil, :placeholder => '0.00' %>
-        </div>
+      <div class="controls">
+        <%= text_field_tag 'can_push', nil, :placeholder => '0.00' %>
       </div>
+    </div>
 
-      <div class="control-group">
+    <div class="control-group">
 
-        <div class="controls">
-          <button id="btnSubmit" class="btn btn-primary">提交</button>
-          <a href="javascript:history.back()" class="btn">返回</a>
-        </div>
+      <div class="controls">
+        <button id="btnSubmit" class="btn btn-primary">提交</button>
+        <a href="javascript:history.back()" class="btn">返回</a>
       </div>
-    </fieldset>
+    </div>
+  </fieldset>
 <% end %>
 
 

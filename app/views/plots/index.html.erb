@@ -1,5 +1,7 @@
 <fieldset>
-  <legend>小区列表</legend>
+  <div id="legend">
+    <legend>小区列表</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
       <%= link_to new_plot_path, '新增', :class => 'btn' %>
@@ -24,22 +26,22 @@
       </thead>
       <tbody>
       <% @plots.each do |plot| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="plot_id" value="<%= plot.id %>">
-              </label>
-            </td>
-            <td><%= h plot.name %>          </td>
-            <td><%= h plot.developer %>          </td>
-            <td><%= h plot.constructor %>          </td>
-            <td><%= h plot.address %>          </td>
-            <td>
-              <%= link_to '编辑', edit_plot_path(plot) %>
-              <%= link_to '删除', plot, :confirm => '你确定吗?', :method => :delete %>
-              <%= link_to '区域列表', :controller => 'areas', :action => 'index', :plot_id => plot %>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="plot_id" value="<%= plot.id %>">
+            </label>
+          </td>
+          <td><%= h plot.name %>          </td>
+          <td><%= h plot.developer %>          </td>
+          <td><%= h plot.constructor %>          </td>
+          <td><%= h plot.address %>          </td>
+          <td>
+            <%= link_to '编辑', edit_plot_path(plot) %>
+            <%= link_to '删除', plot, :confirm => '你确定吗?', :method => :delete %>
+            <%= link_to '区域列表', :controller => 'areas', :action => 'index', :plot_id => plot %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

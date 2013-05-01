@@ -1,114 +1,116 @@
 <script type="text/javascript">
-    var setting = {
-        async: {
-            enable: true,
-            url: "/houses/house_tree",
-            type: 'post'
-        },
+  var setting = {
+    async: {
+      enable: true,
+      url: "/houses/house_tree",
+      type: 'post'
+    },
 
-        callback: {
+    callback: {
 
-            onAsyncSuccess: zTreeOnAsyncSuccess,
-            onAsyncError: zTreeOnAsyncError
-        },
-        check: {
-            enable: true
-        }
-    };
-    var zTree1;
-
-    var nodes = [];
-    function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
-
-        var idArray = $("#house_ids").val().split(",");
-        for (var i = 0; i < idArray.length; i++) {
-            var id = idArray[i];
-
-            var node = zTree1.getNodesByParam("id", "h-" + id, null)[0];
-            zTree1.checkNode(node, true, true);
-
-
-        }
+      onAsyncSuccess: zTreeOnAsyncSuccess,
+      onAsyncError: zTreeOnAsyncError
+    },
+    check: {
+      enable: true
     }
-    function zTreeOnAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-        alert("error");
+  };
+  var zTree1;
+
+  var nodes = [];
+  function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+
+    var idArray = $("#house_ids").val().split(",");
+    for (var i = 0; i < idArray.length; i++) {
+      var id = idArray[i];
+
+      var node = zTree1.getNodesByParam("id", "h-" + id, null)[0];
+      zTree1.checkNode(node, true, true);
+
+
     }
-    $(document).ready(function () {
+  }
+  function zTreeOnAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+    alert("error");
+  }
+  $(document).ready(function () {
 
-        refreshTree();
+    refreshTree();
 
-    });
+  });
 
-    function refreshTree() {
-        zTree1 = $.fn.zTree.init($("#house_tree"), setting);
-        $("#checkAllTrue").bind("click", {type: "checkAllTrue"}, checkNode);
-        $("#checkAllFalse").bind("click", {type: "checkAllFalse"}, checkNode);
-        $("#save").bind('click', function () {
-                    var nodes = zTree1.getCheckedNodes(true);
-                    var idArray = new Array();
+  function refreshTree() {
+    zTree1 = $.fn.zTree.init($("#house_tree"), setting);
+    $("#checkAllTrue").bind("click", {type: "checkAllTrue"}, checkNode);
+    $("#checkAllFalse").bind("click", {type: "checkAllFalse"}, checkNode);
+    $("#save").bind('click', function () {
+              var nodes = zTree1.getCheckedNodes(true);
+              var idArray = new Array();
 
-                    for (var i = 0; i < nodes.length; i++) {
-                        var node_id = nodes[i].id;
-                        if (node_id[0] == "h") {
-                            idArray.push(node_id.split("-")[1]);
-                        }
-                    }
-
-                    var ids = idArray.join(',');
-                    $("#house_ids").attr("value", ids);
-                    $("#add_house_form").submit();
+              for (var i = 0; i < nodes.length; i++) {
+                var node_id = nodes[i].id;
+                if (node_id[0] == "h") {
+                  idArray.push(node_id.split("-")[1]);
                 }
-        );
+              }
 
-
-    }
-
-    function checkNode(e) {
-        var zTree = $.fn.zTree.getZTreeObj("house_tree"),
-                type = e.data.type,
-                nodes = zTree.getSelectedNodes();
-        if (type.indexOf("All") < 0 && nodes.length == 0) {
-            alert("请先选择一个节点");
-        }
-
-        if (type == "checkAllTrue") {
-            zTree.checkAllNodes(true);
-        } else if (type == "checkAllFalse") {
-            zTree.checkAllNodes(false);
-        } else {
-            for (var i = 0, l = nodes.length; i < l; i++) {
-                if (type == "checkTrue") {
-                    zTree.checkNode(nodes[i], true);
-                } else if (type == "checkFalse") {
-                    zTree.checkNode(nodes[i], false);
-                } else if (type == "checkTruePS") {
-                    zTree.checkNode(nodes[i], true, true);
-                } else if (type == "checkFalsePS") {
-                    zTree.checkNode(nodes[i], false, true);
-                }
+              var ids = idArray.join(',');
+              $("#house_ids").attr("value", ids);
+              $("#add_house_form").submit();
             }
-        }
+    );
+
+
+  }
+
+  function checkNode(e) {
+    var zTree = $.fn.zTree.getZTreeObj("house_tree"),
+            type = e.data.type,
+            nodes = zTree.getSelectedNodes();
+    if (type.indexOf("All") < 0 && nodes.length == 0) {
+      alert("请先选择一个节点");
     }
+
+    if (type == "checkAllTrue") {
+      zTree.checkAllNodes(true);
+    } else if (type == "checkAllFalse") {
+      zTree.checkAllNodes(false);
+    } else {
+      for (var i = 0, l = nodes.length; i < l; i++) {
+        if (type == "checkTrue") {
+          zTree.checkNode(nodes[i], true);
+        } else if (type == "checkFalse") {
+          zTree.checkNode(nodes[i], false);
+        } else if (type == "checkTruePS") {
+          zTree.checkNode(nodes[i], true, true);
+        } else if (type == "checkFalsePS") {
+          zTree.checkNode(nodes[i], false, true);
+        }
+      }
+    }
+  }
 </script>
 <fieldset>
-  <legend><%= h @charge.item_name %></legend>
+  <div id="legend">
+    <legend><%= h @charge.item_name %></legend>
+  </div>
   <%= form_tag({:action => 'add_house'}, {:method => 'post', :id => 'add_house_form'}) do %>
-      <%= hidden_field_tag 'charge_id', @charge.id %>
-      <%= hidden_field_tag 'house_ids', @charge.house_ids %>
-      <div class="control-group">
-        <label class="control-label">房间列表</label>
+    <%= hidden_field_tag 'charge_id', @charge.id %>
+    <%= hidden_field_tag 'house_ids', @charge.house_ids %>
+    <div class="control-group">
+      <label class="control-label">房间列表</label>
 
-        <div class="controls">
-          <div id="house_tree" class="ztree"></div>
-        </div>
+      <div class="controls">
+        <div id="house_tree" class="ztree"></div>
       </div>
-      <div class="control-group">
+    </div>
+    <div class="control-group">
 
-        <div class="controls">
-          <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
-          <a href="<%= charges_path %>" class="btn">返回</a>
-        </div>
+      <div class="controls">
+        <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+        <a href="<%= charges_path %>" class="btn">返回</a>
       </div>
+    </div>
 
   <% end %>
 

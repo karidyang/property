@@ -1,8 +1,10 @@
 <fieldset>
-  <legend>收费员统计</legend>
+  <div id="legend">
+    <legend>收费员统计</legend>
+  </div>
   <div class="container-fluid">
     <div class="input-append">
-      <input type="button" value="返回" class="btn" onclick="history.back()" />
+      <input type="button" value="返回" class="btn" onclick="history.back()"/>
     </div>
   </div>
   <div class="container-fluid">
@@ -20,15 +22,15 @@
       </thead>
       <tbody>
       <% @user_reports.each do |user_report| %>
-          <tr>
-            <td><%= h user_report.trans_time %> </td>
-            <td><%= h user_report.item_name %> </td>
-            <td><%= h user_report.house_code %> </td>
-            <td><%= h user_report.owner %> </td>
-            <td><%= h user_report.pay_money %> </td>
-            <td><%= h user_report.pre_money %> </td>
-            <td><%= h user_report.operator %> </td>
-          </tr>
+        <tr>
+          <td><%= h user_report.trans_time %> </td>
+          <td><%= h user_report.item_name %> </td>
+          <td><%= h user_report.house_code %> </td>
+          <td><%= h user_report.owner %> </td>
+          <td><%= h user_report.pay_money %> </td>
+          <td><%= h user_report.pre_money %> </td>
+          <td><%= h user_report.operator %> </td>
+        </tr>
       <% end %>
       </tbody>
     </table>

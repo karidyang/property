@@ -1,18 +1,20 @@
 <fieldset>
-  <legend>房间列表</legend>
+  <div id="legend">
+    <legend>房间列表</legend>
+  </div>
   <div class="container-fluid">
 
     <%= form_tag('/houses', :method => :get) do %>
-        <div class="input-append">
-          <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
-          <button type="submit" class="btn">搜索</button>
-          <% if @current_user.has_privilege?('houses', 'insert') %>
-              <%= link_to '新建', new_house_path, :class => 'btn' %>
-          <% end %>
-          <% if @current_user.has_privilege?('houses', 'destroy') %>
-              <button class="btn" id="btnDelHouse"><i class="icon-remove"></i>批量删除</button>
-          <% end %>
-        </div>
+      <div class="input-append">
+        <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
+        <button type="submit" class="btn">搜索</button>
+        <% if @current_user.has_privilege?('houses', 'insert') %>
+          <%= link_to '新建', new_house_path, :class => 'btn' %>
+        <% end %>
+        <% if @current_user.has_privilege?('houses', 'destroy') %>
+          <button class="btn" id="btnDelHouse"><i class="icon-remove"></i>批量删除</button>
+        <% end %>
+      </div>
     <% end %>
   </div>
   <div class="container-fluid">
@@ -39,28 +41,28 @@
       </thead>
       <tbody>
       <% @houses.each do |house| %>
-          <tr>
-            <td>
-              <label class="checkbox">
-                <input type="checkbox" id="house_id" value="<%= house.id %>">
-              </label>
-            </td>
-            <td><%= house.id %></td>
-            <td><%= h house.plot.name %></td>
-            <td><%= h house.area.name %></td>
-            <td><%= link_to h(house.house_code), edit_house_path(house) %></td>
-            <td><%= h house.owner_names %></td>
-            <td><%= h house.builded_area %></td>
-            <td><%= h house.real_area %></td>
-            <td><%= h house.share_area %></td>
-            <td><%= h get_status(house.status) %></td>
-            <td><%= h get_use_type(house.use_type) %></td>
-            <td>
-              <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
-              <%= link_to_add_owner(house) %>
-              <!--<%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>-->
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="house_id" value="<%= house.id %>">
+            </label>
+          </td>
+          <td><%= house.id %></td>
+          <td><%= h house.plot.name %></td>
+          <td><%= h house.area.name %></td>
+          <td><%= link_to h(house.house_code), edit_house_path(house) %></td>
+          <td><%= h house.owner_names %></td>
+          <td><%= h house.builded_area %></td>
+          <td><%= h house.real_area %></td>
+          <td><%= h house.share_area %></td>
+          <td><%= h get_status(house.status) %></td>
+          <td><%= h get_use_type(house.use_type) %></td>
+          <td>
+            <%= link_to '删除', house, :confirm => '确认删除?', :method => :delete %>
+            <%= link_to_add_owner(house) %>
+            <!--<%= link_to '预存款', :controller => :accounts, :action => :index, :house_id => house.id %>-->
+          </td>
+        </tr>
 
       <% end %>
       </tbody>
