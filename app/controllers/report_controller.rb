@@ -12,4 +12,15 @@ class ReportController < ApplicationController
     end
   end
 
+  def pay_report
+    @pay_reports = PayReport.paginate(:page=>params[:page])
+    render layout: 'admin'
+
+  end
+
+  def unpay_report
+    @unpay_reports = UnpayReport.paginate(:page=>params[:page])
+    render layout: 'admin'
+  end
+
 end

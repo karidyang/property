@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430032641) do
+ActiveRecord::Schema.define(:version => 20130430065723) do
 
   create_table "account_details", :force => true do |t|
     t.integer  "account_id"
@@ -151,6 +151,14 @@ ActiveRecord::Schema.define(:version => 20130430032641) do
 
   add_index "owners", ["house_id"], :name => "index_owners_on_house_id"
 
+  create_table "pay_reports", :force => true do |t|
+    t.integer "plot_id"
+    t.integer "item_id"
+    t.string  "item_name"
+    t.decimal "money",      :precision => 8, :scale => 2
+    t.date    "trans_time"
+  end
+
   create_table "plots", :force => true do |t|
     t.string  "name"
     t.string  "developer"
@@ -196,6 +204,14 @@ ActiveRecord::Schema.define(:version => 20130430032641) do
   create_table "roles_users", :id => false, :force => true do |t|
     t.integer "user_id", :null => false
     t.integer "role_id", :null => false
+  end
+
+  create_table "unpay_reports", :force => true do |t|
+    t.integer "plot_id"
+    t.integer "item_id"
+    t.string  "item_name"
+    t.decimal "money",      :precision => 8, :scale => 2
+    t.date    "trans_time"
   end
 
   create_table "user_reports", :force => true do |t|

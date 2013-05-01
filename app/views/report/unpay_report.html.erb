@@ -1,0 +1,29 @@
+<fieldset>
+  <legend>欠费统计</legend>
+  <div class="container-fluid">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr class="text-center">
+        <th>小区</th>
+        <th>时间周期</th>
+        <th>项目</th>
+        <th>金额</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @unpay_reports.each do |pr| %>
+      <tr>
+        <td><%= h pr.plot.name %></td>
+        <td><%= h pr.trans_time %></td>
+        <td><%= h pr.item_name %></td>
+        <td><%= h pr.money %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="pull-right">
+      <%= paginate @unpay_reports %>
+    </div>
+  </div>
+</fieldset>

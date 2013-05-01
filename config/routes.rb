@@ -1,5 +1,11 @@
 Property::Application.routes.draw do
-  get 'report/user_report'
+  #report start
+  match 'report/user_report' , to: 'report#user_report'
+  match 'report/pay_report', to: 'report#pay_report', as: 'pay_report'
+  match 'report/unpay_report', to: 'report#unpay_report', as: 'unpay_report'
+
+  # report end
+
   get 'receipt/print'
   get 'receipt/show'
   get 'receipt/unpay_list'
