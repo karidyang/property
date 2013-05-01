@@ -33,9 +33,10 @@ class HomeController < ApplicationController
   def choose_plot
     if params[:current_plot]
       session[:current_plot] = params[:current_plot].to_i
+      session[:current_plot_name] = Plot.find(session[:current_plot]).name
       redirect_to root_path
     else
-      render :layout=>false, :action=>:choose_plot
+      render :layout => false, :action => :choose_plot
     end
   end
 

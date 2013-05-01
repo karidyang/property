@@ -4,8 +4,12 @@ module ApplicationHelper
     @current_user.plots.map { |p| [p.name, p.id] }
   end
 
+  def current_plot
+    session[:current_plot_name] ||= '未选择小区'
+  end
+
   def charge_type_list
-    [['已缴费',1],['未缴费',0]]
+    [['已缴费', 1], ['未缴费', 0]]
   end
 
   def get(hash, set_value)
@@ -29,6 +33,6 @@ module ApplicationHelper
   end
 
   def link_to_add_owner(house)
-    link_to('添加业主', :controller=>:owners, :action=>:new, :house_id=>house)
+    link_to('添加业主', :controller => :owners, :action => :new, :house_id => house)
   end
 end

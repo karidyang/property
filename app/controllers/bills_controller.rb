@@ -28,7 +28,7 @@ class BillsController < ApplicationController
   end
 
   def search
-
+    params[:charge_type] = 1
     bill_items = BillItem.search_by_house(current_plot, params)
     bill_items_json = []
     bill_items.each do |bill_item|

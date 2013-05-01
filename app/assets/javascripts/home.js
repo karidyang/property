@@ -169,9 +169,9 @@ function parse_pay_bill_item(bill_items) {
     tr_row += "<td>" + obj.item_name + "</td>" +
         "       <td>" + obj.trans_time + "</td>";
     if (obj.status == 0) {
-      tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
+      tr_row += "<td id='pay_bill_item_" + obj.id + "'>未收</td>";
     } else {
-      tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+      tr_row += "<td id='pay_bill_item_" + obj.id + "'>已收</td>";
     }
 
     tr_row += "       <td>" + obj.unit_price + "</td>" +
@@ -295,9 +295,9 @@ function print() {
   var flag = false;
   var sum_checked = 0;
   var hasNoPay = false;
-  $("input[name='bill_item_ids']").each(function () {
+  $("input[name='pay_bill_item_ids']").each(function () {
     if (this.checked) {
-      if ($("#bill_item_" + this.value).text() == "已收") {
+      if ($("#pay_bill_item_" + this.value).text() == "已收") {
         url += "&item_ids[]=" + this.value;
         flag = true;
         sum_checked += 1;
@@ -336,9 +336,9 @@ function resetBill() {
   var url = "<%=url_for(:controller => :bills, :action => :reset) %>";
   url += "?house_id=" + $('#house_id').val();
   var flag = false;
-  $("input[name='bill_item_ids']").each(function () {
+  $("input[name='pay_bill_item_ids']").each(function () {
     if (this.checked) {
-      if ($("#bill_item_" + this.value).text() == "已收") {
+      if ($("#pay_bill_item_" + this.value).text() == "已收") {
         url += "&bill_item_ids[]=" + this.value;
         flag = true;
       }

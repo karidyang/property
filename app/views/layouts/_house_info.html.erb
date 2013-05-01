@@ -1,14 +1,29 @@
 <div class="row-fluid">
-    <table id="house_base_info" class="table table-bordered table-condensed">
-      <thead>
-      <tr>
-        <th>房号</th>
-        <th>业主</th>
-        <th>建筑面积</th>
-        <th>类型</th>
-      </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <button class="btn" onclick="add_temporary()"><span></span>增加临时账单</button>
+      <button class="btn" onclick="add_pre_money()"><span></span>预存款</button>
+      <button class="btn"><span></span>退款</button>
+      <button class="btn" onclick="pay()"><span></span>缴费</button>
+      <button class="btn" onclick="push()"><span></span>使用预存款冲销</button>
+      <button class="btn" onclick="print()"><span></span>打印收据</button>
+      <button class="btn" onclick="resetBill()"><span></span>重置费用账单</button>
+      <button class="btn" onclick=""><span></span>绑定收费项目</button>
+    </div>
+  </div>
+  <table id="house_base_info" class="table table-bordered table-condensed">
+    <thead>
+    <tr>
+      <th>房号</th>
+      <th>业主</th>
+      <th>建筑面积</th>
+      <th>类型</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td colspan="4">数据准备</td>
+    </tr>
+    </tbody>
+  </table>
 </div>

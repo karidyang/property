@@ -2,9 +2,10 @@ namespace :stat do
   desc "stat user report everyday."
   task :user_report => :environment do
     puts "this is user report."
-    UserReport.delete_all
     puts '----------------bill_item------------------'
-    BillItem.where('pay_date=?',Date.today.to_s).each do |bill_item|
+    #UserReport.delete_all
+    #BillItem.all.each do |bill_item|
+    BillItem.where('pay_date=?', Date.today.to_s).each do |bill_item|
       userReport = UserReport.new
       userReport.item_id=bill_item.item_id
       userReport.house_id=bill_item.house_id
@@ -22,7 +23,8 @@ namespace :stat do
       userReport.save!
     end
     puts '-----------------account_detail---------------'
-    AccountDetail.where('trans_time=?',Date.today.to_s).each do |account_detail|
+    #AccountDetail.all.each do |account_detail|
+    AccountDetail.where('trans_time=?', Date.today.to_s).each do |account_detail|
       userReport = UserReport.new
       puts account_detail.trans_time
       userReport.item_id=account_detail.account.item_id
