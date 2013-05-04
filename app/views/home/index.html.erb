@@ -389,6 +389,17 @@
 //        }
   }
 
+  function bindCharges() {
+    var house_id = $("#house_id").val();
+    if (house_id == '' || house_id == 0) {
+      alert("还未选择房间");
+      return;
+    }
+    var url = "<%= bind_charges_path %>";
+    url += "?id=" + house_id;
+    document.location.href = url;
+  }
+
 
 </script>
 <input type="hidden" id="house_id" value=""/>

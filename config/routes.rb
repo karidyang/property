@@ -14,6 +14,7 @@ Property::Application.routes.draw do
   match 'houses/house_tree' => 'houses#house_tree'
   match 'houses/hosue_info' => 'houses#house_info'
   match 'houses/info' => 'houses#info'
+  match 'houses/bind_charges', :to => 'houses#add_house_charge', as: 'bind_charges'
 
   match 'accounts', :to => 'accounts#index'
   match 'accounts/add_pre_money/:house_id', :to => 'accounts#add_pre_money'

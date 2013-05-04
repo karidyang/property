@@ -154,4 +154,24 @@ class HousesController < ApplicationController
     render 'home/_house_info', layout: 'iframe'
   end
 
+  def add_house_charge
+    @house = House.find(params[:id])
+    if request.post?
+      if params.include?(:house)
+        params[:house][:charge_ids] ||= []
+        if @house.update_attributes(params[:house])
+          flash[:notice] = '绑定收费项目成功.'
+        end
+      else
+        @house.charges = []
+        if @house.save!
+          flash[:notice] = '绑定收费项目成功.'
+        end
+      end
+      redirect_to root_path
+    else
+      @charges = Charge.find_all_by_plot_id(session[:current_plot])
+    end
+  end
+
 end
