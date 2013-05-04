@@ -24,7 +24,6 @@
         </th>
         <th>账号</th>
         <th>姓名</th>
-        <th>状态</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -38,7 +37,6 @@
           </td>
           <td><%= link_to user.email, edit_user_path(user) %></td>
           <td><%= user.name %></td>
-          <td><%= user.state %></td>
 
           <td>
             <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>

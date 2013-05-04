@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    flash[:notice] = params[:name]
     if params.has_key?('name')
       @users = User.where('name like ?', "%#{params[:name]}%").paginate(:page => params[:page])
     else
