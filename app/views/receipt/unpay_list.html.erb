@@ -11,13 +11,27 @@
     window.open(url, '欠费催款单打印', sFeatures);
   }
 </script>
+<style>
+  select {
+    margin-bottom: 0;
+  }
+</style>
 <fieldset>
   <div id="legend">
-    <legend>房间列表</legend>
+    <legend>欠费催款单打印</legend>
   </div>
-  <div class="container-fluid">
-    <button class="btn btn-primary" onclick="print_unpay()">打印欠费催款单</button>
-  </div>
+  <%= form_tag do %>
+    <div class="controls">
+
+      <button class="btn btn-primary" onclick="print_unpay()">打印欠费催款单</button>
+
+      <%= select_tag :area_id, options_from_collection_for_select(@areas, 'id', 'name', @area_id), class: 'input-small' %>
+
+      <%= submit_tag '查询', class: 'btn' %>
+      合计欠费： <%= @total_unpay_money %> 元
+
+    </div>
+  <% end %>
   <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
@@ -27,16 +41,10 @@
             <input type="checkbox" onclick="selectAllCheck(this,'house_ids')">全选
           </label>
         </th>
-        <th>编号</th>
-        <th>小区</th>
-        <th>楼栋</th>
         <th>房号</th>
         <th>业主</th>
         <th>建筑面积</th>
-        <th>实际面积</th>
-        <th>公摊面积</th>
-        <th>单元状况</th>
-        <th>使用类型</th>
+        <th>总欠费金额</th>
       </tr>
       </thead>
       <tbody>
@@ -47,16 +55,10 @@
               <input type="checkbox" name="house_ids" id="house_ids" value="<%= house.id %>">
             </label>
           </td>
-          <td><%= house.id %></td>
-          <td><%= h house.plot.name %></td>
-          <td><%= h house.area.name %></td>
           <td><%= h house.house_code %></td>
           <td><%= h house.owner_names %></td>
           <td><%= h house.builded_area %></td>
-          <td><%= h house.real_area %></td>
-          <td><%= h house.share_area %></td>
-          <td><%= h get_status(house.status) %></td>
-          <td><%= h get_use_type(house.use_type) %></td>
+          <td><%= h house.total_unpay_money %></td>
         </tr>
 
       <% end %>

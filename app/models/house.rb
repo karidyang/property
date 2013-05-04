@@ -3,9 +3,9 @@ class House < ActiveRecord::Base
 
   validates_presence_of :builded_area, :message => '建筑面积不能为空'
   validates_presence_of :real_area, :message => '实际面积不能为空'
-  validates_presence_of :share_area,:message => '公摊面积不能为空'
-  validates_format_of :house_code, :with => /\d*-\d*-\d*-\d*/,:message => '房间号规则不正确，请参考1-1-1-1'
-  validates :house_code, :presence => {:message=>'房间号不能为空'}
+  validates_presence_of :share_area, :message => '公摊面积不能为空'
+  validates_format_of :house_code, :with => /\d*-\d*-\d*-\d*/, :message => '房间号规则不正确，请参考1-1-1-1'
+  validates :house_code, :presence => {:message => '房间号不能为空'}
 
 
   belongs_to :area
@@ -14,8 +14,8 @@ class House < ActiveRecord::Base
   has_many :accounts, :order => 'item_name'
   has_and_belongs_to_many :charges
   has_many :bills, :class_name => 'Bill', :order => 'bill_date desc'
-  has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0',:order=>'bill_date desc'
-  has_many :pay_bills, :class_name => 'Bill', :conditions => 'bill_status = 1',:order=>'bill_date desc'
+  has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0', :order => 'bill_date desc'
+  has_many :pay_bills, :class_name => 'Bill', :conditions => 'bill_status = 1', :order => 'bill_date desc'
   self.per_page = 10
 
   def self.find_house(plot_id, house_code=nil)
@@ -33,11 +33,11 @@ class House < ActiveRecord::Base
   end
 
   def json
-    {id:self.id, house_code:self.house_code, owner_name:self.owner_names, builded_area:self.builded_area, use_type:self.get_use_type(self.use_type)}
+    {id: self.id, house_code: self.house_code, owner_name: self.owner_names, builded_area: self.builded_area, use_type: self.get_use_type(self.use_type)}
   end
 
   def get_use_type(use_type)
-    {1=>'住宅', 2=>'商铺', 3=>'商服', 4=>'车库', 5=>'其他'}.each do |key, value|
+    {1 => '住宅', 2 => '商铺', 3 => '商服', 4 => '车库', 5 => '其他'}.each do |key, value|
       if key.to_i==use_type
         return value
       end
@@ -130,17 +130,17 @@ class House < ActiveRecord::Base
     money = pay_money = push = sub_money = 0
     details = []
     unpay.each do |e|
-      money     += e[:money]
+      money += e[:money]
       pay_money += e[:pay_money]
-      push      += e[:push]
+      push += e[:push]
       sub_money += e[:sub_money]
       details << e
     end
     unpays = {}
     unpays[:details] = details
-    unpays[:total_money]     = money
+    unpays[:total_money] = money
     unpays[:total_pay_money] = pay_money
-    unpays[:total_push]      = push
+    unpays[:total_push] = push
     unpays[:total_sub_money] = sub_money
     unpays[:house_info] = "#{house_code} #{owner_name}"
     unpays[:title] = "#{plot.name}欠费催款单"
@@ -153,7 +153,15 @@ class House < ActiveRecord::Base
     end
   end
 
-  
+  # 欠费总金额
+  def total_unpay_money
+    total_moeny = 0
+    unpay_bills.each do |bill|
+      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 }
+    end
+    total_moeny
+  end
+
 
   private
   def build_time(unpay, item)
@@ -165,7 +173,7 @@ class House < ActiveRecord::Base
       end
     else
       unpay[:start_time] = item.trans_time
-      unpay[:end_time]   = item.trans_time
+      unpay[:end_time] = item.trans_time
     end
   end
 end

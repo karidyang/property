@@ -53,8 +53,19 @@ class ReceiptController < ApplicationController
   end
 
   def unpay_list
+
     plot_id = params[:plot_id] || session[:current_plot]
-    @houses = House.find_house(plot_id).paginate(:page=>params[:page])
+    @areas = Area.find_all_by_plot_id(plot_id)
+    if params[:area_id]
+      area = Area.find(params[:area_id])
+      @houses = area.houses.paginate(:page => params[:page])
+    else
+      area = @areas.first
+      @houses = area.houses.paginate(:page => params[:page])
+    end
+    @total_unpay_money = 0
+    @houses.each { |h| @total_unpay_money += h.total_unpay_money }
+    @area_id = area.id
   end
 
   def print_unpay

@@ -35,4 +35,8 @@ module ApplicationHelper
   def link_to_add_owner(house)
     link_to('添加业主', :controller => :owners, :action => :new, :house_id => house)
   end
+
+  def all_areas
+    Area.all.map { |a| [a.name, a.id] }
+  end
 end

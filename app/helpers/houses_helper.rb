@@ -1,8 +1,6 @@
 # coding: utf-8  
 module HousesHelper
-  def all_areas
-    Area.all.map { |a| [a.name, a.id] }
-  end
+
 
   def all_status
     [['已住', 1], ['未住', 2], ['出租', 3]]
@@ -13,7 +11,7 @@ module HousesHelper
   end
 
   def get_status(status)
-    {1=>'已住', 2=>'未住', 3=>'出租'}.each do |key, value|
+    {1 => '已住', 2 => '未住', 3 => '出租'}.each do |key, value|
       if key.to_i==status
         return value
       end
@@ -21,7 +19,7 @@ module HousesHelper
   end
 
   def get_use_type(use_type)
-    {1=>'住宅', 2=>'商铺', 3=>'商服', 4=>'车库', 5=>'其他'}.each do |key, value|
+    {1 => '住宅', 2 => '商铺', 3 => '商服', 4 => '车库', 5 => '其他'}.each do |key, value|
       if key.to_i==use_type
         return value
       end
