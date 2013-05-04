@@ -1,0 +1,34 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @user} %>
+<%= form_tag add_user_plot_path, class: 'form-horizontal' do %>
+  <fieldset>
+    <div id="legend">
+      <legend>设置用户小区</legend>
+    </div>
+    <div class="control-group">
+      <%= label_tag '用户', nil, class: 'control-label' %>
+      <div class="controls">
+        <%= h @user.email %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag '角色', nil, class: 'control-label' %>
+      <div class="controls">
+        <% for plot in @plots %>
+          <label class="checkbox">
+            <%= check_box_tag 'user[plot_ids][]', plot.id, @user.plots.include?(plot) %>
+            <%= plot.name %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button id="btnSubmit" class="btn btn-primary">保存</button>
+        <%= link_to '返回', users_path, class: 'btn' %>
+      </div>
+    </div>
+
+
+  </fieldset>
+<% end %>
+

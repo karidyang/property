@@ -23,6 +23,7 @@ Property::Application.routes.draw do
 
   match 'charges/get_unit_price/:id', :to => 'charges#get_unit_price'
   match 'users/add_role/:id', :to => 'users#add_role', :as => 'add_user_role'
+  match 'users/add_plot/:id', :to => 'users#add_plot', :as => 'add_user_plot'
 
   match 'bills/details/:id', :to => 'bills#details'
   match 'bills/add_temporary/:id', :to => 'bills#add_temporary'

@@ -41,6 +41,7 @@
           <td>
             <%= link_to '删除', user, :confirm => '确定删除?', :method => :delete %>
             <%= link_to '设置角色', add_user_role_path(user) %>
+            <%= link_to '设置小区', add_user_plot_path(user) %>
           </td>
         </tr>
 

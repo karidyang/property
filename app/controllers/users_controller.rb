@@ -88,6 +88,28 @@ class UsersController < ApplicationController
 
   end
 
+  def add_plot
+    @user = User.find(params[:id])
+    if request.post?
+      if params.include?(:user)
+        params[:user][:plot_ids] ||= []
+        if @user.update_attributes(params[:user])
+          flash[:notice] = '用户小区保存成功.'
+          redirect_to users_path
+        end
+      else
+        @user.roles = []
+        if @user.save!
+          flash[:notice] = '用户小区保存成功.'
+          redirect_to users_path
+        end
+      end
+    else
+      @plots = Plot.all
+      render 'admin/users/add_plot'
+    end
+  end
+
   private
   def get_roles
     @roles = Role.all
