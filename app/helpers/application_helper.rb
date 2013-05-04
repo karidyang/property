@@ -39,4 +39,13 @@ module ApplicationHelper
   def all_areas
     Area.all.map { |a| [a.name, a.id] }
   end
+
+  def backto_plot
+    if session[:current_plot]
+      root_path
+    else
+      choose_plot_path
+    end
+  end
+
 end
