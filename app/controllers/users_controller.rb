@@ -1,4 +1,4 @@
-# coding: utf-8  
+# coding: utf-8
 class UsersController < ApplicationController
   before_filter :require_user, :except => [:new, :create]
   layout('admin')
@@ -7,9 +7,9 @@ class UsersController < ApplicationController
   def index
     flash[:notice] = params[:name]
     if params.has_key?('name')
-      @users = User.where('name like ?', "%#{params[:name]}%").paginate(:page=>params[:page])
+      @users = User.where('name like ?', "%#{params[:name]}%").paginate(:page => params[:page])
     else
-      @users = User.paginate(:page=>params[:page])
+      @users = User.paginate(:page => params[:page])
     end
     render 'admin/users/index'
   end
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    respond_with(@user, :location=>:back)
+    respond_with(@user, :location => :back)
   end
 
   def add_role
@@ -90,7 +90,7 @@ class UsersController < ApplicationController
   end
 
   private
-    def get_roles
-      @roles = Role.all
-    end
+  def get_roles
+    @roles = Role.all
+  end
 end

@@ -1,0 +1,34 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @user} %>
+<%= form_tag user_profile_path, method: 'post', class: 'form-horizontal' do %>
+  <fieldset>
+    <div id="legend">
+      <legend>修改密码</legend>
+    </div>
+    <div class="control-group">
+      <%= label_tag '旧密码', nil, :class => 'control-label' %>
+      <div class="controls">
+        <%= text_field_tag :old_password %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag '密码', nil, :class => 'control-label' %>
+      <div class="controls">
+        <%= password_field_tag 'user[password]' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag '确认密码', nil, :class => 'control-label' %>
+      <div class="controls">
+        <%= password_field_tag 'user[password_confirmation]' %>
+      </div>
+    </div>
+    <div class="control-group">
+
+      <div class="controls">
+        <button id="btnSubmit" class="btn btn-primary">提交</button>
+        <a href="<%= root_path %>" class="btn">返回</a>
+      </div>
+    </div>
+
+  </fieldset>
+<% end %>

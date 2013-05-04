@@ -52,4 +52,22 @@ class HomeController < ApplicationController
     json['rows'] = rows
     render :json => json.to_json
   end
+
+  def profile
+    @user = current_user
+    if request.post?
+      @user.old_password = params[:old_password]
+      if @user.validate_old_password && @user.update_attributes(params[:user])
+        flash[:notice] = "密码修改成功！"
+        redirect_to root_path
+      else
+        flash[:error] = "旧密码不正确"
+        render 'user_profile'
+      end
+
+    else
+      render 'user_profile'
+    end
+  end
+
 end

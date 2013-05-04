@@ -1,6 +1,6 @@
 Property::Application.routes.draw do
   #report start
-  match 'report/user_report' , to: 'report#user_report'
+  match 'report/user_report', to: 'report#user_report'
   match 'report/pay_report', to: 'report#pay_report', as: 'pay_report'
   match 'report/unpay_report', to: 'report#unpay_report', as: 'unpay_report'
 
@@ -11,18 +11,18 @@ Property::Application.routes.draw do
   get 'receipt/unpay_list'
 
   root :to => 'home#index'
-  match 'houses/house_tree'=>'houses#house_tree'
-  match 'houses/hosue_info'=>'houses#house_info'
-  match 'houses/info'=>'houses#info'
+  match 'houses/house_tree' => 'houses#house_tree'
+  match 'houses/hosue_info' => 'houses#house_info'
+  match 'houses/info' => 'houses#info'
 
   match 'accounts', :to => 'accounts#index'
-  match 'accounts/add_pre_money/:house_id', :to=>'accounts#add_pre_money'
+  match 'accounts/add_pre_money/:house_id', :to => 'accounts#add_pre_money'
   match 'accounts/history/:id', :to => 'accounts#history'
   match 'accounts/delete_detail', :to => 'accounts#delete_detail'
   match 'accounts/transcation', :to => 'accounts#transcation'
 
-  match 'charges/get_unit_price/:id', :to =>'charges#get_unit_price'
-  match 'users/add_role/:id', :to=>'users#add_role', :as => 'add_user_role'
+  match 'charges/get_unit_price/:id', :to => 'charges#get_unit_price'
+  match 'users/add_role/:id', :to => 'users#add_role', :as => 'add_user_role'
 
   match 'bills/details/:id', :to => 'bills#details'
   match 'bills/add_temporary/:id', :to => 'bills#add_temporary'
@@ -30,6 +30,8 @@ Property::Application.routes.draw do
   match 'bills/reset', :to => 'bills#reset'
 
   match 'admin', :to => 'users#index'
+
+  match '/profile', :to => 'home#profile', :as => 'user_profile'
 
   resources :bills
 
