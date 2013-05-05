@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user
   before_filter :init
+
   def init
     current_user
   end
@@ -38,7 +39,7 @@ class ApplicationController < ActionController::Base
     flash[:notice] = msg
   end
 
-  def set_seo_meta(title = '',meta_keywords = '', meta_description = '')
+  def set_seo_meta(title = '', meta_keywords = '', meta_description = '')
     if title.length > 0
       @page_title = "#{title} &raquo; "
     end
@@ -50,45 +51,53 @@ class ApplicationController < ActionController::Base
     session[:current_plot]
   end
 
+  def has_privilege?(model, operator, msg)
+    if !@current_user.has_privilege?(model, operator)
+      flash[:notice] = msg
+      return false
+    end
+    return true
+  end
+
   private
-    def current_user_session
-      return @current_user_session if defined?(@current_user_session)
-      @current_user_session = UserSession.find
-    end
+  def current_user_session
+    return @current_user_session if defined?(@current_user_session)
+    @current_user_session = UserSession.find
+  end
 
-    def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.record
-    end
+  def current_user
+    return @current_user if defined?(@current_user)
+    @current_user = current_user_session && current_user_session.record
+  end
 
-    def require_user
-      unless current_user
-        store_location
-        flash[:notice] = 'You must be logged in to access this page'
-        redirect_to login_path
-      end
-    end
-
-    def require_no_user
-      if current_user
-        store_location
-        flash[:notice] = 'You must be logged out to access this page'
-        redirect_to root_path
-      end
-    end
-
-    def require_plot
+  def require_user
+    unless current_user
       store_location
-      redirect_to choose_plot_path unless current_plot
+      flash[:notice] = 'You must be logged in to access this page'
+      redirect_to login_path
     end
+  end
 
-    def store_location
-      session[:return_to] = request.fullpath
+  def require_no_user
+    if current_user
+      store_location
+      flash[:notice] = 'You must be logged out to access this page'
+      redirect_to root_path
     end
+  end
 
-    def redirect_back_or_default(default)
-      redirect_to(session[:return_to] || default)
-      session[:return_to] = nil
-    end
+  def require_plot
+    store_location
+    redirect_to choose_plot_path unless current_plot
+  end
+
+  def store_location
+    session[:return_to] = request.fullpath
+  end
+
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
+  end
 
 end

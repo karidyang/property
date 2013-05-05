@@ -1,12 +1,24 @@
 # coding: utf-8  
 class Area < ActiveRecord::Base
   belongs_to :plot
-  has_many :houses, :order=>'house_code'
+  has_many :houses, :order => 'house_code'
   self.per_page = 10
+
   def to_json
-    
+
     "{\"id\":\"a-#{self.id}\",\"name\":\"#{self.name}\",\"open\":false,\"childs\":#{houses_json}}"
   end
+
+  def unpay_money
+    total_unpay_money = 0
+    houses.each { |h| total_unpay_money += h.total_unpay_money }
+    total_unpay_money
+  end
+
+  def select_name
+    "#{name}--#{unpay_money}"
+  end
+
 
   def houses_json
     json = []
@@ -25,7 +37,7 @@ class Area < ActiveRecord::Base
 
         json << "{\"id\":\"u-#{k}\",\"name\":\"#{k}单元\",\"open\":false,\"childs\":[#{v.join(",")}]}"
       end
-    
+
     end
     "[#{json.join(",")}]"
 

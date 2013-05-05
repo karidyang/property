@@ -3,7 +3,7 @@ class HousesController < ApplicationController
   before_filter :require_user
   #around_filter do |controller, action|
   #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
-  #    flash[:notice] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
+  #    flash[:now] = "你没有#{controller.controller_name}.#{controller.action_name}权限，请联系管理员"
   #    render_403
   #  else
   #    action.call
@@ -12,7 +12,11 @@ class HousesController < ApplicationController
   # GET /houses
   # GET /houses.xml
   def index
-
+    if !@current_user.has_privilege?('houses', 'index')
+      flash[:now] = '你没有浏览房间列表的权限，请联系管理员'
+      render_403
+      return
+    end
     house_code = params[:house_code]
     plot_id = params[:plot_id] || session[:current_plot]
     #logger.info "plot_id=#{plot_id}, house_code=#{house_code}"
@@ -29,10 +33,10 @@ class HousesController < ApplicationController
   # GET /houses/new
   # GET /houses/new.xml
   def new
-    if @current_user.has_privilege?('houses', 'insert')
+    if @current_user.has_privilege?('houses', 'create')
       @house = House.new
     else
-      flash[:notice] = '您没有新增房间的权限,请联系管理员'
+      flash[:now] = '您没有新增房间的权限,请联系管理员'
       render_403
 
     end
@@ -43,7 +47,7 @@ class HousesController < ApplicationController
     if @current_user.has_privilege?('houses', 'update')
       @house = House.find(params[:id])
     else
-      flash[:notice] = '您没有编辑房间的权限,请联系管理员'
+      flash[:now] = '您没有编辑房间的权限,请联系管理员'
       render_403
     end
   end
@@ -51,20 +55,20 @@ class HousesController < ApplicationController
   # POST /houses
   # POST /houses.xml
   def create
-    if @current_user.has_privilege?('houses', 'insert')
+    if @current_user.has_privilege?('houses', 'create')
       @house = House.new(params[:house])
       @area = @house.area
       @house.plot = @area.plot
 
       if @house.save
-        redirect_to(houses_url, :notice => '新建房间成功.')
+        redirect_to(houses_url, :now => '新建房间成功.')
 
       else
         render :action => 'new'
 
       end
     else
-      flash[:notice] = '您没有新增房间的权限,请联系管理员'
+      flash[:now] = '您没有新增房间的权限,请联系管理员'
       render_403
 
     end
@@ -78,12 +82,12 @@ class HousesController < ApplicationController
       @house = House.find(params[:id])
 
       if @house.update_attributes(params[:house])
-        redirect_to(houses_url, :notice => '更新房间成功.')
+        redirect_to(houses_url, :now => '更新房间成功.')
       else
         render :action => 'edit'
       end
     else
-      flash[:notice] = '您没有编辑房间的权限,请联系管理员'
+      flash[:now] = '您没有编辑房间的权限,请联系管理员'
       render_403
 
     end
@@ -100,14 +104,14 @@ class HousesController < ApplicationController
       end
       redirect_to(houses_url)
     else
-      flash[:notice] = '您没有删除房间的权限,请联系管理员'
+      flash[:now] = '您没有删除房间的权限,请联系管理员'
       render_403
 
     end
   end
 
   def house_tree
-    if @current_user.has_privilege?('houses', 'select')
+    if @current_user.has_privilege?('houses', 'index')
       @plots = @current_user.plots
       logger.info "----------------------------------"
       logger.info "session[:current_plot]=#{session[:current_plot]}"
@@ -122,6 +126,11 @@ class HousesController < ApplicationController
   end
 
   def house_info
+    if !@current_user.has_privilege?('houses', 'index')
+      flash[:now] = '你没有浏览房间列表的权限，请联系管理员'
+      render_403
+      return
+    end
     house_code = params[:house_code]
     logger.debug("house_code=#{house_code}")
 
@@ -155,17 +164,22 @@ class HousesController < ApplicationController
   end
 
   def add_house_charge
+    if !@current_user.has_privilege?('houses', 'add_house_charge')
+      flash[:now] = '你没有绑定房间收费项目的权限，请联系管理员'
+      render_403
+      return
+    end
     @house = House.find(params[:id])
     if request.post?
       if params.include?(:house)
         params[:house][:charge_ids] ||= []
         if @house.update_attributes(params[:house])
-          flash[:notice] = '绑定收费项目成功.'
+          flash[:now] = '绑定收费项目成功.'
         end
       else
         @house.charges = []
         if @house.save!
-          flash[:notice] = '绑定收费项目成功.'
+          flash[:now] = '绑定收费项目成功.'
         end
       end
       redirect_to root_path

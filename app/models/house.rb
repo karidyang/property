@@ -54,6 +54,11 @@ class House < ActiveRecord::Base
     owners.map { |owner| owner.name }.flatten.uniq.join(',')
   end
 
+  def owner_phone
+    owners.map { |owner| owner.phone }.flatten.uniq.join(',')
+  end
+
+
   def last_bill
     bills.first
   end
@@ -104,6 +109,7 @@ class House < ActiveRecord::Base
         end
       end
     rescue => e
+      puts e
       puts "#{self.house_code}统计费用出现错误"
     end
 
@@ -151,6 +157,22 @@ class House < ActiveRecord::Base
     def search(plot, params)
       self.where('plot_id=? and house_code=?', plot, params[:house_code]).first
     end
+  end
+
+  def unpay_wuguan_money
+    total_moeny = 0
+    unpay_bills.each do |bill|
+      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 && b.charge.bind_area }
+    end
+    total_moeny
+  end
+
+  def unpay_other_money
+    total_moeny = 0
+    unpay_bills.each do |bill|
+      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 && !b.charge.bind_area }
+    end
+    total_moeny
   end
 
   # 欠费总金额

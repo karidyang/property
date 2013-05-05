@@ -25,10 +25,9 @@
 
       <button class="btn btn-primary" onclick="print_unpay()">打印欠费催款单</button>
 
-      <%= select_tag :area_id, options_from_collection_for_select(@areas, 'id', 'name', @area_id), class: 'input-small' %>
+      <%= select_tag :area_id, options_from_collection_for_select(@areas, 'id', 'select_name', @area_id), class: 'input' %>
 
       <%= submit_tag '查询', class: 'btn' %>
-      合计欠费： <%= @total_unpay_money %> 元
 
     </div>
   <% end %>
@@ -43,7 +42,9 @@
         </th>
         <th>房号</th>
         <th>业主</th>
-        <th>建筑面积</th>
+        <th>电话</th>
+        <th>物管费</th>
+        <th>其他</th>
         <th>总欠费金额</th>
       </tr>
       </thead>
@@ -57,7 +58,9 @@
           </td>
           <td><%= h house.house_code %></td>
           <td><%= h house.owner_names %></td>
-          <td><%= h house.builded_area %></td>
+          <td><%= h house.owner_phone %></td>
+          <td><%= h house.unpay_wuguan_money %></td>
+          <td><%= h house.unpay_other_money %></td>
           <td><%= h house.total_unpay_money %></td>
         </tr>
 

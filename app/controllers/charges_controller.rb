@@ -12,6 +12,11 @@ class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
   def index
+    if !@current_user.has_privilege?('charges', 'index')
+      flash[:now] = '你没有浏览收费项目的权限，请联系管理员'
+      render_403
+      return
+    end
     if params[:item_name].nil?
       @charges = Charge.paginate(:page => params[:page])
     else
@@ -23,10 +28,10 @@ class ChargesController < ApplicationController
   # GET /charges/new
   # GET /charges/new.xml
   def new
-    if @current_user.has_privilege?('charges', 'insert')
+    if @current_user.has_privilege?('charges', 'create')
       @charge = Charge.new
     else
-      flash[:notice] = '你没有新建收费项目的权限，请联系管理员'
+      flash[:now] = '你没有新建收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -36,7 +41,7 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'update')
       @charge = Charge.find(params[:id])
     else
-      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
+      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -44,16 +49,16 @@ class ChargesController < ApplicationController
   # POST /charges
   # POST /charges.xml
   def create
-    if @current_user.has_privilege?('charges', 'insert')
+    if @current_user.has_privilege?('charges', 'create')
       @charge = Charge.new(params[:charge])
       if @charge.save
-        redirect_to(charges_path, :notice => '新建收费项目成功.')
+        redirect_to(charges_path, :now => '新建收费项目成功.')
       else
         render :action => 'new'
 
       end
     else
-      flash[:notice] = '你没有新建收费项目的权限，请联系管理员'
+      flash[:now] = '你没有新建收费项目的权限，请联系管理员'
       render_403
     end
 
@@ -65,13 +70,13 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'update')
       @charge = Charge.find(params[:id])
       if @charge.update_attributes(params[:charge])
-        redirect_to(charges_path, :notice => '更新收费项目成功.')
+        redirect_to(charges_path, :now => '更新收费项目成功.')
 
       else
         render :action => 'edit'
       end
     else
-      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
+      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
 
@@ -88,7 +93,7 @@ class ChargesController < ApplicationController
 
       redirect_to charges_path
     else
-      flash[:notice] = '你没有删除收费项目的权限，请联系管理员'
+      flash[:now] = '你没有删除收费项目的权限，请联系管理员'
       render_403
     end
   end
@@ -107,7 +112,7 @@ class ChargesController < ApplicationController
         end
       end
     else
-      flash[:notice] = '你没有修改收费项目的权限，请联系管理员'
+      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
       render_403
     end
   end

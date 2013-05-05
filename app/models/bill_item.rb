@@ -3,6 +3,7 @@ class BillItem < ActiveRecord::Base
   belongs_to :bill
   belongs_to :receipt
   belongs_to :house
+  belongs_to :charge, :foreign_key => 'item_id'
 
   before_create :default_value_for_create
 
@@ -50,7 +51,7 @@ class BillItem < ActiveRecord::Base
     pushmoney = 0
     if can_push
       pushmoney = push_money(operator)
-      raise '余额不足' if pushmoney.zero?
+      # raise '余额不足' if pushmoney.zero?
     end
     if pushmoney.zero?
       self.push = 0
@@ -86,23 +87,23 @@ class BillItem < ActiveRecord::Base
       true_push_money = 0
       trans_time = self.trans_time
       #if account_item.trans_time < trans_time
-        return 0 if account.money <= 0
-        if account.money >= self.money
-          true_push_money += self.money
-        else
-          true_push_money += account.money
-        end
-        banlance = (account.money - true_push_money).abs
-        if banlance < can_push
-          true_push_money = true_push_money - (can_push - banlance)
-          banlance = can_push
-        end
-        if true_push_money>0
-          puts "#{account.house_code}冲销[#{account.item_name}],金额: #{true_push_money}"
-          account.push(true_push_money, banlance, trans_time, operator)
-          sum_push_money += true_push_money
-        end
-        break
+      return 0 if account.money <= 0
+      if account.money >= self.money
+        true_push_money += self.money
+      else
+        true_push_money += account.money
+      end
+      banlance = (account.money - true_push_money).abs
+      if banlance < can_push
+        true_push_money = true_push_money - (can_push - banlance)
+        banlance = can_push
+      end
+      if true_push_money>0
+        puts "#{account.house_code}冲销[#{account.item_name}],金额: #{true_push_money}"
+        account.push(true_push_money, banlance, trans_time, operator)
+        sum_push_money += true_push_money
+      end
+      break
       #end
     end
     sum_push_money
@@ -115,7 +116,7 @@ class BillItem < ActiveRecord::Base
   end
 
   def json
-    {id:self.id, item_name:self.item_name, money:self.money, pay_money:self.pay_money, push:self.push, record:self.record, unit_price:self.unit_price,start_record:self.start_record,end_record:self.end_record,trans_time:self.trans_time,status:self.status,receipt_no:self.receipt_no}
+    {id: self.id, item_name: self.item_name, money: self.money, pay_money: self.pay_money, push: self.push, record: self.record, unit_price: self.unit_price, start_record: self.start_record, end_record: self.end_record, trans_time: self.trans_time, status: self.status, receipt_no: self.receipt_no}
   end
 
   class << self
@@ -132,14 +133,15 @@ class BillItem < ActiveRecord::Base
      GROUP BY t.house_id,t.ITEM_NAME "
 
     result = ActiveRecord::Base.connection.execute(sql)
-    result.map do |r| {
-      trans_time: "#{r[5]}~~~#{r[6]}",
-      item_name: r[1],
-      money: r[2],
-      pay_money: r[3],
-      push: r[4],
-      sub_money: r[2]-r[3]-r[4]
-      } 
+    result.map do |r|
+      {
+          trans_time: "#{r[5]}~~~#{r[6]}",
+          item_name: r[1],
+          money: r[2],
+          pay_money: r[3],
+          push: r[4],
+          sub_money: r[2]-r[3]-r[4]
+      }
     end
   end
 end

@@ -28,32 +28,46 @@
           <li>
             <a href="<%= choose_plot_url %>" class="navbar-link" alt="切换小区"><%= current_plot %></a>
           </li>
-          <li>
-            <a href="<%= admin_url %>" class="navbar-link">管理</a>
-          </li>
+          <% if @current_user.has_privilege?('admin', 'index') %>
+            <li>
+              <a href="<%= admin_url %>" class="navbar-link">管理</a>
+            </li>
+          <% end %>
         </ul>
         <ul class="nav">
           <li class="active"><a href="/">首页</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">小区管理<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><%= link_to '楼栋管理', areas_path %></li>
-              <li><%= link_to '房屋管理', houses_path %></li>
+              <% if @current_user.has_privilege?('areas', 'index') %>
+                <li><%= link_to '楼栋管理', areas_path %></li>
+              <% end %>
+              <% if @current_user.has_privilege?('houses', 'index') %>
+                <li><%= link_to '房屋管理', houses_path %></li>
+              <% end %>
               <!--<li><%= link_to '业主管理', owners_path %></li>-->
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">收费管理<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><%= link_to '收费项目及标准', charges_path %></li>
-              <li><%= link_to '账单管理', bills_path %></li>
-              <li><%= link_to '欠费收据打印', controller: 'receipt', action: 'unpay_list' %></li>
+              <% if @current_user.has_privilege?('charges', 'index') %>
+                <li><%= link_to '收费项目及标准', charges_path %></li>
+              <% end %>
+              <% if @current_user.has_privilege?('bills', 'index') %>
+                <li><%= link_to '账单管理', bills_path %></li>
+              <% end %>
+              <% if @current_user.has_privilege?('receipts', 'unpay_list') %>
+                <li><%= link_to '欠费收据打印', controller: 'receipt', action: 'unpay_list' %></li>
+              <% end %>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">统计报表<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><%= link_to '收费员报表', controller: 'report', action: 'user_report' %></li>
+              <% if @current_user.has_privilege?('reports', 'user_report') %>
+                <li><%= link_to '收费员报表', controller: 'report', action: 'user_report' %></li>
+              <% end %>
               <li><%= link_to '小区报表', '#' %></li>
             </ul>
           </li>

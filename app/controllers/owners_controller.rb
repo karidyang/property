@@ -12,13 +12,19 @@ class OwnersController < ApplicationController
   # GET /owners
   # GET /owners.xml
   def index
+
+    if !@current_user.has_privilege?('owners', 'index')
+      flash[:now] = '你没有浏览业主列表的权限，请联系管理员'
+      render_403
+      return
+    end
     if params.has_key?('house_code')
       @house_code = params[:house_code]
       house = House.find_by_house_code(@house_code)
       @owners = house.owners.order('name')
     else
       @house_code = 0
-      @owners = Owner.order('house_id').paginate(:page=>params[:page])
+      @owners = Owner.order('house_id').paginate(:page => params[:page])
     end
 
   end
@@ -26,6 +32,11 @@ class OwnersController < ApplicationController
   # GET /owners/1
   # GET /owners/1.xml
   def show
+    if !@current_user.has_privilege?('owners', 'show')
+      flash[:now] = '你没有浏览业主的权限，请联系管理员'
+      render_403
+      return
+    end
     @owner = Owner.find(params[:id])
 
   end
@@ -33,6 +44,11 @@ class OwnersController < ApplicationController
   # GET /owners/new
   # GET /owners/new.xml
   def new
+    if !@current_user.has_privilege?('owners', 'create')
+      flash[:now] = '你没有增加业主的权限，请联系管理员'
+      render_403
+      return
+    end
     @owner = Owner.new
     @owner.house_id = params[:house_id]
 
@@ -40,12 +56,22 @@ class OwnersController < ApplicationController
 
   # GET /owners/1/edit
   def edit
+    if !@current_user.has_privilege?('owners', 'update')
+      flash[:now] = '你没有更新业主的权限，请联系管理员'
+      render_403
+      return
+    end
     @owner = Owner.find(params[:id])
   end
 
   # POST /owners
   # POST /owners.xml
   def create
+    if !@current_user.has_privilege?('owners', 'create')
+      flash[:now] = '你没有增加业主的权限，请联系管理员'
+      render_403
+      return
+    end
     pt = params[:owner]
     @owner = Owner.new(pt)
     @owner.house_id = params[:house] || pt[:house_id]
@@ -54,7 +80,7 @@ class OwnersController < ApplicationController
       @house.owner_name = @owner.name
       @house.receive_time = Date.today
       @house.save
-      redirect_to({:controller=>:houses,:action=>:index, :plot_id=>@house.plot_id,:house_code=>@house.house_code}, :notice => '添加业主成功')
+      redirect_to({:controller => :houses, :action => :index, :plot_id => @house.plot_id, :house_code => @house.house_code}, :now => '添加业主成功')
     else
       render :action => 'new'
     end
@@ -63,11 +89,15 @@ class OwnersController < ApplicationController
   # PUT /owners/1
   # PUT /owners/1.xml
   def update
-
+    if !@current_user.has_privilege?('owners', 'update')
+      flash[:now] = '你没有更新业主的权限，请联系管理员'
+      render_403
+      return
+    end
     @owner = Owner.find(params[:id])
     @owner.house.owner_name = @owner.name
     if @owner.update_attributes(params[:owner])
-      redirect_to(owners_url, :notice => '更新业主信息成功')
+      redirect_to(owners_url, :now => '更新业主信息成功')
     else
       render :action => 'edit'
     end
@@ -76,6 +106,11 @@ class OwnersController < ApplicationController
   # DELETE /owners/1
   # DELETE /owners/1.xml
   def destroy
+    if !@current_user.has_privilege?('owners', 'destroy')
+      flash[:now] = '你没有删除业主的权限，请联系管理员'
+      render_403
+      return
+    end
     @owner = Owner.find(params[:id])
     if owner
       @house = @owner.house

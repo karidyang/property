@@ -13,6 +13,12 @@ class BillsController < ApplicationController
   # GET /bills
   # GET /bills.json
   def index
+    if !@current_user.has_privilege?('bills', 'index')
+      flash[:now] = '你没有浏览账单的权限，请联系管理员'
+      render_403
+      return
+    end
+
     if params[:house_code] && !''.eql?(params[:house_code])
       house = House.where('plot_id=? and house_code=?', current_plot, params[:house_code]).first
       @bills = house.bills.paginate(:page => params[:page])
@@ -28,6 +34,11 @@ class BillsController < ApplicationController
   end
 
   def search
+    if !@current_user.has_privilege?('bills', 'index')
+      flash[:now] = '你没有浏览账单的权限，请联系管理员'
+      render_403
+      return
+    end
     params[:charge_type] = 1
     bill_items = BillItem.search_by_house(current_plot, params)
     bill_items_json = []
@@ -41,6 +52,11 @@ class BillsController < ApplicationController
   # DELETE /bills/1
   # DELETE /bills/1.json
   def destroy
+    if !@current_user.has_privilege?('bills', 'destroy')
+      flash[:now] = '你没有删除账单的权限，请联系管理员'
+      render_403
+      return
+    end
     @bill = Bill.find(params[:id])
     @bill.destroy
 
@@ -51,7 +67,11 @@ class BillsController < ApplicationController
   end
 
   def calculate
-
+    if !@current_user.has_privilege?('bills', 'calculate')
+      flash[:now] = '你没有计算账单的权限，请联系管理员'
+      render_403
+      return
+    end
     plot = Plot.find(current_plot)
     logger.info "plot name is #{plot.name}"
     plot.areas.each do |area|
@@ -64,7 +84,11 @@ class BillsController < ApplicationController
   end
 
   def pay
-
+    if !@current_user.has_privilege?('bills', 'pay')
+      flash[:now] = '你没有收取账单的权限，请联系管理员'
+      render_403
+      return
+    end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
 
     if bill_item_ids.empty?
@@ -83,7 +107,11 @@ class BillsController < ApplicationController
   end
 
   def reset
-
+    if !@current_user.has_privilege?('bills', 'reset')
+      flash[:now] = '你没有重置账单的权限，请联系管理员'
+      render_403
+      return
+    end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
 
     if bill_item_ids.empty?
@@ -102,6 +130,11 @@ class BillsController < ApplicationController
   end
 
   def push
+    if !@current_user.has_privilege?('bills', 'push')
+      flash[:now] = '你没有冲销账单的权限，请联系管理员'
+      render_403
+      return
+    end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
 
     if bill_item_ids.empty?
@@ -125,6 +158,11 @@ class BillsController < ApplicationController
   end
 
   def show
+    if !@current_user.has_privilege?('bills', 'show')
+      flash[:now] = '你没有查看账单的权限，请联系管理员'
+      render_403
+      return
+    end
     bill = Bill.find(params[:bill_id])
     json = []
     bill.bill_items.each do |item|
@@ -135,7 +173,11 @@ class BillsController < ApplicationController
 
   #增加临时账单
   def add_temporary
-
+    if !@current_user.has_privilege?('bills', 'add_temporary')
+      flash[:now] = '你没有增加临时账单的权限，请联系管理员'
+      render_403
+      return
+    end
     @house = House.find(params[:id])
     @items = Charge.find_all_by_plot_id(session[:current_plot])
     render 'add_temporary'
@@ -143,7 +185,11 @@ class BillsController < ApplicationController
 
   #保存临时账单
   def save_temporary
-
+    if !@current_user.has_privilege?('bills', 'add_temporary')
+      flash[:now] = '你没有增加临时账单的权限，请联系管理员'
+      render_403
+      return
+    end
     params[:plot_id] = session[:current_plot]
     params[:user_name] = @current_user.name
     charge_time = params[:charge_time].to_date || Date.today

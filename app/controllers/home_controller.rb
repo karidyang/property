@@ -7,9 +7,6 @@ class HomeController < ApplicationController
     end
   end
 
-  def demo
-  end
-
   def login
     @user_session = UserSession.new
     render :layout => false

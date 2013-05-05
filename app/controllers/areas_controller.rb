@@ -12,10 +12,15 @@ class AreasController < ApplicationController
   # GET /areas
   # GET /areas.xml
   def index
+    if !@current_user.has_privilege?('areas', 'index')
+      flash[:now] = '你没有浏览楼栋的权限，请联系管理员'
+      render_403
+      return
+    end
     if params.has_key?('plot_id')
-      @areas = Area.where('plot_id=?', params[:plot_id]).order('name').paginate(:page=>params[:page])
+      @areas = Area.where('plot_id=?', params[:plot_id]).order('name').paginate(:page => params[:page])
     else
-      @areas = Area.order('name').paginate(:page=>params[:page])
+      @areas = Area.order('name').paginate(:page => params[:page])
     end
     respond_with (@areas)
   end
@@ -29,6 +34,12 @@ class AreasController < ApplicationController
   # GET /areas/1
   # GET /areas/1.xml
   def show
+    if !@current_user.has_privilege?('areas', 'show')
+      flash[:now] = '你没有查看楼栋的权限，请联系管理员'
+      render_403
+      return
+    end
+
     @area = Area.find(params[:id])
     respond_with (@area)
   end
@@ -36,11 +47,11 @@ class AreasController < ApplicationController
   # GET /areas/new
   # GET /areas/new.xml
   def new
-    if @current_user.has_privilege?('areas', 'insert')
+    if @current_user.has_privilege?('areas', 'create')
       @area = Area.new
       respond_with (@area)
     else
-      flash[:notice] = '你没有添加楼栋的权限，请联系管理员'
+      flash[:now] = '你没有添加楼栋的权限，请联系管理员'
       render_403
     end
   end
@@ -50,7 +61,7 @@ class AreasController < ApplicationController
     if @current_user.has_privilege?('areas', 'update')
       @area = Area.find(params[:id])
     else
-      flash[:notice] = '你没有修改楼栋的权限，请联系管理员'
+      flash[:now] = '你没有修改楼栋的权限，请联系管理员'
       render_403
     end
   end
@@ -58,17 +69,17 @@ class AreasController < ApplicationController
   # POST /areas
   # POST /areas.xml
   def create
-    if @current_user.has_privilege?('areas', 'insert')
+    if @current_user.has_privilege?('areas', 'create')
       @area = Area.new(params[:area])
       if @area.save
-        redirect_to(area_path, :notice => 'Area was successfully created.')
+        redirect_to(area_path, :now => '新增楼栋成功')
 
       else
         render :action => 'new'
 
       end
     else
-      flash[:notice] = '你没有添加楼栋的权限，请联系管理员'
+      flash[:now] = '你没有添加楼栋的权限，请联系管理员'
       render_403
     end
 
@@ -80,14 +91,14 @@ class AreasController < ApplicationController
     if @current_user.has_privilege?('areas', 'update')
       @area = Area.find(params[:id])
       if @area.update_attributes(params[:area])
-        redirect_to(area_path, :notice => 'Area was successfully updated.')
+        redirect_to(area_path, :now => '保存楼栋信息成功.')
 
       else
         render :action => 'edit'
 
       end
     else
-      flash[:notice] = '你没有修改楼栋的权限，请联系管理员'
+      flash[:now] = '你没有修改楼栋的权限，请联系管理员'
       render_403
 
     end
@@ -105,7 +116,7 @@ class AreasController < ApplicationController
       redirect_to area_path
     else
 
-      flash[:notice] = '你没有删除楼栋的权限，请联系管理员'
+      flash[:now] = '你没有删除楼栋的权限，请联系管理员'
       render_403
     end
   end

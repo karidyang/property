@@ -12,23 +12,33 @@
       <div class="nav-collapse collapse">
         <p class="navbar-text pull-right">
           Welcome <%= user_name_tag @current_user %> &nbsp; <a href="<%= logout_path %>" class="navbar-link">退出</a>
-          <a href="<%= backto_plot %>" class="navbar-link">小区</a>
+          <% if @current_user.has_privilege?('plot', 'index') %>
+            <a href="<%= backto_plot %>" class="navbar-link">小区</a>
+          <% end %>
         </p>
         <ul class="nav">
           <li class="active"><a href="/admin">首页</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">系统管理<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><%= link_to '用户管理', users_path %></li>
-              <li><%= link_to '角色管理', roles_path %></li>
+              <% if @current_user.has_privilege?('users', 'index') %>
+                <li><%= link_to '用户管理', users_path %></li>
+              <% end %>
+              <% if @current_user.has_privilege?('roles', 'index') %>
+                <li><%= link_to '角色管理', roles_path %></li>
+              <% end %>
               <!--<li><%= link_to '权限管理', nil %></li>-->
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">统计报表<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><%= link_to '收费报表', pay_report_path %></li>
-              <li><%= link_to '欠费报表', unpay_report_path %></li>
+              <% if @current_user.has_privilege?('reports', 'pay_report') %>
+                <li><%= link_to '收费报表', pay_report_path %></li>
+              <% end %>
+              <% if @current_user.has_privilege?('reports', 'unpay_report') %>
+                <li><%= link_to '欠费报表', unpay_report_path %></li>
+              <% end %>
               <li><%= link_to '预收款报表', '#' %></li>
             </ul>
           </li>
