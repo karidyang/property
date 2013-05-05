@@ -30,7 +30,7 @@
     <div class="control-group">
       <div class="controls">
         <button id="btnSubmit" class="btn btn-primary">保存</button>
-        <%= link_to '返回', users_path, class: 'btn' %>
+        <%= link_to '返回', {controller: 'home', action: 'index', id: @house.id}, :class => 'btn' %>
       </div>
     </div>
 

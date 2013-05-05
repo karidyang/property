@@ -79,7 +79,7 @@ class AccountsController < ApplicationController
       #@account.transcation_in(@detail)
 
       if Account.add_pre_money(params, @current_user.name)
-        redirect_to :controller => :accounts, :action => :index, :house_id => params[:house_id]
+        redirect_to :controller => 'home', :action => :index, :id => params[:house_id]
       else
         @item = Charge.find_all_by_plot_id(session[:current_plot])
         render 'add_pre_money'
