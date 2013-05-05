@@ -182,7 +182,7 @@ class HousesController < ApplicationController
           flash[:now] = '绑定收费项目成功.'
         end
       end
-      redirect_to root_path
+      redirect_to controller: 'home', action: 'index', id: @house.id
     else
       @charges = Charge.find_all_by_plot_id(session[:current_plot])
     end

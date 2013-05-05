@@ -12,6 +12,14 @@
   }
 
   $(document).ready(function () {
+    $("#charge_time").datetimepicker({
+      format: 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+
     $("#item_id").change(change_unit_price());
     $("#btnCancel").click(function () {
 
@@ -142,7 +150,7 @@
       <label class="control-label">时间</label>
 
       <div class="controls">
-        <%= text_field_tag 'charge_time', nil, :placeholder => '时间', :onfocus => 'HS_setDate(this)' %>
+        <%= text_field_tag 'charge_time', nil, :placeholder => '时间' %>
       </div>
     </div>
     <div class="control-group">
@@ -184,7 +192,7 @@
 
       <div class="controls">
         <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
-        <a href="javascript:history.back()" class="btn">返回</a>
+        <%= link_to '返回', {controller: 'home', action: 'index', id: @house.id}, :class => 'btn' %>
       </div>
     </div>
   </fieldset>

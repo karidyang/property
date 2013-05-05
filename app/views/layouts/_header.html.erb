@@ -58,7 +58,7 @@
                 <li><%= link_to '账单管理', bills_path %></li>
               <% end %>
               <% if @current_user.has_privilege?('receipts', 'unpay_list') %>
-                <li><%= link_to '欠费收据打印', controller: 'receipt', action: 'unpay_list' %></li>
+                <li><%= link_to '欠费管理', controller: 'receipt', action: 'unpay_list' %></li>
               <% end %>
             </ul>
           </li>
@@ -68,7 +68,7 @@
               <% if @current_user.has_privilege?('reports', 'user_report') %>
                 <li><%= link_to '收费员报表', controller: 'report', action: 'user_report' %></li>
               <% end %>
-              <li><%= link_to '小区报表', '#' %></li>
+              <!--<li><%= link_to '小区报表', '#' %></li>-->
             </ul>
           </li>
         </ul>

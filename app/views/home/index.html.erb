@@ -400,10 +400,16 @@
     document.location.href = url;
   }
 
+  $(document).ready(function () {
+    var house_code = $("#house_code").val();
+    if (house_code != "") {
+      refresh_house(house_code)
+    }
+  });
 
 </script>
 <input type="hidden" id="house_id" value=""/>
-<input type="hidden" id="house_code" value=""/>
+<input type="hidden" id="house_code" value="<%= @house_code %>"/>
 
 <div class="container-fluid">
   <div class="row-fluid">

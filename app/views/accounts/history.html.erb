@@ -71,7 +71,7 @@
 
     </div>
     <div class="pull-right input-prepend">
-      <%= link_to '返回', root_path, :class => 'btn' %>
+      <%= link_to '返回', {controller: 'home', action: 'index', id: @account.house_id}, :class => 'btn' %>
     </div>
   </div>
   <div class="container-fluid">

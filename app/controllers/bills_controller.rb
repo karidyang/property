@@ -196,6 +196,6 @@ class BillsController < ApplicationController
     bill = Bill.current_month_bill params[:house_id], charge_time
     bill.add_temp_pay(params)
 
-    render root_path
+    redirect_to controller: 'home', action: 'index', id: params[:house_id]
   end
 end

@@ -5,6 +5,11 @@ class HomeController < ApplicationController
     if @current_user.nil?
       redirect_to :action => :login
     end
+    @house_code = nil
+    if params[:id]
+      @house_code = House.find(params[:id]).house_code
+    end
+
   end
 
   def login
