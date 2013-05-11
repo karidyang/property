@@ -34,6 +34,9 @@ GEM
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
     builder (3.0.4)
+    carrierwave (0.8.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
     columnize (0.3.6)
     erubis (2.7.0)
     hike (1.2.1)
@@ -89,6 +92,7 @@ GEM
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
+    ruby-ole (1.2.11.6)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     sass (3.2.7)
@@ -96,6 +100,8 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    spreadsheet (0.8.5)
+      ruby-ole (>= 1.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -108,6 +114,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    uuidtools (2.1.4)
     will_paginate (3.0.4)
     yajl-ruby (1.1.0)
 
@@ -116,15 +123,19 @@ PLATFORMS
 
 DEPENDENCIES
   authlogic
+  carrierwave
   jquery-rails (= 2.1.4)
   json
   kaminari
+  mime-types
   mysql2
   rails (= 3.2.12)
   rake
   ruby-debug19
   sass
   sass-rails
+  spreadsheet
   sqlite3
+  uuidtools
   will_paginate (~> 3.0)
   yajl-ruby
