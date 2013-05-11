@@ -188,4 +188,17 @@ class HousesController < ApplicationController
     end
   end
 
+  def batch_import
+    # filename = uploadFile(params[:file])
+    # puts filename
+    uploader = BatchImportUploader.new
+    uploader.store!(params[:file])
+
+    House.import_by_excel(uploader.file.path, session[:current_plot])
+    flash[:now] = '导入成功'
+
+
+    redirect_to houses_path
+  end
+
 end

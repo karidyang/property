@@ -150,7 +150,7 @@ class House < ActiveRecord::Base
     unpays[:total_sub_money] = sub_money
     unpays[:house_info] = "#{house_code} #{owner_name}"
     unpays[:title] = "#{plot.name}欠费催款单"
-    return unpays
+    unpays
   end
 
   class << self
@@ -182,6 +182,60 @@ class House < ActiveRecord::Base
       bill.bill_items.each { |b| total_moeny += b.money if b.status==0 }
     end
     total_moeny
+  end
+
+  def self.import_by_excel(excel, plot_id)
+    book = Spreadsheet.open(excel)
+    sheet = book.worksheet(0)
+    sheet.each 1 do |row|
+      puts row
+      house_code = row[0].to_s
+
+      builded_area = row[1].to_f
+      real_area = row[2].to_f
+      share_area = row[3].to_f
+      receive_time = row[4].to_date
+      checkin_time = row[5].to_date
+      owners = row[6].to_s
+      owner_phone = row[7].to_s
+
+      #1.查找栋号
+      area_name = house_code.split("-")[0]+"栋"
+      @area = Area.find_by_name(area_name)
+      @area = Area.create(name: area_name, plot_id: plot_id) unless @area
+
+
+      #2.查找房号
+      @house = House.find_by_house_code(house_code)
+      next if @house
+
+      @house = House.create(
+          house_code: house_code,
+          area_id: @area.id,
+          plot_id: plot_id,
+          builded_area: builded_area,
+          real_area: real_area,
+          share_area: share_area,
+          owner_name: owners,
+          receive_time: receive_time,
+          checkin_time: checkin_time,
+          status: 1,
+          use_type: 1,
+          unit_id: 1
+
+      )
+
+      #3.查找业主
+      @owner = Owner.find_by_house_id_and_name(@house.id, owners)
+      next if @owner
+      Owner.create(
+          name: owners,
+          house_id: @house.id,
+          phone: owner_phone
+      )
+
+
+    end
   end
 
 

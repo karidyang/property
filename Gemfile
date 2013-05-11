@@ -1,6 +1,6 @@
 source 'http://ruby.taobao.org/'
 
-gem 'rails','3.2.12'
+gem 'rails', '3.2.12'
 gem 'rake'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -23,7 +23,12 @@ group :assets do
 end
 # File Uploads
 # gem 'paperclip'
-# gem 'carrierwave'
+gem 'carrierwave'
+gem 'mime-types'
+gem 'uuidtools'
+
+#excel
+gem 'spreadsheet'
 
 # gem 'devise', '~> 1.1.7'
 # gem "cancan"
@@ -35,26 +40,25 @@ end
 # gem 'validates_timeliness', '~> 3.0.5'
 
 
-
 # gem 'acts-as-taggable-on'
- 
+
 # gem 'hoptoad_notifier'
 # gem 'newrelic_rpm'
 
 #gem 'SystemTimer' if RUBY_VERSION =~ /^1.8/
 
 #group :test, :development do
-  #gem "rspec", "~> 2.0"
-  #gem "rspec-rails", "~> 2.0"
-  #gem 'factory_girl_rails'
-  #gem "shoulda-matchers"
-  #gem "rcov"
-  #gem 'delorean'
-  #gem "watchr"
-  #gem "spork", "~>0.9.0.rc"
-  # gem "capybara"
-  # gem 'yard'
-  # gem "bluecloth"
+#gem "rspec", "~> 2.0"
+#gem "rspec-rails", "~> 2.0"
+#gem 'factory_girl_rails'
+#gem "shoulda-matchers"
+#gem "rcov"
+#gem 'delorean'
+#gem "watchr"
+#gem "spork", "~>0.9.0.rc"
+# gem "capybara"
+# gem 'yard'
+# gem "bluecloth"
 #end
 
 # State machine

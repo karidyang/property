@@ -4,18 +4,23 @@
   </div>
   <div class="container-fluid">
 
-    <%= form_tag('/houses', :method => :get) do %>
+    <%= form_tag(houses_path, :method => :get) do %>
       <div class="input-append">
+
         <%= text_field_tag :house_code, nil, :class => 'span2', :placeholder => '房间号' %>
         <button type="submit" class="btn">搜索</button>
+
         <% if @current_user.has_privilege?('houses', 'insert') %>
           <%= link_to '新建', new_house_path, :class => 'btn' %>
         <% end %>
         <% if @current_user.has_privilege?('houses', 'destroy') %>
           <button class="btn" id="btnDelHouse"><i class="icon-remove"></i>批量删除</button>
         <% end %>
+        <a href="#batchImport" role="button" class="btn" data-toggle="modal">批量导入</a>
+
       </div>
     <% end %>
+
   </div>
   <div class="container-fluid">
     <table class="table table-bordered table-hover table-condensed">
@@ -72,3 +77,26 @@
     </div>
   </div>
 </fieldset>
+
+<!-- Modal -->
+
+<div id="batchImport" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">批量导入</h3>
+  </div>
+  <%= form_tag({:controller => :houses, :action => :batch_import}, :method => :post, :multipart => true, :class => 'modal-form') do %>
+
+    <div class="modal-body">
+
+      <%= file_field_tag :file %>
+
+
+    </div>
+    <div class="modal-footer">
+      <%= submit_tag '提交', :class => 'btn btn-primary' %>
+      <%= link_to '模板下载', '/excels/batch_house.xls', :class => 'btn' %>
+    </div>
+  <% end %>
+</div>
