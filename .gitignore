@@ -6,3 +6,4 @@
 *.swp
 .project
 .DS_Store
+.tags*

@@ -16,6 +16,8 @@ class House < ActiveRecord::Base
   has_many :bills, :class_name => 'Bill', :order => 'bill_date desc'
   has_many :unpay_bills, :class_name => 'Bill', :conditions => 'bill_status = 0', :order => 'bill_date desc'
   has_many :pay_bills, :class_name => 'Bill', :conditions => 'bill_status = 1', :order => 'bill_date desc'
+  has_many :unpay_bill_items, :class_name => 'BillItem', :foreign_key=> 'house_id', :conditions => 'status = 0', :order => 'trans_time'
+  has_many :pay_bill_items, :class_name => 'BillItem', :foreign_key=> 'house_id', :conditions => 'status = 1', :order => 'trans_time'
   self.per_page = 10
 
   def self.find_house(plot_id, house_code=nil)
@@ -161,26 +163,26 @@ class House < ActiveRecord::Base
 
   def unpay_wuguan_money
     total_moeny = 0
-    unpay_bills.each do |bill|
-      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 && b.charge.bind_area }
-    end
+    # unpay_bills.each do |bill|
+      pay_bill_items.each { |b| total_moeny += b.money if b.charge.bind_area }
+    # end
     total_moeny
   end
 
   def unpay_other_money
     total_moeny = 0
-    unpay_bills.each do |bill|
-      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 && !b.charge.bind_area }
-    end
+    # unpay_bills.each do |bill|
+      unpay_bill_items.each { |b| total_moeny += b.money unless b.charge.bind_area }
+    # end
     total_moeny
   end
 
   # 欠费总金额
   def total_unpay_money
     total_moeny = 0
-    unpay_bills.each do |bill|
-      bill.bill_items.each { |b| total_moeny += b.money if b.status==0 }
-    end
+    # unpay_bills.each do |bill|
+      pay_bill_items.each { |b| total_moeny += b.money }
+    # end
     total_moeny
   end
 

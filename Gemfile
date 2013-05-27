@@ -16,7 +16,9 @@ gem 'json'
 
 # Paginator
 gem 'kaminari'
-gem 'will_paginate', '~> 3.0'
+gem 'will_paginate', '3.0.3'
+gem 'bootstrap-will_paginate', '0.0.6'
+
 group :assets do
   gem 'sass-rails'
   gem 'sass'
@@ -74,7 +76,7 @@ gem 'spreadsheet'
 # gem "memcache-client", :require => "memcache"
 
 # Deployment tool
-# gem 'capistrano'
+gem 'capistrano'
 # gem 'whiskey_disk'
 
 # Debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
