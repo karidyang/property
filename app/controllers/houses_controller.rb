@@ -155,7 +155,17 @@ class HousesController < ApplicationController
       accounts_json << account.json
     end
 
-    render :json => {house: house.json, bill_items: bill_items_json, pay_bill_items: pay_bill_items_json, accounts: accounts_json}
+    cars_json = Array.new
+    house.cars.each do |car|
+      cars_json << car.json
+    end
+    render :json => {
+        house: house.json,
+        bill_items: bill_items_json,
+        pay_bill_items: pay_bill_items_json,
+        accounts: accounts_json,
+        cars: cars_json
+    }
   end
 
   def info
@@ -199,6 +209,21 @@ class HousesController < ApplicationController
 
 
     redirect_to houses_path
+  end
+
+  def delete_car
+    @car = Car.find(params[:id])
+    if @car
+      @car.destroy
+    end
+    house = House.find(params[:house_id])
+    cars_json = Array.new
+    house.cars.each do |car|
+      cars_json << car.json
+    end
+    render :json => {
+        cars: cars_json
+    }
   end
 
 end

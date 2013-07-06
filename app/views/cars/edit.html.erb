@@ -1,0 +1,24 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @car} %>
+<%= form_for(@car, :html => {:class => 'form-horizontal'}) do |f| %>
+  <%= f.hidden_field :house_id %>
+  <fieldset>
+    <div id="legend">
+      <legend>修改车辆</legend>
+    </div>
+    <div class="control-group">
+      <label class="control-label">车牌号码</label>
+
+      <div class="controls">
+        <%= f.text_field :car_no %>
+      </div>
+    </div>
+
+    <div class="control-group">
+
+      <div class="controls">
+        <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+        <a href="" class="btn">返回</a>
+      </div>
+    </div>
+  </fieldset>
+<% end %>

@@ -37,7 +37,7 @@ module ApplicationHelper
   end
 
   def all_areas
-    Area.all.map { |a| [a.name, a.id] }
+    Area.where('plot_id=?', session[:current_plot]).map { |a| [a.name, a.id] }
   end
 
   def backto_plot
@@ -46,6 +46,13 @@ module ApplicationHelper
     else
       choose_plot_path
     end
+  end
+
+  def empty_car_ports
+    carports = []
+    CarPort.where('plot_id=?', session[:current_plot]).each { |p| carports<< p if p.car.nil? }
+
+    carports.map { |p| ["#{p.port_no}(费用:#{p.charge.price}元)", p.id] }
   end
 
 end

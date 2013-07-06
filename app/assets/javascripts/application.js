@@ -15,33 +15,56 @@
 
 
 function selectAllCheck(allCheckedObj, id) {
-    var isAll = $(allCheckedObj).attr("checked");
-    if (isAll) {
-        $(":checkbox").each(function () {
-            if (this.id == id) {
-                if (!this.checked && !this.disabled) {
-                    this.checked = true;
-                }
-            }
-        });
-    } else {
-        $(":checkbox").each(function () {
-            if (this.id == id) {
-                if (this.checked && !this.disabled) {
-                    this.checked = false;
-                }
-            }
-        });
-    }
+  var isAll = $(allCheckedObj).attr("checked");
+  if (isAll) {
+    $(":checkbox").each(function () {
+      if (this.id == id) {
+        if (!this.checked && !this.disabled) {
+          this.checked = true;
+        }
+      }
+    });
+  } else {
+    $(":checkbox").each(function () {
+      if (this.id == id) {
+        if (this.checked && !this.disabled) {
+          this.checked = false;
+        }
+      }
+    });
+  }
 }
 
 $.fn.datetimepicker.dates['zh-CN'] = {
-                days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-            daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-            daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-            monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-            today: "今日",
-        suffix: [],
-        meridiem: []
-    };
+  days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+  daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+  daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+  months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  today: "今日",
+  suffix: [],
+  meridiem: []
+};
+
+function CurrencyFormatted(amount) {
+  var i = parseFloat(amount);
+  if (isNaN(i)) {
+    i = 0.00;
+  }
+  var minus = '';
+  if (i < 0) {
+    minus = '-';
+  }
+  i = Math.abs(i);
+  i = parseInt((i + .005) * 100);
+  i = i / 100;
+  s = new String(i);
+  if (s.indexOf('.') < 0) {
+    s += '.00';
+  }
+  if (s.indexOf('.') == (s.length - 2)) {
+    s += '0';
+  }
+  s = minus + s;
+  return s;
+}
