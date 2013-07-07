@@ -12,7 +12,7 @@ class HousesController < ApplicationController
   # GET /houses
   # GET /houses.xml
   def index
-    if !@current_user.has_privilege?('houses', 'index')
+    unless @current_user.has_privilege?('houses', 'index')
       flash[:now] = '你没有浏览房间列表的权限，请联系管理员'
       render_403
       return
@@ -126,7 +126,7 @@ class HousesController < ApplicationController
   end
 
   def house_info
-    if !@current_user.has_privilege?('houses', 'index')
+    unless @current_user.has_privilege?('houses', 'index')
       flash[:now] = '你没有浏览房间列表的权限，请联系管理员'
       render_403
       return
@@ -138,16 +138,12 @@ class HousesController < ApplicationController
 
 
     bill_items_json = Array.new
-    house.unpay_bills.each do |bill|
-      bill.bill_items.each do |bill_item|
-        bill_items_json << bill_item.json
-      end
+    house.unpay_bill_items.each do |bill_item|
+      bill_items_json << bill_item.json
     end
     pay_bill_items_json = Array.new
-    house.pay_bills.each do |bill|
-      bill.bill_items.each do |bill_item|
-        pay_bill_items_json << bill_item.json
-      end
+    house.pay_bill_items.each do |bill_item|
+      pay_bill_items_json << bill_item.json
     end
     accounts_json = Array.new
 
@@ -168,13 +164,13 @@ class HousesController < ApplicationController
     }
   end
 
-  def info
-
-    render 'home/_house_info', layout: 'iframe'
-  end
+  #def info
+  #
+  #  render 'home/_house_info', :layout => 'iframe'
+  #end
 
   def add_house_charge
-    if !@current_user.has_privilege?('houses', 'add_house_charge')
+    unless @current_user.has_privilege?('houses', 'add_house_charge')
       flash[:now] = '你没有绑定房间收费项目的权限，请联系管理员'
       render_403
       return

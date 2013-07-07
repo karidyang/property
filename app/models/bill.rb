@@ -5,6 +5,7 @@ class Bill < ActiveRecord::Base
 
   before_create :default_value_of_create
   self.per_page = 10
+
   def default_value_of_create
     self.bill_status = STATE[:unpay]
   end
@@ -110,7 +111,11 @@ class Bill < ActiveRecord::Base
     self.curr_money = bill_items.map { |detail| detail.money }.inject { |sum, money| sum + money }
     sum_status = bill_items.map { |detail| detail.status }.inject { |sum, status| sum + status }
     #puts "bill_item sum_status = #{sum_status}, bill_items.size = #{bill_items.size}"
-    self.bill_status = STATE[:pay] if sum_status == bill_items.size
+    if sum_status == bill_items.size
+      self.bill_status = STATE[:pay]
+    else
+      self.bill_status = STATE[:unpay]
+    end
     self.save!
   end
 

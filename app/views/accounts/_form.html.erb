@@ -142,7 +142,7 @@
       <label class="control-label">项目</label>
 
       <div class="controls">
-        <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'item_name'), :onchange => 'change_unit_price(this)' %>
+        <%= select_tag 'item_id', options_from_collection_for_select(@items, 'id', 'desplay_name'), :onchange => 'change_unit_price(this)' %>
       </div>
     </div>
     <div class="control-group">

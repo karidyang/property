@@ -27,4 +27,13 @@ class Charge < ActiveRecord::Base
     end
     house_id.join(',')
   end
+
+  def desplay_name
+    if self.period == PERIOD[:month]
+      "#{self.item_name}(费用:#{self.price}元/月)"
+    else
+      "#{self.item_name}(费用:#{self.price}元)"
+    end
+
+  end
 end

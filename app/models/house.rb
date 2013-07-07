@@ -111,6 +111,53 @@ class House < ActiveRecord::Base
             end
           end
         end
+
+        #先找到有多少个车辆费用，然后不同的费用使用车辆的总数量
+        #比如： 计费1：总车辆2辆， 计费2：总车辆1辆
+        car_charges = {}
+        charges = []
+        cars.each do |car|
+          unless car.car_port.nil?
+            charge = car.car_port.charge
+            if car_charges.include? charge.id
+              car_charges[charge.id] += 1
+            else
+              car_charges[charge.id] = 1
+              charges << charge
+            end
+
+          end
+        end
+
+        charges.each do |charge|
+          #puts "计算车费 #{car.car_no}"
+
+
+          unit_price = charge.price
+          record = car_charges[charge.id]
+          puts "车辆费用为：#{unit_price}"
+          bill_item = BillItem.find_by_date(self.id, charge.id, Charge::TYPE[:custom], day)
+          if bill_item.nil?
+            bill_item = BillItem.create(
+                :item_name => charge.item_name,
+                :item_id => charge.id,
+                :item_type => Charge::TYPE[:custom],
+                :house_id => self.id,
+                :plot_id => self.plot.id,
+                :unit_price => unit_price,
+                :record => record,
+                :start_record => 0,
+                :end_record => 0,
+                :trans_time => day,
+                :operator => operator
+            )
+            if bill_item.money > 0
+              puts "#{self.house_code}新增费用[#{charge.item_name}]=#{bill_item.money}"
+              bill.add_item(bill_item, true)
+            end
+          end
+
+        end
       end
     rescue => e
       puts e
