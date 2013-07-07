@@ -1,5 +1,5 @@
 #coding:utf-8
-class CarportsController < ApplicationController
+class CarPortsController < ApplicationController
   before_filter :require_user
 
   def index
@@ -21,10 +21,10 @@ class CarportsController < ApplicationController
 
   def create
     if @current_user.has_privilege?('carports', 'create')
-      @carport = CarPort.new(params[:charge])
+      @carport = CarPort.new(params[:car_port])
       @carport.plot_id = session[:current_plot]
       if @carport.save
-        redirect_to(carports_path, :now => '新建车位成功.')
+        redirect_to(car_ports_path, :now => '新建车位成功.')
       else
         render :action => 'new'
       end
@@ -58,7 +58,7 @@ class CarportsController < ApplicationController
     if @current_user.has_privilege?('carports', 'update')
       @carport = CarPort.find(params[:id])
       if @carport.update_attributes(params[:charge])
-        redirect_to(carports_path, :now => '更新收费项目成功.')
+        redirect_to(car_ports_path, :now => '更新收费项目成功.')
 
       else
         render :action => 'edit'
@@ -78,7 +78,7 @@ class CarportsController < ApplicationController
       else
         flash[:notice] = "该车位还停有车辆，请先删除车辆。房号：#{@carport.car.house.house_code}, 车牌：#{@carport.car.car_no}"
       end
-      redirect_to carports_path
+      redirect_to car_ports_path
 
     else
       flash[:now] = '你没有删除车位的权限，请联系管理员'

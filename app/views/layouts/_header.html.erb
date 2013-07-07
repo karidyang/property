@@ -46,7 +46,7 @@
                 <li><%= link_to '房屋管理', houses_path %></li>
               <% end %>
               <% if @current_user.has_privilege?('carports', 'index') %>
-                <li><%= link_to '车位管理', carports_path %></li>
+                <li><%= link_to '车位管理', car_ports_path %></li>
               <% end %>
               <!--<li><%= link_to '业主管理', owners_path %></li>-->
             </ul>

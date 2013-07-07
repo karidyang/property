@@ -57,7 +57,7 @@ Property::Application.routes.draw do
 
   resources :cars, :only => [:new, :edit, :create]
 
-  resources :carports
+  resources :car_ports
 
   match 'login', :to => 'home#login'
   match 'login_create', :to => 'home#login_create'
