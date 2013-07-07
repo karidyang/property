@@ -48,6 +48,10 @@ module ApplicationHelper
     end
   end
 
+  def all_charges
+    Charge.where('plot_id=?', session[:current_plot]).map { |c| ["#{c.item_name}(费用:#{c.price}元)", c.id] }
+  end
+
   def empty_car_ports
     carports = []
     CarPort.where('plot_id=?', session[:current_plot]).each { |p| carports<< p if p.car.nil? }

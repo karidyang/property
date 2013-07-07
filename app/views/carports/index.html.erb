@@ -1,0 +1,54 @@
+<fieldset>
+  <div id="legend">
+    <legend>车位列表</legend>
+  </div>
+  <div class="container-fluid">
+    <div class="input-append">
+      <%= form_tag(carports_path, :method => :get) do %>
+        <%= text_field_tag :port_no, nil, :class => 'span2', :placeholder => '车位编号' %>
+        <button type="submit" class="btn">搜索</button>
+        <%= link_to '新增', new_carport_path, :class => 'btn' %>
+        <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
+      <% end %>
+
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    <table class="table table-bordered table-hover table-condensed">
+      <thead>
+      <tr>
+        <th style="width: 50px;">
+          <label class="checkbox" style="margin-bottom: 0;">
+            <input type="checkbox" onclick="selectAllCheck(this,'car_port_id')">全选
+          </label>
+        </th>
+        <th>车位编号</th>
+        <th>费用名称</th>
+        <th>价格</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @carports.each do |carport| %>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="car_port_id" value="<%= carport.id %>">
+            </label>
+          </td>
+          <td><%= link_to carport.port_no, edit_carport_path(carport) %></td>
+          <td><%= carport.charge.item_name %></td>
+          <td><%= carport.charge.price %></td>
+          <td>
+            <%= link_to '删除', {:controller => :carports, :action => :destroy, :id => carport}, :confirm => '确定删除?', :method => :delete %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+      <%= paginate @carports %>
+    </div>
+  </div>
+</fieldset>

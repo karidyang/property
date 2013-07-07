@@ -1,0 +1,32 @@
+<%= render :partial => 'shared/error_messages', :locals => {:target => @carport} %>
+<%= form_for(@carport, :html => {:class => 'form-horizontal'}) do |f| %>
+
+  <fieldset>
+    <div id="legend">
+      <legend><%= header_name %></legend>
+    </div>
+    <div class="control-group">
+      <label class="control-label">选择收费项</label>
+
+      <div class="controls">
+        <%= f.select(:port_charge_id, all_charges) %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">车位编号</label>
+
+      <div class="controls">
+        <%= f.text_field :port_no %>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+
+      <div class="controls">
+        <button id="btnSubmit" type="submit" class="btn btn-primary">提交</button>
+        <a href="<%= carports_path %>" class="btn">返回</a>
+      </div>
+    </div>
+  </fieldset>
+<% end %>
