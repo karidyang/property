@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddHouseToAccountDetail < ActiveRecord::Migration
   def change
     add_column :account_details, :house_id, :integer

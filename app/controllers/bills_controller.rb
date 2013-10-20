@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- encoding : utf-8 -*-
 class BillsController < ApplicationController
   before_filter :require_user
   before_filter :require_plot
@@ -13,9 +13,8 @@ class BillsController < ApplicationController
   # GET /bills
   # GET /bills.json
   def index
-    if !@current_user.has_privilege?('bills', 'index')
-      flash[:now] = '你没有浏览账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'index')
+      miss_privilege
       return
     end
 
@@ -34,9 +33,8 @@ class BillsController < ApplicationController
   end
 
   def search
-    if !@current_user.has_privilege?('bills', 'index')
-      flash[:now] = '你没有浏览账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'index')
+      miss_privilege
       return
     end
     params[:charge_type] = 1
@@ -52,9 +50,8 @@ class BillsController < ApplicationController
   # DELETE /bills/1
   # DELETE /bills/1.json
   def destroy
-    if !@current_user.has_privilege?('bills', 'destroy')
-      flash[:now] = '你没有删除账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'destroy')
+      miss_privilege
       return
     end
     @bill = Bill.find(params[:id])
@@ -67,9 +64,8 @@ class BillsController < ApplicationController
   end
 
   def calculate
-    if !@current_user.has_privilege?('bills', 'calculate')
-      flash[:now] = '你没有计算账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'calculate')
+      miss_privilege
       return
     end
     plot = Plot.find(current_plot)
@@ -84,9 +80,8 @@ class BillsController < ApplicationController
   end
 
   def pay
-    if !@current_user.has_privilege?('bills', 'pay')
-      flash[:now] = '你没有收取账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'pay')
+      miss_privilege
       return
     end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
@@ -107,9 +102,8 @@ class BillsController < ApplicationController
   end
 
   def reset
-    if !@current_user.has_privilege?('bills', 'reset')
-      flash[:now] = '你没有重置账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'reset')
+      miss_privilege
       return
     end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
@@ -130,9 +124,8 @@ class BillsController < ApplicationController
   end
 
   def push
-    if !@current_user.has_privilege?('bills', 'push')
-      flash[:now] = '你没有冲销账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'push')
+      miss_privilege
       return
     end
     bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
@@ -158,9 +151,8 @@ class BillsController < ApplicationController
   end
 
   def show
-    if !@current_user.has_privilege?('bills', 'show')
-      flash[:now] = '你没有查看账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'show')
+      miss_privilege
       return
     end
     bill = Bill.find(params[:bill_id])
@@ -173,9 +165,8 @@ class BillsController < ApplicationController
 
   #增加临时账单
   def add_temporary
-    if !@current_user.has_privilege?('bills', 'add_temporary')
-      flash[:now] = '你没有增加临时账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'add_temporary')
+      miss_privilege
       return
     end
     @house = House.find(params[:id])
@@ -185,9 +176,8 @@ class BillsController < ApplicationController
 
   #保存临时账单
   def save_temporary
-    if !@current_user.has_privilege?('bills', 'add_temporary')
-      flash[:now] = '你没有增加临时账单的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('bills', 'add_temporary')
+      miss_privilege
       return
     end
     params[:plot_id] = session[:current_plot]

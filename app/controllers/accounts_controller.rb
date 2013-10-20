@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- encoding : utf-8 -*-
 class AccountsController < ApplicationController
   before_filter :require_user
   #around_filter do |controller, action|
@@ -13,9 +13,8 @@ class AccountsController < ApplicationController
   # GET /accounts
   # GET /accounts.xml
   def index
-    if !@current_user.has_privilege?('accounts', 'index')
-      flash[:now] = '你没有浏览预存款的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'index')
+      miss_privilege
       return
     end
     @house_id = params[:house_id]
@@ -25,10 +24,8 @@ class AccountsController < ApplicationController
   # DELETE /accounts/1
   # DELETE /accounts/1.xml
   def destroy
-    if !@current_user.has_privilege?('accounts', 'destroy')
-
-      flash[:now] = '你没有删除预存款的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'destroy')
+      miss_privilege
       return
     end
 
@@ -40,10 +37,8 @@ class AccountsController < ApplicationController
   end
 
   def history
-    if !@current_user.has_privilege?('accounts', 'history')
-
-      flash[:now] = '你没有查看预存款历史的权限'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'history')
+      miss_privilege
       return
     end
     @account = Account.find(params[:id])
@@ -51,37 +46,18 @@ class AccountsController < ApplicationController
   end
 
   def add_pre_money
-    if !@current_user.has_privilege?('accounts', 'add_pre_money')
-      flash[:now] = '你没有添加预存款的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'add_pre_money')
+      miss_privilege
       return
     end
     @house = House.find(params[:house_id])
     if request.post?
-      #@detail = AccountDetail.new
-      #@detail.unit_price=params[:unitPrice]
-      #@detail.record = params[:record]
-      #@detail.can_push=params[:can_push]
-      #@detail.money = params[:money]
-      #
-      #@account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
-      #@charge = Charge.find(params[:item_id])
-      #
-      #if @account.nil?
-      #  @account = Account.create(:house_id=>params[:house_id],
-      #                            :house_code=>params[:house_code],
-      #                            :item_id=>params[:item_id],
-      #                            :item_name=>@charge.item_name,
-      #                            :plot_id=>params[:plot_id])
-      #
-      #end
-      #
-      #@account.transcation_in(@detail)
 
       if Account.add_pre_money(params, @current_user.name)
         redirect_to :controller => 'home', :action => :index, :id => params[:house_id]
       else
-        @item = Charge.find_all_by_plot_id(session[:current_plot])
+        flash.now[:error] = '预存款错误'
+        @items = Charge.find_all_by_plot_id(session[:current_plot])
         render 'add_pre_money'
       end
     else
@@ -91,9 +67,8 @@ class AccountsController < ApplicationController
   end
 
   def delete_detail
-    if !@current_user.has_privilege?('accounts', 'delete_detail')
-      flash[:now] = '你没有删除预存款明细的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'delete_detail')
+      miss_privilege
       return
     end
     @detail = AccountDetail.find(params['detail_id'])
@@ -107,9 +82,8 @@ class AccountsController < ApplicationController
   end
 
   def transcation
-    if !@current_user.has_privilege?('accounts', 'transcation')
-      flash[:now] = '你没有转账的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('accounts', 'transcation')
+      miss_privilege
       return
     end
     if request.post?

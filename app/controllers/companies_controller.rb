@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class CompaniesController < ApplicationController
   #around_filter do |controller, action|
   #  if !@current_user.has_privilege?(controller.controller_name, controller.action_name)
@@ -65,6 +65,6 @@ class CompaniesController < ApplicationController
   def destroy
     @company = Company.find(params[:id])
     @company.destroy
-    respond_with(@company, :location=>:back)
+    respond_with(@company, :location => :back)
   end
 end

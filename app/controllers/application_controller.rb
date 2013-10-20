@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class ApplicationController < ActionController::Base
   respond_to :html, :xml
   protect_from_forgery
@@ -16,6 +16,11 @@ class ApplicationController < ActionController::Base
 
   def render_403
     render_optional_error_file(403)
+  end
+
+  def miss_privilege
+    flash.now[:error] = '缺少权限，请联系管理员'
+    render_403
   end
 
   def render_optional_error_file(status_code)
@@ -52,11 +57,11 @@ class ApplicationController < ActionController::Base
   end
 
   def has_privilege?(model, operator, msg)
-    if !@current_user.has_privilege?(model, operator)
+    unless @current_user.has_privilege?(model, operator)
       flash[:notice] = msg
       return false
     end
-    return true
+    true
   end
 
   private

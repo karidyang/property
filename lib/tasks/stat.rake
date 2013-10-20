@@ -50,7 +50,7 @@ where t.status=1
 and pay_date=date_add(curdate(),interval -1 day)
 group by plot_id,trans_time, item_id,item_name
 order by pay_date")
-    PayReport.delete_all
+    #PayReport.delete_all
     result.map do |r|
       PayReport.create!(
           plot_id: r[0],
@@ -66,11 +66,10 @@ order by pay_date")
   desc "stat unpay report everyday."
   task :unpay_report => :environment do
     puts "this is unpay report."
-    UnpayReport.delete_all
-    result = ActiveRecord::Base.connection.execute("select plot_id, t.trans_time,item_id,item_name,sum(money)
+    #UnpayReport.delete_all
+    result = ActiveRecord::Base.connection.execute("select plot_id, date_add(curdate(),interval -1 day) trans_time,item_id,item_name,sum(money)
 from bill_items t
 where t.status=0
-and trans_time=date_add(curdate(),interval -1 day)
 group by plot_id,trans_time, item_id,item_name
 order by pay_date")
 
@@ -84,5 +83,10 @@ order by pay_date")
       )
 
     end
+  end
+
+  desc "stat all everyday"
+  task :all => [:user_report, :pay_report, :unpay_report] do
+    puts "stat all over ....."
   end
 end

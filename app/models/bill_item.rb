@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class BillItem < ActiveRecord::Base
   belongs_to :bill

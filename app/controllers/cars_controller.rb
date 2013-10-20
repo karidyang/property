@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class CarsController < ApplicationController
   before_filter :require_user

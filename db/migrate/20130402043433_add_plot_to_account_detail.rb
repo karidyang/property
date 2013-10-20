@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddPlotToAccountDetail < ActiveRecord::Migration
   def change
     add_column :account_details, :plot_id, :integer

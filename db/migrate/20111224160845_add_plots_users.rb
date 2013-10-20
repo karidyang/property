@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddPlotsUsers < ActiveRecord::Migration
   def change
     create_table :plots_users, :id => false do |t|

@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 module ChargesHelper
   def all_period_type
     [['周期', 0], ['临时', 1], ['按次', 2], ['区间', 3]]

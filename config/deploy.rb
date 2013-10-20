@@ -1,9 +1,10 @@
+# -*- encoding : utf-8 -*-
 require 'bundler/capistrano'
 set :application, "property"
-set :repository,  "git://github.com/karidyang/property.git"
+set :repository, "git://github.com/karidyang/property.git"
 set :branch, "master"
 set :scm, :git
-set :user, 'karidyang'  #部署的用户名，需要是可以访问github的用户
+set :user, 'karidyang' #部署的用户名，需要是可以访问github的用户
 set :port, '22'
 
 set :ssh_options, {:forward_agent => true}

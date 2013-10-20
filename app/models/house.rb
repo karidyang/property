@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- encoding : utf-8 -*-
 class House < ActiveRecord::Base
 
   validates_presence_of :builded_area, :message => '建筑面积不能为空'

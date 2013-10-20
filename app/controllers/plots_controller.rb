@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class PlotsController < ApplicationController
   before_filter :require_user
   #around_filter do |controller, action|
@@ -69,6 +69,6 @@ class PlotsController < ApplicationController
   def destroy
     @plot = Plot.find(params[:id])
     @plot.destroy
-    respond_with(@plot, :location=>:back)
+    respond_with(@plot, :location => :back)
   end
 end

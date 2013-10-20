@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130630095101) do
+ActiveRecord::Schema.define(:version => 20131020040658) do
 
   create_table "account_details", :force => true do |t|
     t.integer "account_id"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(:version => 20130630095101) do
     t.string "receipt_no"
     t.integer "item_id"
     t.string "item_name"
+    t.decimal "discount", :precision => 8, :scale => 2, :default => 1.0
+    t.decimal "discount_money", :precision => 8, :scale => 2, :default => 0.0
   end
 
   add_index "account_details", ["account_id"], :name => "index_account_details_on_account_id"
@@ -154,6 +156,15 @@ ActiveRecord::Schema.define(:version => 20130630095101) do
 
   add_index "houses", ["area_id"], :name => "index_houses_on_area_id"
   add_index "houses", ["plot_id"], :name => "index_houses_on_plot_id"
+
+  create_table "notices", :force => true do |t|
+    t.string "topic"
+    t.string "content"
+    t.integer "publish_type"
+    t.date "expire_date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "owners", :force => true do |t|
     t.string "name"

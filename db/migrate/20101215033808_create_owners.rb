@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateOwners < ActiveRecord::Migration
   def change
     create_table :owners do |t|
@@ -7,7 +8,7 @@ class CreateOwners < ActiveRecord::Migration
       t.string :phone
       t.string :id_card
       t.string :contract_no
-      t.integer :house_id, :null=>false
+      t.integer :house_id, :null => false
 
       t.timestamps
     end

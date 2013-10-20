@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 module UsersHelper
   def user_name_tag(user)

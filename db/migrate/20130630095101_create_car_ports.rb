@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateCarPorts < ActiveRecord::Migration
   def change
     create_table :car_ports do |t|

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- encoding : utf-8 -*-
 class HousesController < ApplicationController
   before_filter :require_user
   #around_filter do |controller, action|

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateCompanies < ActiveRecord::Migration
   def change
     create_table :companies do |t|
@@ -8,5 +9,5 @@ class CreateCompanies < ActiveRecord::Migration
     end
   end
 
-  
+
 end

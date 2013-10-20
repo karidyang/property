@@ -1,7 +1,8 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class Plot < ActiveRecord::Base
-  has_many :areas, :order=>"name"
+  has_many :areas, :order => "name"
   self.per_page = 10
+
   def to_json
     #json = "{\"attr\":{\"id\":\"p-#{self.id}\",\"type\":1,\"rel\":\"plot\"},\"data\":\"#{self.name}\""
     json = "{\"id\":\"p-#{self.id}\",\"name\":\"#{self.name}\""

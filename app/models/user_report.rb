@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class UserReport < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :charge
@@ -46,7 +47,7 @@ class UserReport < ActiveRecord::Base
           group by item_id, operator
           order by trans_time "
     result = ActiveRecord::Base.connection.execute(sql)
-    result.map { |r| {trans_time: r[0], item_name: r[1], item_id:r[2], operator: r[3], total_pay_money: r[4]+r[5] }}
+    result.map { |r| {trans_time: r[0], item_name: r[1], item_id: r[2], operator: r[3], total_pay_money: r[4]+r[5]} }
 
   end
 end

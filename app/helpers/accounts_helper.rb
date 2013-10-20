@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 module AccountsHelper
   def account_history(account)
@@ -5,11 +6,11 @@ module AccountsHelper
   end
 
   def del_detail(detail_id)
-    link_to '删除', {:controller=>:accounts, :action=>:delete_detail, :detail_id=>detail_id}, :confirm => '确定删除？', :method => :delete
+    link_to '删除', {:controller => :accounts, :action => :delete_detail, :detail_id => detail_id}, :confirm => '确定删除？', :method => :delete
   end
 
   def get_account_type(type)
-    {0=>'存入', 1=>'支出'}.each do |key, value|
+    {0 => '存入', 1 => '支出'}.each do |key, value|
       if key.to_i==type
         return value
       end

@@ -1,18 +1,17 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class ReportController < ApplicationController
   def user_report
-    if !@current_user.has_privilege?('reports', 'user_report')
-      flash[:now] = '你没有查看收费员报表的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('reports', 'user_report')
+      miss_privilege
       return
     end
     @user_reports = UserReport.find_by_user(params[:start_time], params[:end_time])
   end
 
   def user_report_detail
-    if !@current_user.has_privilege?('reports', 'user_report')
-      flash[:now] = '你没有查看收费员报表的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('reports', 'user_report')
+      miss_privilege
       return
     end
     if params[:item_id]
@@ -24,9 +23,8 @@ class ReportController < ApplicationController
   end
 
   def pay_report
-    if !@current_user.has_privilege?('reports', 'pay_report')
-      flash[:now] = '你没有查看收费报表的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('reports', 'pay_report')
+      miss_privilege
       return
     end
     @pay_reports = PayReport.paginate(:page => params[:page])
@@ -35,9 +33,8 @@ class ReportController < ApplicationController
   end
 
   def unpay_report
-    if !@current_user.has_privilege?('reports', 'unpay_report')
-      flash[:now] = '你没有查看收费员报表的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('reports', 'unpay_report')
+      miss_privilege
       return
     end
     @unpay_reports = UnpayReport.paginate(:page => params[:page])

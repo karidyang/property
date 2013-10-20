@@ -13,6 +13,7 @@ gem 'yajl-ruby', :require => 'yajl'
 #gem 'nokogiri'
 gem 'authlogic'
 gem 'json'
+gem 'magic_encoding'
 
 # Paginator
 gem 'kaminari'
@@ -81,8 +82,8 @@ gem 'capistrano'
 
 # Debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
-gem 'ruby-debug19'
-
+#gem 'ruby-debug19'
+gem 'debugger'
 # Background Processing
 # gem 'delayed_job'
 # gem 'resque'

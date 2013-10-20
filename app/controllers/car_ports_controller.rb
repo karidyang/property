@@ -1,11 +1,11 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class CarPortsController < ApplicationController
   before_filter :require_user
 
   def index
     unless @current_user.has_privilege?('carports', 'index')
-      flash[:now] = '你没有浏览收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
       return
     end
     if params[:port_no].nil?
@@ -24,13 +24,12 @@ class CarPortsController < ApplicationController
       @carport = CarPort.new(params[:car_port])
       @carport.plot_id = session[:current_plot]
       if @carport.save
-        redirect_to(car_ports_path, :now => '新建车位成功.')
+        redirect_to(car_ports_path, :notice => '新建车位成功.')
       else
         render :action => 'new'
       end
     else
-      flash[:now] = '你没有新建车位的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 
@@ -38,8 +37,7 @@ class CarPortsController < ApplicationController
     if @current_user.has_privilege?('carports', 'create')
       @carport = CarPort.new()
     else
-      flash[:now] = '你没有新建车位的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
 
   end
@@ -48,8 +46,7 @@ class CarPortsController < ApplicationController
     if @current_user.has_privilege?('carports', 'update')
       @carport = CarPort.find(params[:id])
     else
-      flash[:now] = '你没有修改车位的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
 
   end
@@ -58,14 +55,13 @@ class CarPortsController < ApplicationController
     if @current_user.has_privilege?('carports', 'update')
       @carport = CarPort.find(params[:id])
       if @carport.update_attributes(params[:charge])
-        redirect_to(car_ports_path, :now => '更新收费项目成功.')
+        redirect_to(car_ports_path, :notice => '更新收费项目成功.')
 
       else
         render :action => 'edit'
       end
     else
-      flash[:now] = '你没有修改车位的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
 
   end
@@ -81,8 +77,7 @@ class CarPortsController < ApplicationController
       redirect_to car_ports_path
 
     else
-      flash[:now] = '你没有删除车位的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 end

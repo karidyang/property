@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class RolesController < ApplicationController
   before_filter :require_user
   layout 'admin'
@@ -13,9 +13,8 @@ class RolesController < ApplicationController
   # GET /roles
   # GET /roles.xml
   def index
-    if !@current_user.has_privilege?('roles', 'index')
-      flash[:now] = '你没有浏览角色的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('roles', 'index')
+      miss_privilege
       return
     end
 
@@ -27,9 +26,8 @@ class RolesController < ApplicationController
   # GET /roles/new
   # GET /roles/new.xml
   def new
-    if !@current_user.has_privilege?('roles', 'create')
-      flash[:now] = '你没有增加角色的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('roles', 'create')
+      miss_privilege
       return
     end
     @role = Role.new
@@ -39,9 +37,8 @@ class RolesController < ApplicationController
 
   # GET /roles/1/edit
   def edit
-    if !@current_user.has_privilege?('roles', 'update')
-      flash[:now] = '你没有修改角色的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('roles', 'update')
+      miss_privilege
       return
     end
     @role = Role.find(params[:id])
@@ -51,9 +48,8 @@ class RolesController < ApplicationController
   # POST /roles
   # POST /roles.xml
   def create
-    if !@current_user.has_privilege?('roles', 'create')
-      flash[:now] = '你没有增加角色的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('roles', 'create')
+      miss_privilege
       return
     end
     @role = Role.new(params[:role])
@@ -61,7 +57,7 @@ class RolesController < ApplicationController
     if @role.save
       params[:role][:privilege_ids] ||= []
       if @role.update_attributes(params[:role])
-        redirect_to(roles_url, :now => '新建角色成功.')
+        redirect_to(roles_url, :notice => '新建角色成功.')
       else
         render 'admin/roles/new'
       end
@@ -73,16 +69,15 @@ class RolesController < ApplicationController
   # PUT /roles/1
   # PUT /roles/1.xml
   def update
-    if !@current_user.has_privilege?('roles', 'update')
-      flash[:now] = '你没有修改角色的权限，请联系管理员'
-      render_403
+    unless current_user.has_privilege?('roles', 'update')
+      miss_privilege
       return
     end
     @role = Role.find(params[:id])
 
 
     if @role.update_attributes(params[:role])
-      redirect_to(roles_url, :now => '角色保存成功.')
+      redirect_to(roles_url, :notice => '角色保存成功.')
 
     else
       render 'admin/roles/edit'
@@ -93,16 +88,15 @@ class RolesController < ApplicationController
   # DELETE /roles/1
   # DELETE /roles/1.xml
   def destroy
-    if !@current_user.has_privilege?('roles', 'destroy')
-      flash[:now] = '你没有删除角色的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('roles', 'destroy')
+      miss_privilege
       return
     end
     @role = Role.find(params[:id])
     if @role.destroy
-      flash[:now] = '删除成功'
+      flash[:notice] = '删除成功'
     else
-      flash[:now] = '删除失败'
+      flash[:error] = '删除失败'
     end
     redirect_to roles_path
   end

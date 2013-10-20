@@ -1,4 +1,6 @@
+# -*- encoding : utf-8 -*-
 Property::Application.routes.draw do
+
   #report start
   match 'report/user_report', to: 'report#user_report'
   match 'report/pay_report', to: 'report#pay_report', as: 'pay_report'
@@ -58,6 +60,8 @@ Property::Application.routes.draw do
   resources :cars, :only => [:new, :edit, :create]
 
   resources :car_ports
+
+  resources :notices
 
   match 'login', :to => 'home#login'
   match 'login_create', :to => 'home#login_create'

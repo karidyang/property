@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class Area < ActiveRecord::Base
   belongs_to :plot
   has_many :houses, :order => 'house_code'

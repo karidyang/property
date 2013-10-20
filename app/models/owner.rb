@@ -1,4 +1,4 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class Owner < ActiveRecord::Base
   belongs_to :house
   self.per_page = 10

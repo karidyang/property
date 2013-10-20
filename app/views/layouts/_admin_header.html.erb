@@ -27,7 +27,7 @@
               <% if @current_user.has_privilege?('roles', 'index') %>
                 <li><%= link_to '角色管理', roles_path %></li>
               <% end %>
-              <!--<li><%= link_to '权限管理', nil %></li>-->
+              <li><%= link_to '公告管理', notices_path %></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -42,6 +42,7 @@
               <!--<li><%= link_to '预收款报表', '#' %></li>-->
             </ul>
           </li>
+
         </ul>
 
       </div>

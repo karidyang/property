@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class BillItemAddItemType < ActiveRecord::Migration
   def change
     add_column :bill_items, :item_type, :integer

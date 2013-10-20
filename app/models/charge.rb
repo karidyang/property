@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding: utf-8
 class Charge < ActiveRecord::Base
   belongs_to :plot

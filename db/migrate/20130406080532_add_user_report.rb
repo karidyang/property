@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddUserReport < ActiveRecord::Migration
   def change
     create_table :user_reports do |t|
@@ -12,6 +13,6 @@ class AddUserReport < ActiveRecord::Migration
       t.decimal :pre_money, :precision => 8, :scale => 2, :default => 0
       t.string :operator
     end
-    
+
   end
 end

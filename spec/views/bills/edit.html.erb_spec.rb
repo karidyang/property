@@ -1,13 +1,14 @@
+# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe "bills/edit.html.erb" do
   before(:each) do
     @bill = assign(:bill, stub_model(Bill,
-      :bill_name => "MyString",
-      :bill_status => 1,
-      :curr_money => "9.99",
-      :house_id => 1,
-      :plot_id => 1
+                                     :bill_name => "MyString",
+                                     :bill_status => 1,
+                                     :curr_money => "9.99",
+                                     :house_id => 1,
+                                     :plot_id => 1
     ))
   end
 

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class CarPort < ActiveRecord::Base
   attr_accessible :port_charge_id, :port_no, :plot_id

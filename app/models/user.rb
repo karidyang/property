@@ -1,11 +1,12 @@
-# coding: utf-8  
+# -*- encoding : utf-8 -*-
 class User < ActiveRecord::Base
   attr_protected :state
   acts_as_authentic
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :plots
 
-  validates_presence_of :name, :email
+  validates_presence_of :name, :message => '必须填写姓名'
+  validates_presence_of :email, :message => '必须填写Email'
   validates_uniqueness_of :email
   before_create :default_value_for_create
   self.per_page = 10

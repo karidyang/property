@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding: utf-8
 class ChargesController < ApplicationController
   before_filter :require_user
@@ -12,9 +13,8 @@ class ChargesController < ApplicationController
   # GET /charges
   # GET /charges.xml
   def index
-    if !@current_user.has_privilege?('charges', 'index')
-      flash[:now] = '你没有浏览收费项目的权限，请联系管理员'
-      render_403
+    unless @current_user.has_privilege?('charges', 'index')
+      miss_privilege
       return
     end
     if params[:item_name].nil?
@@ -31,8 +31,7 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'create')
       @charge = Charge.new
     else
-      flash[:now] = '你没有新建收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 
@@ -41,8 +40,7 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'update')
       @charge = Charge.find(params[:id])
     else
-      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 
@@ -52,14 +50,13 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'create')
       @charge = Charge.new(params[:charge])
       if @charge.save
-        redirect_to(charges_path, :now => '新建收费项目成功.')
+        redirect_to(charges_path, :notice => '新建收费项目成功.')
       else
         render :action => 'new'
 
       end
     else
-      flash[:now] = '你没有新建收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
 
   end
@@ -70,14 +67,13 @@ class ChargesController < ApplicationController
     if @current_user.has_privilege?('charges', 'update')
       @charge = Charge.find(params[:id])
       if @charge.update_attributes(params[:charge])
-        redirect_to(charges_path, :now => '更新收费项目成功.')
+        redirect_to(charges_path, :notice => '更新收费项目成功.')
 
       else
         render :action => 'edit'
       end
     else
-      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
 
   end
@@ -93,8 +89,7 @@ class ChargesController < ApplicationController
 
       redirect_to charges_path
     else
-      flash[:now] = '你没有删除收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 
@@ -112,16 +107,17 @@ class ChargesController < ApplicationController
         end
       end
     else
-      flash[:now] = '你没有修改收费项目的权限，请联系管理员'
-      render_403
+      miss_privilege
     end
   end
 
   def get_unit_price
     @charge = Charge.find(params[:id])
     house = House.find(params[:house_id])
-    @charge.price *= house.builded_area
-    render :json => @charge.to_json
+    if @charge.bind_area?
+      @charge.price *= house.builded_area
+    end
+    render :json => {price: format('%#.2f', @charge.price)}
   end
 
 end

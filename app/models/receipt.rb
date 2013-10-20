@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class Receipt < ActiveRecord::Base
   has_many :details, :class_name => 'BillItem', :order => 'trans_time desc'
@@ -52,15 +53,19 @@ class Receipt < ActiveRecord::Base
   end
 
   def total_account_money
-    account_details.map{|detail| detail.money}.inject {|sum,money| sum + money}
+    account_details.map { |detail| detail.money }.inject { |sum, money| sum + money }
   end
 
   def total_money
-    details.map{|detail| detail.money}.inject {|sum,money| sum + money}
+    details.map { |detail| detail.money }.inject { |sum, money| sum + money }
   end
 
   def total_pay_money
-    details.map{|detail| detail.pay_money}.inject {|sum,money| sum + money}
+    details.map { |detail| detail.pay_money }.inject { |sum, money| sum + money }
+  end
+
+  def total_account_discount_money
+    account_details.map { |detail| detail.discount_money }.inject { |sum, money| sum + money }
   end
 
   def init_info

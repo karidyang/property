@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreatePlots < ActiveRecord::Migration
   def change
     create_table :plots do |t|

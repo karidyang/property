@@ -1,12 +1,12 @@
-# coding: utf-8
+# -*- encoding : utf-8 -*-
 class UsersController < ApplicationController
   before_filter :require_user, :except => [:new, :create]
   layout('admin')
   # GET /users
   # GET /users.xml
   def index
-    if !@current_user.has_privilege?('users', 'index')
-      flash[:now] = '你没有浏览用户的权限，请联系管理员'
+    unless !@current_user.has_privilege?('users', 'index')
+      flash.now[:error] = '你没有浏览用户的权限，请联系管理员'
       render_403
       return
     end
@@ -22,8 +22,8 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    if !@current_user.has_privilege?('users', 'create')
-      flash[:now] = '你没有增加用户的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'create')
+      flash.now[:error] = '你没有增加用户的权限，请联系管理员'
       render_403
       return
     end
@@ -33,8 +33,8 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    if !@current_user.has_privilege?('users', 'update')
-      flash[:now] = '你没有更新用户的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'update')
+      flash.now[:error] = '你没有更新用户的权限，请联系管理员'
       render_403
       return
     end
@@ -45,15 +45,15 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
   def create
-    if !@current_user.has_privilege?('users', 'create')
-      flash[:now] = '你没有增加用户的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'create')
+      flash.now[:error] = '你没有增加用户的权限，请联系管理员'
       render_403
       return
     end
     @user = User.new(params[:user])
 
     if @user.save
-      flash[:now] = '注册成功.'
+      flash.now[:error] = '注册成功.'
       redirect_back_or_default user_path
     else
       render 'admin/users/new'
@@ -63,8 +63,8 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    if !@current_user.has_privilege?('users', 'update')
-      flash[:now] = '你没有更新用户的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'update')
+      flash.now[:error] = '你没有更新用户的权限，请联系管理员'
       render_403
       return
     end
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
 
     if @user.update_attributes(params[:user])
-      redirect_to(@user, :now => '保存用户成功.')
+      redirect_to(@user, :notice => '保存用户成功.')
 
     else
       render :action => 'edit'
@@ -84,8 +84,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
-    if !@current_user.has_privilege?('users', 'destroy')
-      flash[:now] = '你没有删除用户的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'destroy')
+      flash.now[:error] = '你没有删除用户的权限，请联系管理员'
       render_403
       return
     end
@@ -95,8 +95,8 @@ class UsersController < ApplicationController
   end
 
   def add_role
-    if !@current_user.has_privilege?('users', 'add_role')
-      flash[:now] = '你没有绑定用户角色的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'add_role')
+      flash.now[:error] = '你没有绑定用户角色的权限，请联系管理员'
       render_403
       return
     end
@@ -105,13 +105,13 @@ class UsersController < ApplicationController
       if params.include?(:user)
         params[:user][:role_ids] ||= []
         if @user.update_attributes(params[:user])
-          flash[:now] = '用户角色保存成功.'
+          flash[:notice] = '用户角色保存成功.'
           redirect_to users_path
         end
       else
         @user.roles = []
         if @user.save!
-          flash[:now] = '用户角色保存成功.'
+          flash[:notice] = '用户角色保存成功.'
           redirect_to users_path
         end
       end
@@ -123,8 +123,8 @@ class UsersController < ApplicationController
   end
 
   def add_plot
-    if !@current_user.has_privilege?('users', 'add_plot')
-      flash[:now] = '你没有绑定用户小区的权限，请联系管理员'
+    unless @current_user.has_privilege?('users', 'add_plot')
+      flash.now[:notice] = '你没有绑定用户小区的权限，请联系管理员'
       render_403
       return
     end
@@ -133,13 +133,13 @@ class UsersController < ApplicationController
       if params.include?(:user)
         params[:user][:plot_ids] ||= []
         if @user.update_attributes(params[:user])
-          flash[:now] = '用户小区保存成功.'
+          flash.now[:error] = '用户小区保存成功.'
           redirect_to users_path
         end
       else
         @user.roles = []
         if @user.save!
-          flash[:now] = '用户小区保存成功.'
+          flash[:notice] = '用户小区保存成功.'
           redirect_to users_path
         end
       end

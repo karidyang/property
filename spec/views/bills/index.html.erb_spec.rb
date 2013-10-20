@@ -1,22 +1,23 @@
+# -*- encoding : utf-8 -*-
 require 'spec_helper'
 
 describe "bills/index.html.erb" do
   before(:each) do
     assign(:bills, [
-      stub_model(Bill,
-        :bill_name => "Bill Name",
-        :bill_status => 1,
-        :curr_money => "9.99",
-        :house_id => 1,
-        :plot_id => 1
-      ),
-      stub_model(Bill,
-        :bill_name => "Bill Name",
-        :bill_status => 1,
-        :curr_money => "9.99",
-        :house_id => 1,
-        :plot_id => 1
-      )
+        stub_model(Bill,
+                   :bill_name => "Bill Name",
+                   :bill_status => 1,
+                   :curr_money => "9.99",
+                   :house_id => 1,
+                   :plot_id => 1
+        ),
+        stub_model(Bill,
+                   :bill_name => "Bill Name",
+                   :bill_status => 1,
+                   :curr_money => "9.99",
+                   :house_id => 1,
+                   :plot_id => 1
+        )
     ])
   end
 

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding: utf-8
 class Bill < ActiveRecord::Base
   belongs_to :house

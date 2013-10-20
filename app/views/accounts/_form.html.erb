@@ -22,6 +22,10 @@
       var money = 0;
       var unitPrice = parseFloat($("#unitPrice").val());
       var record = parseInt($("#record").val());
+      if (isNaN(record)) {
+        $(this).focus();
+        alert("请填写正确的数量!");
+      }
       if (!isNaN(unitPrice) && !isNaN(record)) {
         money = unitPrice * record;
         var result = confirm("你确定预存" + money + "元?");
@@ -156,7 +160,8 @@
       <label class="control-label">数量</label>
 
       <div class="controls">
-        <%= text_field_tag 'record', nil, :placeholder => '数量' %>
+        <%= text_field_tag 'record', nil %>
+        <span class="help-inline">填写预存数量，如是按月，则数量=月份</span>
       </div>
     </div>
     <div class="control-group">
@@ -171,6 +176,15 @@
 
       <div class="controls">
         <%= text_field_tag 'can_push', 0.00, :placeholder => '0.00' %>
+        <span class="help-inline">填写不超过金额的数字</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">折扣</label>
+
+      <div class="controls">
+        <%= text_field_tag 'discount', 1, :placeholder => '填写0-1之间', :maxlength => 4, :class => 'span2' %>
+        <span class="help-inline">填写0-1之间</span>
       </div>
     </div>
     <div class="control-group">

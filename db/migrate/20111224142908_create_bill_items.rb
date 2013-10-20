@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateBillItems < ActiveRecord::Migration
   def change
     create_table :bill_items do |t|

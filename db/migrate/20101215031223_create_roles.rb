@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #coding:utf-8
 class CreateRoles < ActiveRecord::Migration
   def change
@@ -7,7 +8,7 @@ class CreateRoles < ActiveRecord::Migration
       t.timestamps
     end
 
-    role = Role.create(:name=>'管理员')
+    role = Role.create(:name => '管理员')
     role.save
   end
 
