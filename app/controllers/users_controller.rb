@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    unless !@current_user.has_privilege?('users', 'index')
+    unless @current_user.has_privilege?('users', 'index')
       flash.now[:error] = '你没有浏览用户的权限，请联系管理员'
       render_403
       return

@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   acts_as_authentic
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :plots
+  has_and_belongs_to_many :notices
 
   validates_presence_of :name, :message => '必须填写姓名'
   validates_presence_of :email, :message => '必须填写Email'

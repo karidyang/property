@@ -5,4 +5,6 @@ class Notice < ActiveRecord::Base
   validates_presence_of :topic, :content, :publish_type, :message => '未填写'
   validates_inclusion_of :publish_type, :in => 1..2
 
+  has_and_belongs_to_many :users
+  
 end

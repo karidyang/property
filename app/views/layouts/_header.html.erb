@@ -11,6 +11,11 @@
 
       <div class="nav-collapse collapse">
         <ul class="nav pull-right">
+          <li>
+            <a href="<%= notifications_path %>" class="notice">
+              <span class="bages"><%= @unread_notice_count %></span>
+            </a>
+          </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= @current_user.name %>
               <b class="caret"></b></a>
@@ -29,9 +34,9 @@
             <a href="<%= choose_plot_url %>" class="navbar-link" alt="切换小区"><%= current_plot %></a>
           </li>
           <% if @current_user.has_privilege?('admin', 'index') %>
-            <li>
-              <a href="<%= admin_url %>" class="navbar-link">管理</a>
-            </li>
+          <li>
+            <a href="<%= admin_url %>" class="navbar-link">管理</a>
+          </li>
           <% end %>
         </ul>
         <ul class="nav">

@@ -60,4 +60,11 @@ module ApplicationHelper
     carports.map { |p| ["#{p.port_no}(费用:#{p.charge.price}元)", p.id] }
   end
 
+  def first_string(str)
+    if str.length > 40
+      str.first(40)+'...'
+    else
+      str
+    end
+  end
 end

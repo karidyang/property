@@ -1,19 +1,9 @@
 <fieldset>
   <div id="legend">
-    <legend>公告列表</legend>
-  </div>
-  <div class="container-fluid">
-    <div class="input-append">
-      <%= form_tag(notices_path, :method => :get) do %>
-        <%= text_field_tag :topic, nil, :class => 'span2', :placeholder => '主题' %>
-        <button type="submit" class="btn">搜索</button>
-      <% end %>
+    <legend>我的公告</legend>
 
-      <%= link_to '新增', new_notice_path, :class => 'btn' %>
-      <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
-    </div>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid span8">
     <table class="table table-bordered table-hover table-condensed">
       <thead>
       <tr>
@@ -24,34 +14,47 @@
         </th>
         <th>主题</th>
         <th>内容</th>
-        <th>类型</th>
         <th>发布时间</th>
         <th>过期时间</th>
         <th>操作</th>
       </tr>
       </thead>
       <tbody>
-      <% @notices.each do |notice| %>
+      <% @top_notices.each do |notice| %>
         <tr>
           <td>
             <label class="checkbox">
               <input type="checkbox" id="notice_id" value="<%= notice.id %>">
             </label>
           </td>
-          <td><%= link_to notice.topic, edit_notice_path(notice) %></td>
+          <td><%= notice.topic %></td>
           <td><%= first_string(notice.content) %></td>
-          <td><%= get_publish_type(notice) %></td>
           <td><%= notice.created_at.strftime("%Y-%m-%d %H:%M") %></td>
           <td><%= notice.expire_date %></td>
           <td>
-            <%= link_to '删除', notice, :confirm => '确定删除?', :method => :delete %>
+          </td>
+        </tr>
+      <% end %>
+      <% @user_notices.each do |user_notice| %>
+        <tr>
+          <td>
+            <label class="checkbox">
+              <input type="checkbox" id="notice_id" value="<%= user_notice.notice.id %>">
+            </label>
+          </td>
+          <td><%= link_to user_notice.notice.topic, read_notification_path(user_notice) %></td>
+          <td><%= first_string(user_notice.notice.content) %></td>
+          <td><%= user_notice.notice.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+          <td><%= user_notice.notice.expire_date %></td>
+          <td>
+            <%= get_read(user_notice) %>
           </td>
         </tr>
 
       <% end %>
       </tbody>
     </table>
-    <%= paginate @notices %>
+    <%= paginate @user_notices %>
 
   </div>
 </fieldset>

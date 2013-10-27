@@ -76,11 +76,16 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    unless current_user
+    if current_user
+      top_notice_count = Notice.where('publish_type=1 and expire_date>now()').count
+      user_notice_count = NoticesUsers.where('user_id=? and is_read=false',@current_user.id).count
+      @unread_notice_count = top_notice_count + user_notice_count
+    else
       store_location
       flash[:notice] = 'You must be logged in to access this page'
       redirect_to login_path
     end
+
   end
 
   def require_no_user

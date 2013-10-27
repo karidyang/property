@@ -9,7 +9,6 @@ class HomeController < ApplicationController
     if params[:id]
       @house_code = House.find(params[:id]).house_code
     end
-
   end
 
   def login
