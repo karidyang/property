@@ -40,7 +40,8 @@
         $('#house_base_info tbody tr').each(function () {
           $(this).remove();
         });
-        var html = "<tr><td>" + data.house.house_code + "</td>" +
+        var html = "<tr><td>" + data.house.id + "</td>" +
+								"<td>" + data.house.house_code + "</td>" +
                 "<td>" + data.house.owner_name + "</td>" +
                 "<td>" + data.house.builded_area + "平方米</td>" +
                 "<td>" + data.house.use_type + "</td></tr>";
@@ -75,7 +76,7 @@
 
 
     } else {
-      $("#accounts_table tbody").append("<tr><td colspan='5'>没有数据!</td></tr>")
+      $("#accounts_table tbody").append("<tr><td colspan='6'>没有数据!</td></tr>")
     }
   }
   function del_car(car_id) {
@@ -254,7 +255,9 @@
   function add_pre_money() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
@@ -265,7 +268,9 @@
   function add_temporary() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :bills, :action => :add_temporary) %>";
@@ -275,7 +280,9 @@
   function pay() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
@@ -287,7 +294,9 @@
     });
     $.post(url, function (data) {
       if (data.result == 'success') {
-        alert(data.msg);
+        // alert(data.msg);
+				$(".modal-body").append(data.msg);
+				$("#push_result").modal();
         refresh_house();
       }
     });
@@ -295,7 +304,9 @@
   function push() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :bills,:action=>:push) %>";
@@ -307,17 +318,29 @@
     });
     $.post(url, function (data) {
       if (data.result == 'success') {
-        alert(data.msg);
+				var text = "共冲销:<br/>";
+				for (i=0;i<data.push_money.length;i++) {
+					text += "<p>"+data.push_money[i].item_name+":"+data.push_money[i].push+"元</p>";
+				}
+				
+				
+				$(".modal-body").append(text);
+				$("#push_result").modal();
+        // alert(data.msg);
         refresh_house();
       } else {
-        alert(data.msg);
+				$(".modal-body").append("<p>"+data.msg+"</p>")
+				$("#push_result").modal();
+        // alert(data.msg);
       }
     });
   }
   function print() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
@@ -339,16 +362,22 @@
     });
 
     if (hasNoPay) {
-      alert("包含有未缴费项目,请先缴费再打印收据!");
+			$(".modal-body").append("包含有未缴费项目,请先缴费再打印收据!");
+			$("#push_result").modal();
+      // alert("包含有未缴费项目,请先缴费再打印收据!");
       return;
     }
     if (!flag) {
-      alert("至少选择一个收费项!");
+			$(".modal-body").append("至少选择一个收费项!");
+			$("#push_result").modal();
+      // alert("至少选择一个收费项!");
       return;
     }
 
-    if (sum_checked > 4) {
-      alert("最多只能选择4项!");
+    if (sum_checked > 6) {
+			$(".modal-body").append("最多只能选择6项!");
+			$("#push_result").modal();
+      // alert("最多只能选择4项!");
       return;
     }
     var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
@@ -360,7 +389,9 @@
   function resetBill() {
     var house_code = $("#house_code").val();
     if (house_code == '') {
-      alert("未选择房间");
+			$(".modal-body").append("未选择房间");
+			$("#push_result").modal();
+      // alert("未选择房间");
       return;
     }
     var url = "<%=url_for(:controller => :bills, :action => :reset) %>";
@@ -377,12 +408,56 @@
 
 
     if (!flag) {
-      alert("至少选择一个收费项!");
+			$(".modal-body").append("至少选择一个收费项!");
+			$("#push_result").modal();
+      // alert("至少选择一个收费项!");
       return;
     }
     $.post(url, function (data) {
       if (data.result == 'success') {
-        alert(data.msg);
+				$(".modal-body").append(data.msg);
+				$("#push_result").modal();
+        // alert(data.msg);
+        refresh_house();
+      }
+    });
+  }
+
+  /*
+  批量删除账单
+  */
+  function delBill () {
+    var house_code = $("#house_code").val();
+    if (house_code == '') {
+			$(".modal-body").append(data.msg);
+			$("#push_result").modal();
+      // alert("未选择房间");
+      return;
+    }
+    var url = "<%=url_for(:controller => :bills, :action => :del_items) %>";
+    url += "?house_id=" + $('#house_id').val();
+    var flag = false; 
+    $("input[name='pay_bill_item_ids']").each(function () {
+      if (this.checked) {
+        if ($("#pay_bill_item_" + this.value).text() == "已收") {
+          url += "&bill_item_ids[]=" + this.value;
+          flag = true;
+        }
+      }
+    });
+
+
+    if (!flag) {
+			$(".modal-body").append("至少选择一个收费项!");
+			$("#push_result").modal();
+      // alert("至少选择一个收费项!");
+      return;
+    }
+    $.post(url, function (data) {
+      if (data.result == 'success') {
+				$(".modal-body").append(data.msg);
+				$("#push_result").modal();
+        // alert(data.msg);
         refresh_house();
       }
     });
@@ -412,7 +487,9 @@
   function bindCharges() {
     var house_id = $("#house_id").val();
     if (house_id == '' || house_id == 0) {
-      alert("还未选择房间");
+			$(".modal-body").append("还未选择房间");
+			$("#push_result").modal();
+      // alert("还未选择房间");
       return;
     }
     var url = "<%= bind_charges_path %>";
@@ -449,5 +526,16 @@
     <%= render 'home/house_info' %>
   </div>
 
+</div>
+
+<div id="push_result" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">提示</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+  </div>
 </div>
 

@@ -12,7 +12,7 @@ gem 'sqlite3'
 gem 'yajl-ruby', :require => 'yajl'
 #gem 'nokogiri'
 gem 'authlogic'
-gem 'json'
+gem 'json','1.8.1'
 gem 'magic_encoding'
 
 # Paginator
@@ -23,6 +23,8 @@ gem 'bootstrap-will_paginate', '0.0.6'
 group :assets do
   gem 'sass-rails'
   gem 'sass'
+  gem 'therubyracer'
+  gem 'uglifier'
 end
 # File Uploads
 # gem 'paperclip'

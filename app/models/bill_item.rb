@@ -52,6 +52,7 @@ class BillItem < ActiveRecord::Base
     pushmoney = 0
     if can_push
       pushmoney = push_money(operator)
+      #这里可能会导致后续冲销流程断掉
       # raise '余额不足' if pushmoney.zero?
     end
     if pushmoney.zero?

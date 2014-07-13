@@ -20,6 +20,7 @@ namespace :stat do
         userReport.trans_time=bill_item.trans_time
       end
       userReport.operator=bill_item.operator
+      userReport.plot_id = bill_item.plot_id
       userReport.save!
     end
     puts '-----------------account_detail---------------'
@@ -34,6 +35,7 @@ namespace :stat do
       userReport.owner = account_detail.house.owner_names
       userReport.trans_time=account_detail.trans_time
       userReport.operator=account_detail.updateby
+      userReport.plot_id = account_detail.plot_id
       if account_detail.account_type==0
         userReport.pre_money=account_detail.money
         userReport.save!
@@ -70,7 +72,7 @@ order by pay_date")
     result = ActiveRecord::Base.connection.execute("select plot_id, date_add(curdate(),interval -1 day) trans_time,item_id,item_name,sum(money)
 from bill_items t
 where t.status=0
-group by plot_id,trans_time, item_id,item_name
+group by plot_id,date_add(curdate(),interval -1 day), item_id,item_name
 order by pay_date")
 
     result.map do |r|

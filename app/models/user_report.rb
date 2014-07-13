@@ -4,14 +4,14 @@ class UserReport < ActiveRecord::Base
   belongs_to :charge
   belongs_to :house
 
-  def self.find_by_user(start_time = nil, end_time = nil)
+  def self.find_by_user(start_time = nil, end_time = nil, plot_id)
     sql = "select concat(min(trans_time),'~~~',max(trans_time)) trans_time,
             operator,
             sum(total_pay_money) total_pay_money,
             sum(total_pre_money) total_pre_money
           from (
           select r.trans_time, item_id,operator,sum(pay_money) total_pay_money ,sum(pre_money) total_pre_money
-          from user_reports r where (pay_money>0 or pre_money>0) "
+          from user_reports r where (pay_money>0 or pre_money>0) and plot_id=#{plot_id} "
     #params = {}
     #if !start_time.nil?
     #  sql += " and t.trans_time >= :start_time"

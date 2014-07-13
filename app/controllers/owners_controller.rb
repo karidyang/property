@@ -24,7 +24,7 @@ class OwnersController < ApplicationController
       @owners = house.owners.order('name')
     else
       @house_code = 0
-      @owners = Owner.order('house_id').paginate(:page => params[:page])
+      @owners = Owner.where("plot_id=#{current_plot}").order('house_id').paginate(:page => params[:page])
     end
 
   end
@@ -73,6 +73,7 @@ class OwnersController < ApplicationController
       return
     end
     pt = params[:owner]
+    pt[:plot_id] = @owner.house.plot_id
     @owner = Owner.new(pt)
     @owner.house_id = params[:house] || pt[:house_id]
     if @owner.save

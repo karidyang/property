@@ -12,7 +12,7 @@ class CreateBillItems < ActiveRecord::Migration
       t.date :pay_date
       t.integer :house_id
       t.decimal :unit_price, :precision => 8, :scale => 2
-      t.integer :record
+      t.decimal :record, :precision => 8, :scale => 2
       t.integer :start_record
       t.integer :end_record
       t.decimal :push, :precision => 8, :scale => 2

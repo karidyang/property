@@ -70,10 +70,11 @@ class BillsController < ApplicationController
     end
     plot = Plot.find(current_plot)
     logger.info "plot name is #{plot.name}"
+    day = params[:day] || Date.today
     plot.areas.each do |area|
       logger.info "area is #{area.id}"
       area.houses.each do |house|
-        house.create_bill(Date.today, @current_user.name)
+        house.create_bill(day, @current_user.name)
       end
     end
     redirect_to :action => :index
@@ -137,11 +138,13 @@ class BillsController < ApplicationController
       house = House.find(params[:house_id])
       bill_items = BillItem.find(bill_item_ids)
       begin
+        push_money = []
         bill_items.each do |bi|
           bi.push_item true, @current_user.name
+          push_money << {:item_name=>bi.item_name, :push => bi.push_money}
           bi.bill.check_status
         end
-        result = {:result => 'success', :msg => '冲销成功', :house_code => house.house_code}
+        result = {:result => 'success', :msg => '冲销成功', :house_code => house.house_code, :push_money=> push_money}
       rescue Exception => e
         puts "exception : #{e.message}"
         result = {:result => 'fail', :msg => e.message}
@@ -187,5 +190,25 @@ class BillsController < ApplicationController
     bill.add_temp_pay(params)
 
     redirect_to controller: 'home', action: 'index', id: params[:house_id]
+  end
+
+  def del_items
+    unless @current_user.has_privilege?('bills', 'destroy')
+      miss_privilege
+      return
+    end
+    bill_item_ids = params[:bill_item_ids].each { |itemId| itemId.to_i }
+
+    if bill_item_ids.empty?
+      result = {:result => 'fail', :msg => '数组为空'}
+    else
+      house = House.find(params[:house_id])
+      bill_items = BillItem.find(bill_item_ids)
+      bill_items.each do |bi|
+        bi.destroy()
+      end
+      result = {:result => 'success', :msg => '删除成功', :house_code => house.house_code}
+    end
+    render :json => result
   end
 end

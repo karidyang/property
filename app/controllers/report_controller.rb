@@ -6,7 +6,7 @@ class ReportController < ApplicationController
       miss_privilege
       return
     end
-    @user_reports = UserReport.find_by_user(params[:start_time], params[:end_time])
+    @user_reports = UserReport.find_by_user(params[:start_time], params[:end_time],current_plot)
   end
 
   def user_report_detail

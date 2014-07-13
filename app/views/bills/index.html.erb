@@ -11,6 +11,7 @@
     </div>
     <div class="input-append">
       <%= form_tag(:controller => :bills, :action => :calculate) do %>
+				<input id="day" name="day" type="text" class="span2" style="margin-bottom: 0;" placeholder="账单月份"/>
         <button type="submit" class="btn">计算小区当月账单</button>
         <button type="button" class="btn"><i class="icon-remove"></i>批量删除</button>
       <% end %>
@@ -62,4 +63,14 @@
 
   </div>
 </fieldset>
-
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#day").datetimepicker({
+      format: 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+  });
+</script>

@@ -5,7 +5,9 @@
   <div class="container-fluid">
     <div class="input-append">
       <%= form_tag controller: 'report', action: 'user_report' do %>
-        <%= text_field_tag :user, nil, placehold: '收费员' %>
+        <input id="start_time" name="start_time" type="text" class="span2" style="margin-bottom: 0;" placeholder="开始日期"/>
+        --
+        <input id="end_time" name="end_time" type="text" class="span2" style="margin-bottom: 0;" placeholder="结束日期"/>
         <%= submit_tag '搜索', class: 'btn' %>
       <% end %>
     </div>
@@ -34,3 +36,21 @@
 
   </div>
 </fieldset>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#start_time").datetimepicker({
+      format: 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+    $("#end_time").datetimepicker({
+      format: 'yyyy-mm-dd',
+      minView: 'month',
+      autoclose: true,
+      todayBtn: true,
+      todayHighlight: true
+    });
+  });
+</script>

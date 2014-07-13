@@ -27,8 +27,12 @@
         alert("请填写正确的数量!");
       }
       if (!isNaN(unitPrice) && !isNaN(record)) {
-        money = unitPrice * record;
-        var result = confirm("你确定预存" + money + "元?");
+        money = parseFloat(unitPrice * record);
+				var _money = $("#money").val();
+				if (_money > money) {
+					money = _money;
+				}
+        var result = confirm("你确定预存" + money.toFixed(2) + "元?");
         if (result) {
           $("form").submit();
         }
@@ -43,7 +47,7 @@
         if (record != 0) {
           $(this).removeAttr("style");
           var money = parseFloat($("#unitPrice").val() * record);
-          $("#money").val(money);
+          $("#money").val(money.toFixed(2));
         } else {
           $(this).focus();
           alert("请填写正确的数量!");

@@ -72,7 +72,7 @@ class House < ActiveRecord::Base
     #1、是否有业主、是否业主已收房
     #2、查询本月是否已经生成账单，未生成则新建，否则追加
     #3、循环收费项，根据收费项生成账单详细
-    return if !can_create_bill?
+    return if !can_create_bill?(day)
     logger.info "开始计算#{self.house_code}#{day.year}年#{day.month}月账单"
     begin
       Bill.transaction do
@@ -166,12 +166,12 @@ class House < ActiveRecord::Base
 
   end
 
-  def can_create_bill?
+  def can_create_bill?(day = Date.today)
     return false if owners.empty? || self.receive_time.nil?
     result = true
 
     #收房日期大于当月20号
-    today = Date.today
+    today = day
 
     if today.month == self.receive_time.month && self.receive_time.day > 20
       result = false

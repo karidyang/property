@@ -25,11 +25,15 @@
       <% if @current_user.has_privilege?('houses', 'add_house_charge') %>
         <button class="btn" onclick="bindCharges()"><span></span>绑定收费项目</button>
       <% end %>
+      <% if @current_user.has_privilege?('bills', 'destroy') %>
+        <button class="btn" onclick="delBill()"><span></span>删除收费账单</button>
+      <% end %>
     </div>
   </div>
   <table id="house_base_info" class="table table-bordered table-condensed">
     <thead>
     <tr>
+			<th>ID</th>
       <th>房号</th>
       <th>业主</th>
       <th>建筑面积</th>
@@ -38,7 +42,7 @@
     </thead>
     <tbody>
     <tr>
-      <td colspan="4">数据准备</td>
+      <td colspan="5">数据准备</td>
     </tr>
     </tbody>
   </table>
