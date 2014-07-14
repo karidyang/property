@@ -166,12 +166,11 @@ class House < ActiveRecord::Base
 
   end
 
-  def can_create_bill?(day = Date.today)
+  def can_create_bill?(today = Date.today)
     return false if owners.empty? || self.receive_time.nil?
     result = true
 
     #收房日期大于当月20号
-    today = day
 
     if today.month == self.receive_time.month && self.receive_time.day > 20
       result = false

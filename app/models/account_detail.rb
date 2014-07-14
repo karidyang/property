@@ -11,9 +11,9 @@ class AccountDetail < ActiveRecord::Base
     self.trans_time = current_time_from_proper_timezone
   end
 
-  def item_name
-    account.item_name
-  end
+  # def item_name
+  #   account.item_name
+  # end
 
   def calculate_discount_money
     self.discount_money = self.money * self.discount

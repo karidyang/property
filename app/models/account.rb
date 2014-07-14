@@ -104,6 +104,9 @@ class Account < ActiveRecord::Base
       account = Account.find_by_item_id_and_house_id(params[:item_id], params[:house_id])
       charge = Charge.find(params[:item_id])
 
+      detail.item_id = params[:item_id]
+      detail.item_name = charge.item_name
+
       if account.nil?
         account = Account.create(:house_id => params[:house_id],
                                  :house_code => params[:house_code],

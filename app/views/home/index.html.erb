@@ -1,479 +1,479 @@
 <script type="text/javascript">
-  var setting = {
-    async: {
-      enable: true,
-      url: "/houses/house_tree",
-      type: 'post'
-    },
-    callback: {
-      onClick: click_house
+    var setting = {
+        async: {
+            enable: true,
+            url: "/houses/house_tree",
+            type: 'post'
+        },
+        callback: {
+            onClick: click_house
+        }
+    };
+    var zTree1;
+
+    var nodes = [];
+
+
+    $(function () {
+        zTree1 = $.fn.zTree.init($("#house_tree"), setting);
+
+    });
+
+    function click_house(event, treeid, treeNode) {
+        var nodeName = treeNode.name;
+        var names = nodeName.split("|");
+        $("#house_code").val(names[0]);
+        refresh_house(names[0]);
+
     }
-  };
-  var zTree1;
-
-  var nodes = [];
 
 
-  $(function () {
-    zTree1 = $.fn.zTree.init($("#house_tree"), setting);
+    function refresh_house(house_code) {
+        $("#select_account_all").removeAttr("checked");
+        $("#select_bill_all").removeAttr("checked");
+        var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
+        if (house_code == null)
+            house_code = $("#house_code").val();
+        $.post(url, {"house_code": house_code}, function (data) {
+            if (data.house) {
+                $("#house_id").val(data.house.id);
+                $('#house_base_info tbody tr').each(function () {
+                    $(this).remove();
+                });
+                var html = "<tr><td>" + data.house.id + "</td>" +
+                        "<td>" + data.house.house_code + "</td>" +
+                        "<td>" + data.house.owner_name + "</td>" +
+                        "<td>" + data.house.builded_area + "平方米</td>" +
+                        "<td>" + data.house.use_type + "</td></tr>";
 
-  });
+                $("#house_base_info tbody").append(html);
+            }
+            parse_accounts(data);
+            parse_cars(data.cars);
+            parse_bill_item(data.bill_items);
+            parse_pay_bill_item(data.pay_bill_items);
 
-  function click_house(event, treeid, treeNode) {
-    var nodeName = treeNode.name;
-    var names = nodeName.split("|");
-    $("#house_code").val(names[0]);
-    refresh_house(names[0]);
-
-  }
-
-
-  function refresh_house(house_code) {
-    $("#select_account_all").removeAttr("checked");
-    $("#select_bill_all").removeAttr("checked");
-    var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
-    if (house_code == null)
-      house_code = $("#house_code").val();
-    $.post(url, {"house_code": house_code}, function (data) {
-      if (data.house) {
-        $("#house_id").val(data.house.id);
-        $('#house_base_info tbody tr').each(function () {
-          $(this).remove();
         });
-        var html = "<tr><td>" + data.house.id + "</td>" +
-								"<td>" + data.house.house_code + "</td>" +
-                "<td>" + data.house.owner_name + "</td>" +
-                "<td>" + data.house.builded_area + "平方米</td>" +
-                "<td>" + data.house.use_type + "</td></tr>";
-
-        $("#house_base_info tbody").append(html);
-      }
-      parse_accounts(data);
-      parse_cars(data.cars);
-      parse_bill_item(data.bill_items);
-      parse_pay_bill_item(data.pay_bill_items);
-
-    });
-  }
-  function parse_accounts(accounts) {
-    $('#accounts_table tbody tr').each(function () {
-      $(this).remove();
-    });
-    if (accounts.accounts && accounts.accounts.length > 0) {
-      for (i = 0; i < accounts.accounts.length; i++) {
-        var account = accounts.accounts[i];
-        var account_html = "<tr>" +
-                "<td><input type='checkbox' name='account_ids' id='account_ids' value='" + account.id + "' /></td>" +
-                "<td>" + account.item_name + "</td>" +
-                "<td>" + account.money + "</td>" +
-                "<td>" + account.can_push + "</td>" +
-                "<td>" + account.discount_money + "</td>" +
-                "<td>" +
-                "<a href='/accounts/history/" + account.id + "'>历史记录</a>" +
-                "</td></tr>";
-        $("#accounts_table tbody").append(account_html);
-      }
-
-
-    } else {
-      $("#accounts_table tbody").append("<tr><td colspan='6'>没有数据!</td></tr>")
     }
-  }
-  function del_car(car_id) {
-    var url = "<%=url_for(:controller => :houses,:action => :delete_car) %>";
-    var house_id = $("#house_id").val();
-    $.post(url, {"id": car_id, "house_id": house_id}, function (data) {
+    function parse_accounts(accounts) {
+        $('#accounts_table tbody tr').each(function () {
+            $(this).remove();
+        });
+        if (accounts.accounts && accounts.accounts.length > 0) {
+            for (i = 0; i < accounts.accounts.length; i++) {
+                var account = accounts.accounts[i];
+                var account_html = "<tr>" +
+                        "<td><input type='checkbox' name='account_ids' id='account_ids' value='" + account.id + "' /></td>" +
+                        "<td>" + account.item_name + "</td>" +
+                        "<td>" + account.money + "</td>" +
+                        "<td>" + account.can_push + "</td>" +
+                        "<td>" + account.discount_money + "</td>" +
+                        "<td>" +
+                        "<a href='/accounts/history/" + account.id + "'>历史记录</a>" +
+                        "</td></tr>";
+                $("#accounts_table tbody").append(account_html);
+            }
 
-
-      parse_cars(data.cars);
-    }, "json");
-  }
-  function parse_cars(cars) {
-    $('#cars_table tbody tr').each(function () {
-      $(this).remove();
-    });
-    if (cars && cars.length > 0) {
-      for (i = 0; i < cars.length; i++) {
-        var car = cars[i];
-        var car_html = "<tr>" +
-                "<td>" + car.car_no + "</td>" +
-                "<td>" + car.port_no + "</td>" +
-                "<td>" + car.port_money + "</td>" +
-                "<td><a href='javascript:del_car(" + car.id + ")'>删除<a/></td>" +
-                "</tr>";
-        $("#cars_table tbody").append(car_html);
-      }
-    } else {
-      $("#cars_table tbody").append("<tr><td colspan='4'>没有数据!</td></tr>")
-    }
-  }
-  function search_bill_item() {
-    var url = "<%=url_for(:controller => :bills,:action => :search) %>";
-    var house_code = $("#house_code").val();
-    var start_time = $("#start_time").val();
-    var end_time = $("#end_time").val();
-    if (house_code == '') {
-      alert("未选择房间");
-      return;
-    }
-    if (start_time == "") {
-      alert("未填写开始时间");
-      return;
-    }
-    if (end_time == "") {
-      alert("未填写结束时间");
-      return;
-    }
-    $("#pay_bill_items_table tbody tr").each(function () {
-      $(this).remove();
-    });
-    $.post(url, {"house_code": house_code, "start_time": start_time, "end_time": end_time }, function (data) {
-
-      if (data.bill_items && data.bill_items.length > 0) {
-        parse_pay_bill_item(data.bill_items)
-      } else {
-        $("#pay_bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
-      }
-
-    }, "json");
-  }
-
-  function parse_bill_item(bill_items) {
-    $("#bill_items_table tbody tr").each(function () {
-      $(this).remove();
-    });
-    if (bill_items && bill_items.length > 0) {
-
-
-      var sum_money = 0;
-      for (i = 0; i < bill_items.length; i++) {
-        var obj = bill_items[i];
-        var tr_row = "<tr>";
-        tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
-
-        tr_row += "<td>" + obj.item_name + "</td>" +
-                "       <td>" + obj.trans_time + "</td>";
-        if (obj.status == 0) {
-          tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
-        } else {
-          tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
-        }
-
-        tr_row += "       <td>" + obj.unit_price + "</td>" +
-                "       <td>" + obj.money + "</td>" +
-                "       <td>" + obj.push + "</td>" +
-                "       <td>0.00</td>" +
-                "       <td>" + (obj.money - obj.push - obj.pay_money) + "</td>" +
-                "       <td>" + obj.pay_money + "</td>";
-
-        if (obj.receipt_no == null) {
-          tr_row += "  <td></td>";
-        } else {
-          tr_row += "       <td><a href='javascript:receipt_show(" + obj.receipt_no + ");'>" + obj.receipt_no + "</a></td>";
-        }
-        tr_row += "</tr>";
-        if (obj.status == 0) {
-          sum_money += parseFloat(obj.money - obj.push);
-        }
-        $("#bill_items_table tbody").append(tr_row);
-      }
-
-      $("#bill_items_table tbody").append("<tr><td></td><td>欠费合计</td><td></td>" +
-              "<td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td><td></td></tr>");
-    } else {
-      $("#bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
-    }
-  }
-
-  function parse_pay_bill_item(bill_items) {
-    $("#pay_bill_items_table tbody tr").each(function () {
-      $(this).remove();
-    });
-    if (bill_items && bill_items.length > 0) {
-
-      var sum_money = 0;
-      for (i = 0; i < bill_items.length; i++) {
-        var obj = bill_items[i];
-        var tr_row = "<tr>";
-        tr_row += "<td><input type='checkbox' name='pay_bill_item_ids' id='pay_bill_item_ids' value='" + obj.id + "' /></td>";
-
-        tr_row += "<td>" + obj.item_name + "</td>" +
-                "       <td>" + obj.trans_time + "</td>";
-        if (obj.status == 0) {
-          tr_row += "<td id='pay_bill_item_" + obj.id + "'>未收</td>";
-        } else {
-          tr_row += "<td id='pay_bill_item_" + obj.id + "'>已收</td>";
-        }
-
-        tr_row += "       <td>" + obj.unit_price + "</td>" +
-                "       <td>" + obj.money + "</td>" +
-                "       <td>" + obj.push + "</td>" +
-                "       <td>0.00</td>" +
-                "       <td>" + (obj.money - obj.push - obj.pay_money) + "</td>" +
-                "       <td>" + obj.pay_money + "</td>";
-
-        if (obj.receipt_no == null) {
-          tr_row += "  <td></td>";
-        } else {
-          tr_row += "       <td><a href='javascript:receipt_show(" + obj.receipt_no + ");'>" + obj.receipt_no + "</a></td>";
-        }
-        tr_row += "</tr>";
-        if (obj.status == 1) {
-          sum_money += parseFloat(obj.pay_money);
-        }
-        $("#pay_bill_items_table tbody").append(tr_row);
-      }
-
-      $("#pay_bill_items_table tbody").append("<tr><td></td><td>缴费合计</td><td></td>" +
-              "<td></td><td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td></tr>");
-    } else {
-      $("#pay_bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
-    }
-  }
-
-  function selectAllCheck(allCheckedObj, id) {
-    var isAll = $(allCheckedObj).attr("checked");
-    if (isAll) {
-      $(":checkbox").each(function () {
-        if (this.id == id) {
-          if (!this.checked && !this.disabled) {
-            this.checked = true;
-          }
-        }
-      });
-    } else {
-      $(":checkbox").each(function () {
-        if (this.id == id) {
-          if (this.checked && !this.disabled) {
-            this.checked = false;
-          }
-        }
-      });
-    }
-  }
-
-  function add_pre_money() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
-    url += "/" + $("#house_id").val();
-    document.location.href = url;
-  }
-
-  function add_temporary() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :bills, :action => :add_temporary) %>";
-    url += "/" + $("#house_id").val();
-    document.location.href = url;
-  }
-  function pay() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
-    url += "?house_id=" + $("#house_id").val();
-    $("input[name='bill_item_ids']").each(function () {
-      if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
-        url += "&bill_item_ids[]=" + this.value;
-      }
-    });
-    $.post(url, function (data) {
-      if (data.result == 'success') {
-        // alert(data.msg);
-				$(".modal-body").append(data.msg);
-				$("#push_result").modal();
-        refresh_house();
-      }
-    });
-  }
-  function push() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :bills,:action=>:push) %>";
-    url += "?house_id=" + $("#house_id").val();
-    $("input[name='bill_item_ids']").each(function () {
-      if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
-        url += "&bill_item_ids[]=" + this.value;
-      }
-    });
-    $.post(url, function (data) {
-      if (data.result == 'success') {
-				var text = "共冲销:<br/>";
-				for (i=0;i<data.push_money.length;i++) {
-					text += "<p>"+data.push_money[i].item_name+":"+data.push_money[i].push+"元</p>";
-				}
-				
-				
-				$(".modal-body").append(text);
-				$("#push_result").modal();
-        // alert(data.msg);
-        refresh_house();
-      } else {
-				$(".modal-body").append("<p>"+data.msg+"</p>")
-				$("#push_result").modal();
-        // alert(data.msg);
-      }
-    });
-  }
-  function print() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
-    url += "?houseId=" + $('#house_id').val() + "&type=0";
-    var flag = false;
-    var sum_checked = 0;
-    var hasNoPay = false;
-    $("input[name='pay_bill_item_ids']").each(function () {
-      if (this.checked) {
-        if ($("#pay_bill_item_" + this.value).text() == "已收") {
-          url += "&item_ids[]=" + this.value;
-          flag = true;
-          sum_checked += 1;
 
         } else {
-          hasNoPay = true;
+            $("#accounts_table tbody").append("<tr><td colspan='6'>没有数据!</td></tr>")
         }
-      }
-    });
-
-    if (hasNoPay) {
-			$(".modal-body").append("包含有未缴费项目,请先缴费再打印收据!");
-			$("#push_result").modal();
-      // alert("包含有未缴费项目,请先缴费再打印收据!");
-      return;
     }
-    if (!flag) {
-			$(".modal-body").append("至少选择一个收费项!");
-			$("#push_result").modal();
-      // alert("至少选择一个收费项!");
-      return;
-    }
+    function del_car(car_id) {
+        var url = "<%=url_for(:controller => :houses,:action => :delete_car) %>";
+        var house_id = $("#house_id").val();
+        $.post(url, {"id": car_id, "house_id": house_id}, function (data) {
 
-    if (sum_checked > 6) {
-			$(".modal-body").append("最多只能选择6项!");
-			$("#push_result").modal();
-      // alert("最多只能选择4项!");
-      return;
-    }
-    var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
-    window.open(url, '收据打印', sFeatures);
-    setInterval(refresh_house, 5000);
 
-  }
-
-  function resetBill() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append("未选择房间");
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
+            parse_cars(data.cars);
+        }, "json");
     }
-    var url = "<%=url_for(:controller => :bills, :action => :reset) %>";
-    url += "?house_id=" + $('#house_id').val();
-    var flag = false;
-    $("input[name='pay_bill_item_ids']").each(function () {
-      if (this.checked) {
-        if ($("#pay_bill_item_" + this.value).text() == "已收") {
-          url += "&bill_item_ids[]=" + this.value;
-          flag = true;
+    function parse_cars(cars) {
+        $('#cars_table tbody tr').each(function () {
+            $(this).remove();
+        });
+        if (cars && cars.length > 0) {
+            for (i = 0; i < cars.length; i++) {
+                var car = cars[i];
+                var car_html = "<tr>" +
+                        "<td>" + car.car_no + "</td>" +
+                        "<td>" + car.port_no + "</td>" +
+                        "<td>" + car.port_money + "</td>" +
+                        "<td><a href='javascript:del_car(" + car.id + ")'>删除<a/></td>" +
+                        "</tr>";
+                $("#cars_table tbody").append(car_html);
+            }
+        } else {
+            $("#cars_table tbody").append("<tr><td colspan='4'>没有数据!</td></tr>")
         }
-      }
-    });
-
-
-    if (!flag) {
-			$(".modal-body").append("至少选择一个收费项!");
-			$("#push_result").modal();
-      // alert("至少选择一个收费项!");
-      return;
     }
-    $.post(url, function (data) {
-      if (data.result == 'success') {
-				$(".modal-body").append(data.msg);
-				$("#push_result").modal();
-        // alert(data.msg);
-        refresh_house();
-      }
-    });
-  }
-
-  /*
-  批量删除账单
-  */
-  function delBill () {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-			$(".modal-body").append(data.msg);
-			$("#push_result").modal();
-      // alert("未选择房间");
-      return;
-    }
-    var url = "<%=url_for(:controller => :bills, :action => :del_items) %>";
-    url += "?house_id=" + $('#house_id').val();
-    var flag = false; 
-    $("input[name='pay_bill_item_ids']").each(function () {
-      if (this.checked) {
-        if ($("#pay_bill_item_" + this.value).text() == "已收") {
-          url += "&bill_item_ids[]=" + this.value;
-          flag = true;
+    function search_bill_item() {
+        var url = "<%=url_for(:controller => :bills,:action => :search) %>";
+        var house_code = $("#house_code").val();
+        var start_time = $("#start_time").val();
+        var end_time = $("#end_time").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
         }
-      }
-    });
+        if (start_time == "") {
+            alert("未填写开始时间");
+            return;
+        }
+        if (end_time == "") {
+            alert("未填写结束时间");
+            return;
+        }
+        $("#pay_bill_items_table tbody tr").each(function () {
+            $(this).remove();
+        });
+        $.post(url, {"house_code": house_code, "start_time": start_time, "end_time": end_time }, function (data) {
 
+            if (data.bill_items && data.bill_items.length > 0) {
+                parse_pay_bill_item(data.bill_items)
+            } else {
+                $("#pay_bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
+            }
 
-    if (!flag) {
-			$(".modal-body").append("至少选择一个收费项!");
-			$("#push_result").modal();
-      // alert("至少选择一个收费项!");
-      return;
+        }, "json");
     }
-    $.post(url, function (data) {
-      if (data.result == 'success') {
-				$(".modal-body").append(data.msg);
-				$("#push_result").modal();
-        // alert(data.msg);
-        refresh_house();
-      }
-    });
-  }
 
-  function receipt_show(receipt_no) {
-    var url = "<%= url_for(:controller => :receipt, :action => :show) %>";
-    url += "?receipt_no=" + receipt_no;
-    var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
-    window.open(url, '收据打印', sFeatures);
-  }
+    function parse_bill_item(bill_items) {
+        $("#bill_items_table tbody tr").each(function () {
+            $(this).remove();
+        });
+        if (bill_items && bill_items.length > 0) {
 
-  function search_house() {
-    var house_code = $("#search_house_code").val();
-    refresh_house(house_code);
-    $("#house_code").val(house_code);
+
+            var sum_money = 0;
+            for (i = 0; i < bill_items.length; i++) {
+                var obj = bill_items[i];
+                var tr_row = "<tr>";
+                tr_row += "<td><input type='checkbox' name='bill_item_ids' id='bill_item_ids' value='" + obj.id + "' /></td>";
+
+                tr_row += "<td>" + obj.item_name + "</td>" +
+                        "       <td>" + obj.trans_time + "</td>";
+                if (obj.status == 0) {
+                    tr_row += "<td id='bill_item_" + obj.id + "'>未收</td>";
+                } else {
+                    tr_row += "<td id='bill_item_" + obj.id + "'>已收</td>";
+                }
+
+                tr_row += "       <td>" + parseFloat(obj.unit_price).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.money).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.push).toFixed(2) + "</td>" +
+                        "       <td>0.00</td>" +
+                        "       <td>" + parseFloat(obj.money - obj.push - obj.pay_money).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.pay_money).toFixed(2) + "</td>";
+
+                if (obj.receipt_no == null) {
+                    tr_row += "  <td></td>";
+                } else {
+                    tr_row += "       <td><a href='javascript:receipt_show(" + obj.receipt_no + ");'>" + obj.receipt_no + "</a></td>";
+                }
+                tr_row += "</tr>";
+                if (obj.status == 0) {
+                    sum_money += parseFloat(obj.money - obj.push).toFixed(2);
+                }
+                $("#bill_items_table tbody").append(tr_row);
+            }
+
+            $("#bill_items_table tbody").append("<tr><td></td><td>欠费合计</td><td></td>" +
+                    "<td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td><td></td></tr>");
+        } else {
+            $("#bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
+        }
+    }
+
+    function parse_pay_bill_item(bill_items) {
+        $("#pay_bill_items_table tbody tr").each(function () {
+            $(this).remove();
+        });
+        if (bill_items && bill_items.length > 0) {
+
+            var sum_money = 0;
+            for (i = 0; i < bill_items.length; i++) {
+                var obj = bill_items[i];
+                var tr_row = "<tr>";
+                tr_row += "<td><input type='checkbox' name='pay_bill_item_ids' id='pay_bill_item_ids' value='" + obj.id + "' /></td>";
+
+                tr_row += "<td>" + obj.item_name + "</td>" +
+                        "       <td>" + obj.trans_time + "</td>";
+                if (obj.status == 0) {
+                    tr_row += "<td id='pay_bill_item_" + obj.id + "'>未收</td>";
+                } else {
+                    tr_row += "<td id='pay_bill_item_" + obj.id + "'>已收</td>";
+                }
+
+                tr_row += "       <td>" + parseFloat(obj.unit_price).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.money).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.push).toFixed(2) + "</td>" +
+                        "       <td>0.00</td>" +
+                        "       <td>" + parseFloat(obj.money - obj.push - obj.pay_money).toFixed(2) + "</td>" +
+                        "       <td>" + parseFloat(obj.pay_money).toFixed(2) + "</td>";
+
+                if (obj.receipt_no == null) {
+                    tr_row += "  <td></td>";
+                } else {
+                    tr_row += "       <td><a href='javascript:receipt_show(" + obj.receipt_no + ");'>" + obj.receipt_no + "</a></td>";
+                }
+                tr_row += "</tr>";
+                if (obj.status == 1) {
+                    sum_money += parseFloat(obj.pay_money).toFixed(2);
+                }
+                $("#pay_bill_items_table tbody").append(tr_row);
+            }
+
+            $("#pay_bill_items_table tbody").append("<tr><td></td><td>缴费合计</td><td></td>" +
+                    "<td></td><td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td></tr>");
+        } else {
+            $("#pay_bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
+        }
+    }
+
+    function selectAllCheck(allCheckedObj, id) {
+        var isAll = $(allCheckedObj).attr("checked");
+        if (isAll) {
+            $(":checkbox").each(function () {
+                if (this.id == id) {
+                    if (!this.checked && !this.disabled) {
+                        this.checked = true;
+                    }
+                }
+            });
+        } else {
+            $(":checkbox").each(function () {
+                if (this.id == id) {
+                    if (this.checked && !this.disabled) {
+                        this.checked = false;
+                    }
+                }
+            });
+        }
+    }
+
+    function add_pre_money() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :accounts, :action => :add_pre_money) %>";
+        url += "/" + $("#house_id").val();
+        document.location.href = url;
+    }
+
+    function add_temporary() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills, :action => :add_temporary) %>";
+        url += "/" + $("#house_id").val();
+        document.location.href = url;
+    }
+    function pay() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills,:action=>:pay) %>";
+        url += "?house_id=" + $("#house_id").val();
+        $("input[name='bill_item_ids']").each(function () {
+            if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
+                url += "&bill_item_ids[]=" + this.value;
+            }
+        });
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                // alert(data.msg);
+                $(".modal-body").append(data.msg);
+                $("#push_result").modal();
+                refresh_house();
+            }
+        });
+    }
+    function push() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills,:action=>:push) %>";
+        url += "?house_id=" + $("#house_id").val();
+        $("input[name='bill_item_ids']").each(function () {
+            if (this.checked && $("#bill_item_" + this.value).text() != '已收') {
+                url += "&bill_item_ids[]=" + this.value;
+            }
+        });
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                var text = "共冲销:<br/>";
+                for (i = 0; i < data.push_money.length; i++) {
+                    text += "<p>" + data.push_money[i].item_name + ":" + data.push_money[i].push + "元</p>";
+                }
+
+
+                $(".modal-body").append(text);
+                $("#push_result").modal();
+                // alert(data.msg);
+                refresh_house();
+            } else {
+                $(".modal-body").append("<p>" + data.msg + "</p>")
+                $("#push_result").modal();
+                // alert(data.msg);
+            }
+        });
+    }
+    function print() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :receipt,:action=>:print) %>";
+        url += "?houseId=" + $('#house_id').val() + "&type=0";
+        var flag = false;
+        var sum_checked = 0;
+        var hasNoPay = false;
+        $("input[name='pay_bill_item_ids']").each(function () {
+            if (this.checked) {
+                if ($("#pay_bill_item_" + this.value).text() == "已收") {
+                    url += "&item_ids[]=" + this.value;
+                    flag = true;
+                    sum_checked += 1;
+
+                } else {
+                    hasNoPay = true;
+                }
+            }
+        });
+
+        if (hasNoPay) {
+            $(".modal-body").append("包含有未缴费项目,请先缴费再打印收据!");
+            $("#push_result").modal();
+            // alert("包含有未缴费项目,请先缴费再打印收据!");
+            return;
+        }
+        if (!flag) {
+            $(".modal-body").append("至少选择一个收费项!");
+            $("#push_result").modal();
+            // alert("至少选择一个收费项!");
+            return;
+        }
+
+        if (sum_checked > 6) {
+            $(".modal-body").append("最多只能选择6项!");
+            $("#push_result").modal();
+            // alert("最多只能选择4项!");
+            return;
+        }
+        var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+        window.open(url, '收据打印', sFeatures);
+        setInterval(refresh_house, 5000);
+
+    }
+
+    function resetBill() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append("未选择房间");
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills, :action => :reset) %>";
+        url += "?house_id=" + $('#house_id').val();
+        var flag = false;
+        $("input[name='pay_bill_item_ids']").each(function () {
+            if (this.checked) {
+                if ($("#pay_bill_item_" + this.value).text() == "已收") {
+                    url += "&bill_item_ids[]=" + this.value;
+                    flag = true;
+                }
+            }
+        });
+
+
+        if (!flag) {
+            $(".modal-body").append("至少选择一个收费项!");
+            $("#push_result").modal();
+            // alert("至少选择一个收费项!");
+            return;
+        }
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                $(".modal-body").append(data.msg);
+                $("#push_result").modal();
+                // alert(data.msg);
+                refresh_house();
+            }
+        });
+    }
+
+    /*
+     批量删除账单
+     */
+    function delBill() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            $(".modal-body").append(data.msg);
+            $("#push_result").modal();
+            // alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :bills, :action => :del_items) %>";
+        url += "?house_id=" + $('#house_id').val();
+        var flag = false;
+        $("input[name='pay_bill_item_ids']").each(function () {
+            if (this.checked) {
+                if ($("#pay_bill_item_" + this.value).text() == "已收") {
+                    url += "&bill_item_ids[]=" + this.value;
+                    flag = true;
+                }
+            }
+        });
+
+
+        if (!flag) {
+            $(".modal-body").append("至少选择一个收费项!");
+            $("#push_result").modal();
+            // alert("至少选择一个收费项!");
+            return;
+        }
+        $.post(url, function (data) {
+            if (data.result == 'success') {
+                $(".modal-body").append(data.msg);
+                $("#push_result").modal();
+                // alert(data.msg);
+                refresh_house();
+            }
+        });
+    }
+
+    function receipt_show(receipt_no) {
+        var url = "<%= url_for(:controller => :receipt, :action => :show) %>";
+        url += "?receipt_no=" + receipt_no;
+        var sFeatures = "height=600, width=810, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=n o, status=no";
+        window.open(url, '收据打印', sFeatures);
+    }
+
+    function search_house() {
+        var house_code = $("#search_house_code").val();
+        refresh_house(house_code);
+        $("#house_code").val(house_code);
 //        var treeObj = $.fn.zTree.getZTreeObj("house_tree");
 //        var node = zTree1.getNodesByParam("name", house_code, null); // 仅查找一个节点
 //        alert(node);
@@ -482,27 +482,27 @@
 //        } else {
 //            zTree1.expandAll(true);
 //        }
-  }
-
-  function bindCharges() {
-    var house_id = $("#house_id").val();
-    if (house_id == '' || house_id == 0) {
-			$(".modal-body").append("还未选择房间");
-			$("#push_result").modal();
-      // alert("还未选择房间");
-      return;
     }
-    var url = "<%= bind_charges_path %>";
-    url += "?id=" + house_id;
-    document.location.href = url;
-  }
 
-  $(document).ready(function () {
-    var house_code = $("#house_code").val();
-    if (house_code != "") {
-      refresh_house(house_code)
+    function bindCharges() {
+        var house_id = $("#house_id").val();
+        if (house_id == '' || house_id == 0) {
+            $(".modal-body").append("还未选择房间");
+            $("#push_result").modal();
+            // alert("还未选择房间");
+            return;
+        }
+        var url = "<%= bind_charges_path %>";
+        url += "?id=" + house_id;
+        document.location.href = url;
     }
-  });
+
+    $(document).ready(function () {
+        var house_code = $("#house_code").val();
+        if (house_code != "") {
+            refresh_house(house_code)
+        }
+    });
 
 </script>
 <input type="hidden" id="house_id" value=""/>

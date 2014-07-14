@@ -51,7 +51,7 @@ class BillItem < ActiveRecord::Base
 
     pushmoney = 0
     if can_push
-      pushmoney = push_money(operator)
+      pushmoney = push_money_process(operator)
       #这里可能会导致后续冲销流程断掉
       # raise '余额不足' if pushmoney.zero?
     end
@@ -79,10 +79,10 @@ class BillItem < ActiveRecord::Base
 
   end
 
-  def push_money(operator = '系统')
+  def push_money_process(operator = '系统')
     #Account account = accountDao.findUniqueAccountByHouseAndItem(houseId, itemType.getType(), itemId)
     account = Account.find_account_by_house(self.house_id, self.item_type, self.item_id)
-    return 0 if account.nil? || account.money==0
+    return 0 if account.nil? || account.money <= 0
     sum_push_money = 0
     account.in_details.each do |account_item|
       can_push = account_item.can_push

@@ -70,7 +70,10 @@ class BillsController < ApplicationController
     end
     plot = Plot.find(current_plot)
     logger.info "plot name is #{plot.name}"
-    day = params[:day] || Date.today
+    day = params[:day]
+    if day.nil? || day.empty?
+      day = Date.today
+    end
     plot.areas.each do |area|
       logger.info "area is #{area.id}"
       area.houses.each do |house|
@@ -141,7 +144,7 @@ class BillsController < ApplicationController
         push_money = []
         bill_items.each do |bi|
           bi.push_item true, @current_user.name
-          push_money << {:item_name=>bi.item_name, :push => bi.push_money}
+          push_money << {:item_name => bi.item_name, :push => bi.push}
           bi.bill.check_status
         end
         result = {:result => 'success', :msg => '冲销成功', :house_code => house.house_code, :push_money=> push_money}

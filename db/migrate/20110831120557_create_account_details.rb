@@ -12,6 +12,13 @@ class CreateAccountDetails < ActiveRecord::Migration
       t.decimal :unit_price, :precision => 8, :scale => 2
       t.decimal :can_push, :precision => 8, :scale => 2, :default => 0.00
       t.integer :receipt_id
+      t.integer :item_id
+      t.string :item_name
+      t.string :receipt_no
+      t.integer :house_id
+      t.integer :plot_id
+      t.decimal :discount, :precision => 8, :scale => 2, :default => 1.00
+      t.decimal :discount_money, :precision => 8, :scale => 2, :default => 1.00
 
       t.timestamps
     end
