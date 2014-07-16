@@ -44,19 +44,12 @@
         </table>
       </div>
       <div class="tab-pane active" id="tab2">
-        <!--<div class="input-append">-->
-        <!--<div class="row-fluid">-->
-        <!--<div class="btn-toolbar">-->
-        <!--<div class="btn-group">-->
-        <!--<button class="btn" onclick="add_temporary()"><span></span>增加临时账单</button>-->
-        <!--<button class="btn" onclick="add_pre_money()"><span></span>预存款</button>-->
-        <!--<button class="btn"><span></span>退款</button>-->
-        <!--<button class="btn" onclick="pay()"><span></span>缴费</button>-->
-        <!--<button class="btn" onclick="push()"><span></span>使用预存款冲销</button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
+        <div class="control-group">
+          <div class="controls">
+            <label class="label" style="">收费项目:</label>
+            <%= select_tag 'unpay_select', options_for_select(plot_charges), :onchange => "filter_bill_items(0)", :style => "margin-bottom: 0;" %>
+          </div>
+        </div>
         <div class="row-fluid">
           <table id="bill_items_table" class="table table-bordered table-hover table-condensed">
             <thead>
@@ -116,6 +109,9 @@
             <input id="end_time" name="end_time" type="text" class="span2" style="margin-bottom: 0;" placeholder="结束日期"/>
 
             <input type="button" value="查询" class="btn btn-primary" onclick="search_bill_item()"/>
+
+            <label class="label" style="">收费项目:</label>
+            <%= select_tag 'pay_select', options_for_select(plot_charges), :onchange => "filter_bill_items(1)", :style => "margin-bottom: 0;" %>
           </div>
         </div>
         <!--<div class="row-fluid">-->
@@ -161,20 +157,42 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(document).ready(function () {
-    $("#start_time").datetimepicker({
-      format: 'yyyy-mm-dd',
-      minView: 'month',
-      autoclose: true,
-      todayBtn: true,
-      todayHighlight: true
+    $(document).ready(function () {
+        $("#start_time").datetimepicker({
+            format: 'yyyy-mm-dd',
+            minView: 'month',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
+        $("#end_time").datetimepicker({
+            format: 'yyyy-mm-dd',
+            minView: 'month',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
     });
-    $("#end_time").datetimepicker({
-      format: 'yyyy-mm-dd',
-      minView: 'month',
-      autoclose: true,
-      todayBtn: true,
-      todayHighlight: true
-    });
-  });
+
+    function filter_bill_items(pay_state) {
+        var filter_unpay_item = $("#unpay_select").val();
+        var filter_pay_item = $("#pay_select").val();
+        var house_code = $("#house_code").val();
+        if (pay_state) {
+            refresh_house(house_code, filter_pay_item, 0);
+        } else {
+            refresh_house(house_code, 0, filter_unpay_item);
+        }
+
+
+    }
+
+    function sum_talbe() {
+        var sum = 0;
+        $("#pay_bill_items_table tbody tr td:nth-child(10)").each(function () {
+            var money = parseFloat($(this).html());
+            sum += money;
+        });
+
+    }
 </script>

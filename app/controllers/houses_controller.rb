@@ -139,11 +139,19 @@ class HousesController < ApplicationController
 
     bill_items_json = Array.new
     house.unpay_bill_items.each do |bill_item|
-      bill_items_json << bill_item.json
+      if params[:filter_unpay_item].nil? ||
+          params[:filter_unpay_item].to_i == 0 ||
+          bill_item.item_id == params[:filter_unpay_item].to_i
+        bill_items_json << bill_item.json
+      end
     end
     pay_bill_items_json = Array.new
     house.pay_bill_items.each do |bill_item|
-      pay_bill_items_json << bill_item.json
+      if params[:filter_pay_item].nil? ||
+          params[:filter_pay_item].to_i == 0 ||
+          bill_item.item_id == params[:filter_pay_item].to_i
+        pay_bill_items_json << bill_item.json
+      end
     end
     accounts_json = Array.new
 

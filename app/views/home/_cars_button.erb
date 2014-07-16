@@ -3,21 +3,23 @@
     <div class="btn-group">
       <% if @current_user.has_privilege?('cars', 'create') %>
 
-        <button class="btn" onclick="add_car()"><span></span>新增车辆</button>
+          <button class="btn" onclick="add_car()"><span></span>新增车辆</button>
       <% end %>
 
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
-  function add_car() {
-    var house_code = $("#house_code").val();
-    if (house_code == '') {
-      alert("未选择房间");
-      return;
+    function add_car() {
+        var house_code = $("#house_code").val();
+        if (house_code == '') {
+            alert("未选择房间");
+            return;
+        }
+        var url = "<%=url_for(:controller => :cars, :action => :new) %>";
+        url += "?house_id=" + $("#house_id").val();
+        document.location.href = url;
     }
-    var url = "<%=url_for(:controller => :cars, :action => :new) %>";
-    url += "?house_id=" + $("#house_id").val();
-    document.location.href = url;
-  }
+
 </script>

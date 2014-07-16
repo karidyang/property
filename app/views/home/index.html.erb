@@ -28,13 +28,17 @@
     }
 
 
-    function refresh_house(house_code) {
+    function refresh_house(house_code, filter_pay_item, filter_unpay_item) {
         $("#select_account_all").removeAttr("checked");
         $("#select_bill_all").removeAttr("checked");
         var url = "<%=url_for(:controller => :houses,:action => :house_info) %>";
         if (house_code == null)
             house_code = $("#house_code").val();
-        $.post(url, {"house_code": house_code}, function (data) {
+        $.post(url, {
+            "house_code": house_code,
+            "filter_pay_item": filter_pay_item,
+            "filter_unpay_item": filter_unpay_item
+        }, function (data) {
             if (data.house) {
                 $("#house_id").val(data.house.id);
                 $('#house_base_info tbody tr').each(function () {
@@ -55,6 +59,7 @@
 
         });
     }
+
     function parse_accounts(accounts) {
         $('#accounts_table tbody tr').each(function () {
             $(this).remove();
@@ -79,15 +84,20 @@
             $("#accounts_table tbody").append("<tr><td colspan='6'>没有数据!</td></tr>")
         }
     }
+
     function del_car(car_id) {
         var url = "<%=url_for(:controller => :houses,:action => :delete_car) %>";
         var house_id = $("#house_id").val();
-        $.post(url, {"id": car_id, "house_id": house_id}, function (data) {
+        $.post(url, {
+            "id": car_id,
+            "house_id": house_id
+        }, function (data) {
 
 
             parse_cars(data.cars);
         }, "json");
     }
+
     function parse_cars(cars) {
         $('#cars_table tbody tr').each(function () {
             $(this).remove();
@@ -107,6 +117,7 @@
             $("#cars_table tbody").append("<tr><td colspan='4'>没有数据!</td></tr>")
         }
     }
+
     function search_bill_item() {
         var url = "<%=url_for(:controller => :bills,:action => :search) %>";
         var house_code = $("#house_code").val();
@@ -127,7 +138,11 @@
         $("#pay_bill_items_table tbody tr").each(function () {
             $(this).remove();
         });
-        $.post(url, {"house_code": house_code, "start_time": start_time, "end_time": end_time }, function (data) {
+        $.post(url, {
+            "house_code": house_code,
+            "start_time": start_time,
+            "end_time": end_time
+        }, function (data) {
 
             if (data.bill_items && data.bill_items.length > 0) {
                 parse_pay_bill_item(data.bill_items)
@@ -173,13 +188,14 @@
                 }
                 tr_row += "</tr>";
                 if (obj.status == 0) {
-                    sum_money += parseFloat(obj.money - obj.push).toFixed(2);
+                    var money = parseFloat(obj.money - obj.push);
+                    sum_money += parseFloat(money.toFixed(2));
                 }
                 $("#bill_items_table tbody").append(tr_row);
             }
 
             $("#bill_items_table tbody").append("<tr><td></td><td>欠费合计</td><td></td>" +
-                    "<td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td><td></td></tr>");
+                    "<td></td><td></td><td></td><td></td><td></td><td>" + parseFloat(sum_money).toFixed(2) + "</td><td></td><td></td></tr>");
         } else {
             $("#bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
         }
@@ -219,13 +235,15 @@
                 }
                 tr_row += "</tr>";
                 if (obj.status == 1) {
-                    sum_money += parseFloat(obj.pay_money).toFixed(2);
+                    var pay_money = parseFloat(obj.pay_money);
+                    sum_money += parseFloat(pay_money.toFixed(2));
                 }
+
                 $("#pay_bill_items_table tbody").append(tr_row);
             }
 
             $("#pay_bill_items_table tbody").append("<tr><td></td><td>缴费合计</td><td></td>" +
-                    "<td></td><td></td><td></td><td></td><td></td><td></td><td>" + CurrencyFormatted(sum_money) + "</td><td></td></tr>");
+                    "<td></td><td></td><td></td><td></td><td></td><td></td><td>" + parseFloat(sum_money).toFixed(2) + "</td><td></td></tr>");
         } else {
             $("#pay_bill_items_table tbody").append("<tr><td colspan='11'>没有数据!</td></tr>")
         }
@@ -277,6 +295,7 @@
         url += "/" + $("#house_id").val();
         document.location.href = url;
     }
+
     function pay() {
         var house_code = $("#house_code").val();
         if (house_code == '') {
@@ -301,6 +320,7 @@
             }
         });
     }
+
     function push() {
         var house_code = $("#house_code").val();
         if (house_code == '') {
@@ -335,6 +355,7 @@
             }
         });
     }
+
     function print() {
         var house_code = $("#house_code").val();
         if (house_code == '') {
@@ -426,6 +447,7 @@
     /*
      批量删除账单
      */
+
     function delBill() {
         var house_code = $("#house_code").val();
         if (house_code == '') {
@@ -474,14 +496,14 @@
         var house_code = $("#search_house_code").val();
         refresh_house(house_code);
         $("#house_code").val(house_code);
-//        var treeObj = $.fn.zTree.getZTreeObj("house_tree");
-//        var node = zTree1.getNodesByParam("name", house_code, null); // 仅查找一个节点
-//        alert(node);
-//        if (node.length>0) {
-//            zTree1.expandNode(node[0], true, true, true);
-//        } else {
-//            zTree1.expandAll(true);
-//        }
+        //        var treeObj = $.fn.zTree.getZTreeObj("house_tree");
+        //        var node = zTree1.getNodesByParam("name", house_code, null); // 仅查找一个节点
+        //        alert(node);
+        //        if (node.length>0) {
+        //            zTree1.expandNode(node[0], true, true, true);
+        //        } else {
+        //            zTree1.expandAll(true);
+        //        }
     }
 
     function bindCharges() {
@@ -500,7 +522,7 @@
     $(document).ready(function () {
         var house_code = $("#house_code").val();
         if (house_code != "") {
-            refresh_house(house_code)
+            refresh_house(house_code);
         }
     });
 
