@@ -18,7 +18,7 @@ class RolesController < ApplicationController
       return
     end
 
-    @roles = Role.order('name').paginate(:page => params[:page])
+    @roles = Role.where('company_id=?', @current_user.company_id).order('name').paginate(:page => params[:page])
     render 'admin/roles/index'
   end
 
@@ -53,7 +53,7 @@ class RolesController < ApplicationController
       return
     end
     @role = Role.new(params[:role])
-
+    @role.company_id = @current_user.company_id
     if @role.save
       params[:role][:privilege_ids] ||= []
       if @role.update_attributes(params[:role])

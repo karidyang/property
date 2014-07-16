@@ -11,9 +11,9 @@ class UsersController < ApplicationController
       return
     end
     if params.has_key?('name')
-      @users = User.where('name like ?', "%#{params[:name]}%").paginate(:page => params[:page])
+      @users = User.where('name like ? and company_id=?', "%#{params[:name]}%", current_user.company_id).paginate(:page => params[:page])
     else
-      @users = User.paginate(:page => params[:page])
+      @users = User.where('company_id=?', current_user.company_id).paginate(:page => params[:page])
     end
     render 'admin/users/index'
   end
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
       return
     end
     @user = User.new(params[:user])
-
+    @user.company_id = @current_user.company_id
     if @user.save
       flash.now[:error] = '注册成功.'
       redirect_back_or_default user_path
@@ -69,7 +69,6 @@ class UsersController < ApplicationController
       return
     end
     @user = User.find(params[:id])
-
 
     if @user.update_attributes(params[:user])
       redirect_to(@user, :notice => '保存用户成功.')
